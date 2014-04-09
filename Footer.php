@@ -1,0 +1,1 @@
+<p>&copy; <?php echo date("Y"); ?> Treasure Hunters. All rights reserved.</p>
