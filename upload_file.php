@@ -1,12 +1,4 @@
 #!/usr/local/bin/php
-
-<html>
- <head>
-  <title>
-   File Upload
-  </title>
- </head>
-<body>
 <?php 
 
 require 'functions.php';
@@ -53,11 +45,9 @@ if ((($_FILES["file"]["type"] == "image/gif")
 				$long = $location[1];
 				savePhoto($usrn, $filename, $lat, $long, $alname);
 			}else{ 
-			echo "Unable to upload image. No location detected. ";
 			unlink(realpath($filename));
 			}
 			  //createThumbnail($filename);  
-
 		  }
 		}
 	  }
@@ -66,9 +56,50 @@ if ((($_FILES["file"]["type"] == "image/gif")
 	  echo "Invalid file";
 	  }
 ?>
+
+<html>
+ <head>
+	  <style>
+      #map_canvas {
+        width: 500px;
+        height: 400px;
+      }
+    </style>
+    <script src="https://maps.googleapis.com/maps/api/js?sensor=false"></script>
+    <script>
+      function initialize() {
+        var map_canvas = document.getElementById('map_canvas');
+        var myLatlng = new google.maps.LatLng(<?php echo $lat.', '.$long; ?>);
+        
+        var map_options = {
+          zoom: 8,
+          mapTypeId: google.maps.MapTypeId.ROADMAP,
+          center: myLatlng
+        }
+        var map = new google.maps.Map(map_canvas, map_options);
+        var marker = new google.maps.Marker({
+			position: myLatlng,
+			map: map,
+			title: 'Hello World!'
+		});
+
+      }
+      google.maps.event.addDomListener(window, 'load', initialize);
+    </script>
+    
+  <title>
+   File Upload
+  </title>
+ </head>
+<body>
+
+<? if($result) { ?>
+	 <div id="map_canvas"></div>
+<?php } else { ?>
+    <div class="myotherdiv">Unable to upload image. No location detected.</div>
+<?php } ?> 
+
 <form name = 'form' method = 'post' action = 'profile.php'>
 			<input type = "Submit" value = "Go Back">
 </body>
 </html>
-
-
