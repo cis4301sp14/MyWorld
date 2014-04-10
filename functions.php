@@ -73,6 +73,40 @@ function addFriend($userid,$frdID,$type) {
     }
 	//pg_close($db);
 }
+
+
+function check_gps($pos){
+	if ($pos != null) 
+		return true;
+	else 
+		return false;
+}
+
+function multiexplode ($delimiters,$string) {
+    
+    $ready = str_replace($delimiters, $delimiters[0], $string);
+    $launch = explode($delimiters[0], $ready);
+    return  $launch;
+}
+
+function decimal_lat_long($gps){
+	$position = multiexplode(array(' ', '\'','"',','),$gps);
+	$degree_lat = doubleval($position[0]);
+	$min_lat = doubleval($position[2]);
+	$sec_lat = doubleval($position[4]);
+	$decimal_lat = $degree_lat + $min_lat/60 + $sec_lat/3600;
+	$decimal_lat = round($decimal_lat,6);
+	if($position[6] == "S")
+		$decimal_lat*=-1;
+	$degree_long = doubleval($position[8]);
+	$min_long = doubleval($position[10]);
+	$sec_long = doubleval($position[12]);
+	$decimal_long = $degree_long + $min_long/60 + $sec_long/3600;
+	$decimal_long = round($decimal_long,6);
+	if($position[14] == "W")
+		$decimal_long*=-1;
+	return array($decimal_lat,$decimal_long);
+}
 ?>
 
 
