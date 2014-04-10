@@ -35,30 +35,21 @@ function createThumbnail($filename) {
     echo $tn;
 }
 
-function savePhoto($albumID, $filename, $location)	{
-	
-	require 'config.php';
-	
-	$tn =$path_to_thumbs_directory . $filename;
+function savePhoto($usrn, $filename, $lat, $long, $alname)	{
 	$db = pg_connect("host=postgres.cise.ufl.edu port=5432 dbname=atheteodb user=jclewis password=2991Uf!1855")or die('connection failed');
 
 	 $maxPhotoId = pg_query($db, "select max(photoid) from photo");
  	 $PhotoId = pg_fetch_result($maxPhotoId,0,0)+1;
-	 pg_query($db, "insert into photo (albumid, photoid, photoname, lon, lat, date) values ($albumID, $PhotoId,'$tn',NULL,NULL,NULL)");
-	 //pg_close($db);
-}
-	
-function getAlbumID($userid, $alname){
+	 
+	 $match_user_id = pg_query($db, "select userid from users where username='$usrn'");
+	 $user_id = pg_fetch_result($match_user_id,0,0);
+	 
+	 $match_album_id = pg_query($db, "select albumid from albums where userid=$user_id and albumname = '$alname'");
+	 $albumID = pg_fetch_result($match_album_id,0,0);
 
-	$db = pg_connect("host=postgres.cise.ufl.edu port=5432 dbname=atheteodb user=jclewis password=2991Uf!1855") or die('connection failed');
-    $AId = pg_query($db, "select EXISTS (SELECT albumid FROM albums WHERE userid = $userid and albumname = '$alname')::int as answer");
-	//pg_close($db);
-	
-	$albumname = pg_fetch_result($AId,0,0);
-	echo $albumname;
-	echo $AId;
-	if ($AId == $albumname)    
-	echo "he";
+	 pg_query($db, "insert into photo (albumid, photoid, photoname, lat, lon) values ($albumID, $PhotoId,'$filename',$lat, $long)");
+	 pg_close($db);
+
 }
 
 function addFriend($userid,$frdID,$type) {
@@ -73,7 +64,6 @@ function addFriend($userid,$frdID,$type) {
     }
 	//pg_close($db);
 }
-
 
 function check_gps($pos){
 	if ($pos != null) 
@@ -108,17 +98,3 @@ function decimal_lat_long($gps){
 	return array($decimal_lat,$decimal_long);
 }
 ?>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
