@@ -22,15 +22,12 @@ if ((($_FILES["file"]["type"] == "image/gif")
 		}
 	  else
 		{
-		
-		if (file_exists("upload/" . $_FILES["file"]["name"]))
-		  {
-		  echo $_FILES["file"]["name"] . " already exists. ";
-		  }
-		else
-		  {
-			move_uploaded_file($_FILES["file"]["tmp_name"], "upload/" . $_FILES["file"]["name"]);
-			$filename = "upload/" . $_FILES["file"]["name"];
+			$db = pg_connect("host=postgres.cise.ufl.edu port=5432 dbname=atheteodb user=jclewis password=2991Uf!1855")or die('connection failed');
+			$maxPhotoId = pg_query($db, "select max(photoid) from photo");
+			$PhotoId = pg_fetch_result($maxPhotoId,0,0)+1;
+			move_uploaded_file($_FILES["file"]["tmp_name"], "upload/" . $PhotoId . $_FILES["file"]["name"]);
+			pg_close($db);
+			$filename = "upload/" . $PhotoId . $_FILES["file"]["name"];
 			
 			$pic = null;
 			exec("./exif/Image-ExifTool-9.56/exiftool -a -u -j -g1 '$filename' ", $pic);
@@ -48,7 +45,6 @@ if ((($_FILES["file"]["type"] == "image/gif")
 			unlink(realpath($filename));
 			}
 			  //createThumbnail($filename);  
-		  }
 		}
 	  }
 	else
@@ -103,3 +99,5 @@ if ((($_FILES["file"]["type"] == "image/gif")
 			<input type = "Submit" value = "Go Back">
 </body>
 </html>
+
+
