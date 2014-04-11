@@ -40,7 +40,7 @@ function savePhoto($usrn, $filename, $lat, $long, $alname)	{
 
 	 $maxPhotoId = pg_query($db, "select max(photoid) from photo");
  	 $PhotoId = pg_fetch_result($maxPhotoId,0,0)+1;
-	 
+		
 	 $match_user_id = pg_query($db, "select userid from users where username='$usrn'");
 	 $user_id = pg_fetch_result($match_user_id,0,0);
 	 
@@ -48,19 +48,15 @@ function savePhoto($usrn, $filename, $lat, $long, $alname)	{
 	 $result = pg_fetch_result($resultTF,0,0);
 	 
 	 if($result){
-		echo "inside match_album_id is there";
 		$match_album_id = pg_query($db, "select albumid from albums where userid=$user_id and albumname = '$alname'");
 		$albumID = pg_fetch_result($match_album_id,0,0);
 	 }else{
-		echo "outside match_album_id is not there ". "<br>";
-		$maxAlbumId = pg_query($db, "select max(albumid) from albums");
-		$albumId = pg_fetch_result($maxAlbumId,0,0)+1;
-		echo "# ". $albumID . "<br>";
-		pg_query($db, "insert into albums(userid, albumname, albumid, lon, lat, coverid) values ($user_id, $alname, $albumID, $long, $lat, $PhotoId)");
+		$maxaId = pg_query($db, "select max(albumid) from albums");
+		$albumID = pg_fetch_result($maxaId,0,0)+1;
+		pg_query($db, "insert into albums values ($user_id, '$alname', $albumID, $long, $lat, $PhotoId)");
 	 }
 	 pg_query($db, "insert into photo (albumid, photoid, photoname, lat, lon) values ($albumID, $PhotoId,'$filename',$lat, $long)");
 	 pg_close($db);
-
 }
 
 function addFriend($userid,$frdID,$type) {
