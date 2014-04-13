@@ -744,7 +744,7 @@ pre code {
     display: block;
     list-style: none;
     padding: 0;    
-    width: 300px;
+    width: 350px;
 }
 
 #form-container li {
@@ -755,7 +755,7 @@ pre code {
 }
 
 #form-container li label {
-    width: 100px;
+    width: 150px;
     float: left;
 }
 

@@ -67,7 +67,7 @@
 
   	<li><label>Password:</label><input type="password" value="" name="pw" id="pw" required></li>
    	
-  	<li><label>Password:</label><input type="password" value="" name="vpw" id="vpw" required></li>
+  	<li><label>Confirm Password:</label><input type="password" value="" name="vpw" id="vpw" required></li>
    	
   	<li><label>E-mail:</label><input type="email" value="" name="em" id="em" required></li>
 
