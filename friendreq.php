@@ -8,17 +8,21 @@
 	<body>
 		<?php
 		
-			session_start();
-			
-			$uid = $_SESSION['userid'];
-			echo $uid;
 			
 			$dbconn = pg_connect("host=postgres.cise.ufl.edu port=5432 dbname=atheteodb user=jclewis password=2991Uf!1855") or die('connection failed');
-			$requests = pg_query("select friendreqid from friendreq where userid = $uid");
-						
-			$n = 0;
+			$requests = pg_query("select friendreqid from friendreq where userid = 1");
+			
+			$reqid = pg_fetch_result($requests,1,0);
+			echo $reqid;
+			
+			$max_req = pg_num_rows($requests);
+			echo $max_req;
+			for($i = 0; $i < $max_req; $i++) {
+				echo pg_fetch_result($row,$i,0);
+			}
+			/*
 			if($requests != 0) {
-				while($req = pg_fetch_result($requests, $n, 0)) {
+				while($req = pg_fetch_result($requests,0,0)) {
 					//&uname = pg_query("select firstn, lastn from users where userid = $req")
 					$firn = pg_fetch_result($uname, 0,0);
 					$lasn = pg_fetch_result($uname, 0,1);
@@ -39,7 +43,7 @@
 						</form>';
 			}
 			
-			
+			*/
 		?>
 	</body>	
 </html>

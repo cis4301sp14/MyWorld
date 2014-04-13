@@ -42,37 +42,40 @@
           <a class="navbar-brand" href="#">My World</a>
         </div>
         <div class="navbar-collapse collapse">
-          <form class="navbar-form navbar-right" name="form" action="profile.php" method = "post">
+          <form class="navbar-form navbar-right" name="form" action="login.php" method = "post">
             <div class="form-group">
               <input type="text" placeholder="Username" class="form-control" name = "un" id = "un" required>
               <input type="password" placeholder="Password" class="form-control" name = "pw" id = "pw" required>
             </div>
-            <button type="submit" class="btn btn-success">Sign in</button>
+            <button type="submit" class="btn btn-success">Log In</button>
           </form>
         </div><!--/.navbar-collapse -->
       </div>
     </div>
 
     <!-- Main jumbotron for a primary marketing message or call to action -->
-    <div class="jumbotron">
-      <div class="container">
+    <div class="jumbotron" style="padding-left: 1080px;">
+      <div class="container" style="padding-left: 20px;">
+	<div id="form-container">
       	<form name='form' method='post' action='welcome.php'>
-        First Name: <input type="Text" value="" name="fn" id="fn"><br />
-      	<font size="1">Your first name</font><br /><br />
-  	<form name='form' method='post' action='welcome.php'>
-  	Last Name: <input type="Text" value="" name="ln" id="ln"><br />
-   	<font size="1">Your last name</font><br /><br /> 	
-  	<form name='form' method='post' action='welcome.php'>
-  	Username: <input type="Text" value="" name="un" id="un"><br />
-   	<font size="1">Select a Username</font><br /><br />
-  	Password: &nbsp;<input type="password" value="" name="pw" id="pw"><br />
-   	<font size="1">Select Password</font><br /><br />
-  	Password: &nbsp;<input type="password" value="" name="vpw" id="vpw"><br />
-   	<font size="1">Again</font><br /><br />
-  	E-mail: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="email" value="" name="em" id="em">
-   	<input type="Submit" value="Submit"><br />
-   	<font size="1">Input your Email</font>
+	<ul>
+        <li><label>First Name:</label><input type="Text" value="" name="fn" id="fn" required></li>      	
+
+  	<li><label>Last Name:</label><input type="Text" value="" name="ln" id="ln" required></li>   	
+
+  	<li><label>Username:</label><input type="Text" value="" name="un" id="un" required></li>   	
+
+  	<li><label>Password:</label><input type="password" value="" name="pw" id="pw" required></li>
+   	
+  	<li><label>Password:</label><input type="password" value="" name="vpw" id="vpw" required></li>
+   	
+  	<li><label>E-mail:</label><input type="email" value="" name="em" id="em" required></li>
+
+        <li><label></label><button type="submit" class="btn btn-success">Sign up</button></li>
+   	</ul>
+	        
   	</form> 
+	</div>
       </div>
     </div>
       <hr>
@@ -87,3 +90,4 @@
     <script src="js/bootstrap.min.js"></script>
   </body>
 </html>
+
