@@ -59,6 +59,7 @@
 	<div id="form-container">
       	<form name='form' method='post' action='welcome.php'>
 	<ul>
+	<h1>Haven't Joined the Club?</h1>
         <li><label>First Name:</label><input type="Text" value="" name="fn" id="fn" required></li>      	
 
   	<li><label>Last Name:</label><input type="Text" value="" name="ln" id="ln" required></li>   	
