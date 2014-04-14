@@ -50,6 +50,7 @@
 	
 	 echo "Welcome, $dbfn $dbln\n";	 
 	 $_SESSION['userid'] = pg_fetch_result($result,0,3);	
+
 	 }
 	  ?>
    <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
@@ -61,20 +62,37 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="#"><?php echo $dbfn.' '.$dbln; ?></a>
+          <a class="navbar-brand" href="#">My World</a>
         </div>
         <div class="collapse navbar-collapse">
           <ul class="nav navbar-nav">
-            <li class="active"><a href="#">Home</a></li>
-            <li><a href="#about">About</a></li>
-            <li><a href="#friends">Friends</a></li>
+            <li class="active"><a href="#"><?php echo $dbfn.' '.$dbln; ?></a></li>
+            <li><a href="friends.php">Friends</a></li>
 			<li><a href="friendreq.php">Friends Request</a></li>
           </ul>
         </div><!--/.nav-collapse -->
       </div>
     </div>
-	<div class="starter-template">
-   <form name="form" method="post" action="friendreq.php">
+<div class="container">
+	
+	<?php 
+	require 'functions.php';
+	echo "<br>";
+	echo "<br>";
+	echo "<br>";
+	echo "<br>";
+	$path = null;
+	$path=profile_picture($_SESSION['userid']);
+	$path = '<img src="'.$path. '" alt="image" width=200 height=auto />';
+	echo $path;
+	?>
+</div>
+
+	<div class="container">
+
+      <div class="starter-template">
+        <h1>Bootstrap starter template</h1>
+           <form name="form" method="post" action="friendreq.php">
    <input type="submit" value="Friend Requests"> 
    </form>
    <form name="form" method="post" action="befriends.php">
@@ -98,13 +116,6 @@
 	<input type="file" name="file" id="file"><br>
 	<input type="submit" name="submit" value="Upload">
 	</form>
-	</div>
-	
-	<div class="container">
-
-      <div class="starter-template">
-        <h1>Bootstrap starter template</h1>
-        <p class="lead">Use this document as a way to quickly start any new project.<br> All you get is this text and a mostly barebones HTML document.</p>
       </div>
 
     </div><!-- /.container -->
