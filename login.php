@@ -1,11 +1,5 @@
 #!/usr/local/bin/php
 
-
-
-
-
-
-
 <html>
  <head>
   <title>
@@ -60,7 +54,7 @@
 	else {
 	   $_SESSION['userid'] = pg_fetch_result($result,0,2);
 		 
-	header("Location: profile.php");
+	header("Location: home.php");
 	
 	}
 	exit;
