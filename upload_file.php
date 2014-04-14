@@ -10,27 +10,29 @@ $allowedExts = array("gif", "jpeg", "jpg", "png");
 $temp = explode(".", $_FILES["file"]["name"]);
 $extension = end($temp);
 
-if ((($_FILES["file"]["type"] == "image/gif")
+if (true/*(($_FILES["file"]["type"] == "image/gif")
 	|| ($_FILES["file"]["type"] == "image/jpeg")
 	|| ($_FILES["file"]["type"] == "image/jpg")
 	|| ($_FILES["file"]["type"] == "image/png"))
-	&& in_array(strtolower($extension), $allowedExts))
+	&& in_array(strtolower($extension), $allowedExts)*/)
 	  {
-	  if ($_FILES["file"]["error"] > 0)
+	  /*if ($_FILES["file"]["error"] > 0)
 		{
 		echo "Return Code: " . $_FILES["file"]["error"] . "<br>";
 		}
 	  else
-		{
+		{*/
 			$db = pg_connect("host=postgres.cise.ufl.edu port=5432 dbname=atheteodb user=jclewis password=2991Uf!1855")or die('connection failed');
 			$maxPhotoId = pg_query($db, "select max(photoid) from photo");
 			$PhotoId = pg_fetch_result($maxPhotoId,0,0)+1;
 			move_uploaded_file($_FILES["file"]["tmp_name"], "upload/" . $PhotoId . $_FILES["file"]["name"]);
 			pg_close($db);
 			$filename = "upload/" . $PhotoId . $_FILES["file"]["name"];
+			echo $filename;
 			
 			$pic = null;
 			exec("./exif/Image-ExifTool-9.56/exiftool -a -u -j -g1 '$filename' ", $pic);
+			var_dump($pic);
 			$pic = join("\n", $pic);
 			$g = json_decode($pic, true);
 			$pos = $g[0]["Composite"]["GPSPosition"];
@@ -46,11 +48,11 @@ if ((($_FILES["file"]["type"] == "image/gif")
 			}
 			  //createThumbnail($filename);  
 		}
-	  }
-	else
+	 // }
+	/*else
 	  {
 	  echo "Invalid file";
-	  }
+	  }*/
 ?>
 
 <html>
