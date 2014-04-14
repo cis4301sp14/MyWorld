@@ -2,16 +2,8 @@
 function createThumbnail($filename) {
      
     require 'config.php';
-	// if (exif_imagetype($filename) != IMAGETYPE_GIF) {
-		 // $im = imagecreatefromgif($path_to_image_directory . $filename);
-		 // echo "!!!!!!!!!!gif";
-	// }   else if(exif_imagetype($filename) != IMAGETYPE_JPEG) {
-        // $im = imagecreatefromjpeg($path_to_image_directory . $filename); echo "!!!!!!!!!!jpeg";
-    // }  else if (exif_imagetype($filename) != IMAGETYPE_PNG) {
-        // $im = imagecreatefrompng($path_to_image_directory . $filename); echo "!!!!!!!!!!png";
-    // }
 	
-    $im = imagecreatefromjpeg($path_to_image_directory . $filename);   //added
+    $im = imagecreatefromjpeg($filename);   //added
 	
     $ox = imagesx($im);
     $oy = imagesy($im);
@@ -44,7 +36,7 @@ function savePhoto($usrn, $filename, $lat, $long, $alname)	{
 	 $match_user_id = pg_query($db, "select userid from users where username='$usrn'");
 	 $user_id = pg_fetch_result($match_user_id,0,0);
 	 
-	 $resultTF = pg_query($db, "select EXISTS (select albumid from albums where userid=$user_id and albumname = '$alname')::int)=true");
+	 $resultTF = pg_query($db, "select EXISTS (select albumid from albums where userid=$user_id and albumname = '$alname')::int");
 	 $result = pg_fetch_result($resultTF,0,0);
 	 
 	 if($result){
@@ -103,5 +95,18 @@ function decimal_lat_long($gps){
 	if($position[14] == "W")
 		$decimal_long*=-1;
 	return array($decimal_lat,$decimal_long);
+}
+
+function profile_picture($userid){
+	$db = pg_connect("host=postgres.cise.ufl.edu port=5432 dbname=atheteodb user=jclewis password=2991Uf!1855")or die('connection failed');
+
+	 $picture = pg_query($db, "select max from profilepic where userid=$userid");
+ 	 $picture_id = pg_fetch_result($picture,0,0);
+ 	 
+ 	 $path = pg_query($db, "select photoname from photo where photoid=$picture_id");
+ 	 $path = pg_fetch_result($path,0,0);
+
+	pg_close($db);
+	return $path;
 }
 ?>

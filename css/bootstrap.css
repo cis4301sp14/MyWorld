@@ -4390,8 +4390,8 @@ a.list-group-item.active > .badge,
   margin-left: 3px;
 }
 .jumbotron {
-  padding: 30px;
-  margin-bottom: 30px;
+  padding: 1%;
+  margin-bottom: 1%;
   color: inherit;
   background-color: #eee;
 }
@@ -4412,8 +4412,8 @@ a.list-group-item.active > .badge,
 }
 @media screen and (min-width: 768px) {
   .jumbotron {
-    padding-top: 97px;
-    padding-bottom: 323px;
+    padding-top: 6%;
+    padding-bottom: 11%;
   }
   .container .jumbotron {
     padding-right: 60px;

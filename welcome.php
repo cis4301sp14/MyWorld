@@ -44,9 +44,7 @@
  	 $newId = pg_fetch_result($maxId,0,0) + 1;
 	
 	 pg_query($dbconn, "insert into users (username, email, userid, firstn, lastn) values ('$usrn','$email',$newId, '$firstn', '$lastn')");
-	 pg_query($dbconn, "insert into password (userid, pw) values ($newId,'$passw')");
-	 pg_query($dbconn, "insert into friends (userid, friendid) values ($newId, NULL)");
-	 pg_query($dbconn, "insert into friendreq (userid, friendreqid) values ($newId, NULL)");
+	 pg_query($dbconn, "insert into password (userid, pw) values ($newId,'$passw')");	 
 	 //pg_close($dbconn);
 	 
 	 echo "Welcome to the club, $usrn";

@@ -54,8 +54,8 @@
     </div>
 
     <!-- Main jumbotron for a primary marketing message or call to action -->
-    <div class="jumbotron" style="padding-left: 1080px;">
-      <div class="container" style="padding-left: 20px;">
+    <div class="jumbotron" style="padding-left: 58%;">
+      <div class="container" style="padding-left: 5%;">
 	<div id="form-container">
       	<form name='form' method='post' action='welcome.php'>
 	<ul>
