@@ -74,9 +74,11 @@
 			<li><a href="friendreq.php"><?php 
 				if(!($frdreqcount)) {echo 'Friend Requests';}			
 				else{echo 'Friend Requests ('.$frdreqcount.')';}
-			?></a></li>
-			<li style="padding-left:250px" ><a href="friends.php">Sign Out?</a></li>
+			?></a></li>			
           </ul>
+		  <form class="navbar-form navbar-right" name="form" action="loggedout.php" method = "post">            
+				<button type="submit" class="btn btn-success">Sign Out, <?php echo $dbfn.' '.$dbln;?></button>
+			</form>
         </div><!--/.nav-collapse -->
       </div>
     </div>

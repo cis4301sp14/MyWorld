@@ -79,7 +79,7 @@
 			?></a></li>			
           </ul>
 		  <form class="navbar-form navbar-right" name="form" action="loggedout.php" method = "post">            
-				<button type="submit" class="btn btn-success">Sign Out</button>
+				<button type="submit" class="btn btn-success">Sign Out, <?php echo $dbfn.' '.$dbln;?></button>
 			</form>
         </div><!--/.nav-collapse -->
       </div>
