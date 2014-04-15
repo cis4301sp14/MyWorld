@@ -9,7 +9,7 @@
 		<meta name="author" content="">
 		<link rel="shortcut icon" href="../../assets/ico/favicon.ico">
 
-		<title>Starter Template for Bootstrap</title>
+		<title>My World</title>
 
 		<!-- Bootstrap core CSS -->
 		<link href="css/bootstrap.min.css" rel="stylesheet">
@@ -26,6 +26,7 @@
 			require 'functions.php';
 			session_start();
 			$urid = $_SESSION['userid'];
+			$dbusrn = $_SESSION['usrn'];
 			
 			$dbconn = pg_connect("host=postgres.cise.ufl.edu port=5432 dbname=atheteodb user=jclewis password=2991Uf!1855") or die('connection failed');					
 			$frdID = $_GET["frd"];
@@ -68,7 +69,13 @@
 			?></a></li>
 			</ul>
 			<form class="navbar-form navbar-right" name="form" action="loggedout.php" method = "post">            
-				<button type="submit" class="btn btn-success">Sign Out</button>
+				<button type="submit" class="btn btn-success">Sign Out, <?php echo ucwords($dbusrn);?></button>
+			</form>
+			<form class="navbar-form navbar-right" name="form" action="befriends.php" method = "post">            
+				<div class="form-group">
+					<input type="text" placeholder="Username" class="form-control" name = "person" id = "person">					
+				</div>
+				<button type="submit" class="btn btn-success">Add Friend</button>
 			</form>
 			</div><!--/.nav-collapse -->
 			</div>

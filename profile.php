@@ -10,7 +10,7 @@
     <meta name="author" content="">
     <link rel="shortcut icon" href="../../assets/ico/favicon.ico">
 
-    <title>Profile</title>
+    <title>My World</title>
 
     <!-- Bootstrap core CSS -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
@@ -18,10 +18,10 @@
     <!-- Custom styles for this template -->
     <link href="starter-template.css" rel="stylesheet">
 
-  <title>
-   My World
-  </title>
-    
+    <link rel="stylesheet" href="nivo-slider/nivo-slider.css" type="text/css" />
+    <link rel="stylesheet" href="nivo-slider/themes/default/default.css" type="text/css" />
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js" type="text/javascript"></script>
+    <script src="jquery.nivo.slider.pack.js" type="text/javascript"></script>  
  </head>
  <body>
   <?php  
@@ -77,12 +77,39 @@
 			?></a></li>			
           </ul>
 		  <form class="navbar-form navbar-right" name="form" action="loggedout.php" method = "post">            
-				<button type="submit" class="btn btn-success">Sign Out, <?php echo $dbfn.' '.$dbln;?></button>
+				<button type="submit" class="btn btn-success">Sign Out, <?php echo ucwords($dbusrn);?></button>
 			</form>
         </div><!--/.nav-collapse -->
       </div>
     </div>
-    
+
+<div class="container">
+<?php
+echo "<br>";
+	echo "<br>";
+	echo "<br>";
+	echo "<br>";
+?>
+<div class="slider-wrapper theme-default">    
+	<div id="slider" class="nivoSlider">
+    		<img src="nivo-slider/demo/images/nemo.jpg" alt="" />
+    		<a href="http://dev7studios.com"><img src="nivo-slider/demo/images/toystory.jpg" alt="" title="#htmlcaption" /></a>
+    		<img src="nivo-slider/demo/images/walle.jpg" alt="" title="This is an example of a caption" />
+    		<img src="nivo-slider/demo/images/up.jpg" alt="" />
+	</div>
+</div>
+
+<div id="htmlcaption" class="nivo-html-caption">
+    <strong>This</strong> is an example of a <em>HTML</em> caption with <a href="#">a link</a>.
+</div>
+
+<script type="text/javascript">
+$(window).load(function() {
+    $('#slider').nivoSlider();
+});
+</script>
+</div>
+<!--
 <div class="container">
 	
 	<?php 
@@ -105,7 +132,7 @@
 	<?php 		
 	printalbums($user_id);
 	?>
-</div>	
+</div> -->
 
     </div><!-- /.container -->
 	 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>

@@ -10,11 +10,11 @@ $allowedExts = array("gif", "jpeg", "jpg", "png");
 $temp = explode(".", $_FILES["file"]["name"]);
 $extension = end($temp);
 
-if (true/*(($_FILES["file"]["type"] == "image/gif")
+if (true)/*(($_FILES["file"]["type"] == "image/gif")
 	|| ($_FILES["file"]["type"] == "image/jpeg")
 	|| ($_FILES["file"]["type"] == "image/jpg")
 	|| ($_FILES["file"]["type"] == "image/png"))
-	&& in_array(strtolower($extension), $allowedExts)*/)
+	&& in_array(strtolower($extension), $allowedExts))*/
 	  {
 	  /*if ($_FILES["file"]["error"] > 0)
 		{
@@ -46,7 +46,6 @@ if (true/*(($_FILES["file"]["type"] == "image/gif")
 			}else{ 
 			unlink(realpath($filename));
 			}
-			  //createThumbnail($filename);  
 		}
 	 // }
 	/*else

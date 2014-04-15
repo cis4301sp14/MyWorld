@@ -9,7 +9,7 @@
 		<meta name="author" content="">
 		<link rel="shortcut icon" href="../../assets/ico/favicon.ico">
 
-		<title>Starter Template for Bootstrap</title>
+		<title>My World</title>
 
 		<!-- Bootstrap core CSS -->
 		<link href="css/bootstrap.min.css" rel="stylesheet">
@@ -24,6 +24,7 @@
 		<?php 
 		session_start();		
 		$urid = $_SESSION['userid'];
+		$dbusrn = $_SESSION['usrn'];		
 		
 		$dbconn = pg_connect("host=postgres.cise.ufl.edu port=5432 dbname=atheteodb user=jclewis password=2991Uf!1855") or die('connection failed');
 		$frdreq = pg_query($dbconn, "select count(friendreqid) from friendreq where userid='$urid'");
@@ -51,7 +52,13 @@
 			?></a></li>
 			</ul>
 			<form class="navbar-form navbar-right" name="form" action="loggedout.php" method = "post">            
-				<button type="submit" class="btn btn-success">Sign Out</button>
+				<button type="submit" class="btn btn-success">Sign Out, <?php echo ucwords($dbusrn);?></button>
+			</form>
+			<form class="navbar-form navbar-right" name="form" action="befriends.php" method = "post">            
+				<div class="form-group">
+					<input type="text" placeholder="Username" class="form-control" name = "person" id = "person">					
+				</div>
+				<button type="submit" class="btn btn-success">Add Friend</button>
 			</form>
 			</div><!--/.nav-collapse -->
 		</div>
@@ -72,7 +79,7 @@
 				$delete_request2 = pg_query($dbconn, "DELETE FROM friends WHERE userid=$frdID AND friendid=$urid");				
 			}
 			
-			$requests = pg_query($dbconn, "select userid, firstn, lastn from (select friendid as userid from friends where userid = $urid)q natural join users;");
+			$requests = pg_query($dbconn, "select userid, firstn, lastn, username from (select friendid as userid from friends where userid = $urid)q natural join users;");
 			
 			$max_req = pg_num_rows($requests);	
 			?> <br /><br /><br /> <?php
@@ -87,6 +94,7 @@
 					$frdr = pg_fetch_result($requests,$i,0);
 					$frn = pg_fetch_result($requests,$i,1);
 					$lsn =	pg_fetch_result($requests,$i,2);
+					$frun = pg_fetch_result($requests,$i,3);
 					?>
 
 									
@@ -100,7 +108,8 @@
 						<?php 												
 						$path = null;
 						$path=profile_picture($frdr);
-						$path = '<a href="friendprofile.php"><img src="'.$path. '" alt="image" width=150 height=auto />';
+						$destination = '<a href="friendprofile.php/?frdun='.$frun;
+						$path = $destination.'"><img src="'.$path. '" alt="image" width=150 height=auto />';
 						echo $path;
 						?>
 					</div>	

@@ -47,10 +47,7 @@
             <li><a href="profile.php"><?php echo $dbfn.' '.$dbln; ?></a></li>
             <li><a href="home.php">Home</a></li>
             <li><a href="friends.php">Friends</a></li>
-			<li><a href="friendreq.php"><?php 
-				if(!($frdreqcount)) {echo 'Friend Requests';}			
-				else{echo 'Friend Requests ('.$frdreqcount.')';}
-			?></a></li>
+			<li><a href="friendreq.php"><?php if(!($frdreqcount)) {echo 'Friend Requests';}	else{echo 'Friend Requests ('.$frdreqcount.')';}?></a></li>
           </ul>
         </div><!--/.nav-collapse -->
       </div>
@@ -63,6 +60,14 @@
    $usrn = $_SESSION["user"];
    $urid = $_SESSION["userid"];
    
+   $arr = explode(' ',$frd);
+	$c = count($arr);
+	echo arr[0];
+	
+	if($c == 1){
+		$result = pg_query($dbconn, "select username, userid, firstn, lastn from users where username='$arr[0]'");
+	}
+   
    
    $result = pg_query($dbconn, "select username, userid, firstn, lastn from users where username='$frd'");     
 		
@@ -73,7 +78,8 @@
 	$check = pg_fetch_result($che, 0,1);
 	$check2 = pg_fetch_result($che2, 0,1);
 	$frn = pg_fetch_result($result,0,2);
-	$lsn = pg_fetch_result($result,0,3);
+	$lsn = pg_fetch_result($result,0,3);	
+	
 	
 	if($urid == $check) {
 		?> &nbsp&nbsp&nbsp&nbsp <?php

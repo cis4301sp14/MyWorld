@@ -33,9 +33,10 @@
 	else {
 
 	$usrn = $_SESSION['user'];
-	$frname = $_GET['frdname'];
+	$frd_un = $_GET['frdun'];
 	$dbconn = pg_connect("host=postgres.cise.ufl.edu port=5432 dbname=atheteodb user=jclewis password=2991Uf!1855") or die('connection failed');
     $result = pg_query($dbconn, "select firstn, lastn, pw, userid, username from users natural join password where username='$usrn'");
+
 	
 	
 	if (!$result) {
@@ -48,7 +49,6 @@
 	$user_id = pg_fetch_result($result,0,3);
 	$dbusrn = pg_fetch_result($result, 0, 4);
 	
-	 echo "Welcome, $dbfn $dbln\n";	 
 	 $_SESSION['userid'] = pg_fetch_result($result,0,3);	
 	 }
 	 
@@ -89,20 +89,25 @@
 	echo "<br>";
 	echo "<br>";
 	echo "<br>";
+	$frdinfo = pg_query($dbconn, "select userid, firstn, lastn from users where userid='$frd_un'");
+	$frd_id = pg_fetch_result($frdinfo,0,0);
+	$frd_fn = pg_fetch_result($frdinfo,0,1);
+	$frd_ln = pg_fetch_result($frdinfo,0,2);
+	echo $frd_fn ."   ". $frd_ln."!!!!!!!!!!!!!!!<br>";
 	$path = null;
-	$path=profile_picture($user_id);
+	$path=profile_picture($frd_id);
 	$path = '<img src="'.$path. '" alt="image" width=300 height=auto />';
 	echo $path;
 	?>
-	<h2><?php echo $dbfn.' '.$dbln; ?></h2>
+	<h2><?php echo $frd_fn.' '.$frd_ln; ?></h2>
 </div>
 
 	
 
 <div class="container">
 	<?php 		
-	printalbums($user_id);
-	echo $frname;
+	printalbums($frd_id);
+
 	?>
 </div>	
 
@@ -111,47 +116,4 @@
     <script src="js/bootstrap.min.js"></script>
  </body>
 
-</html>
-
-
-
-<html>
- <head>
-	  <style>
-      #map_canvas {
-        width: 500px;
-        height: 400px;
-      }
-    </style>
-    <script src="https://maps.googleapis.com/maps/api/js?sensor=false"></script>
-    <script>
-      function initialize() {
-        var map_canvas = document.getElementById('map_canvas');
-        var myLatlng = new google.maps.LatLng(<?php echo $lat.', '.$long; ?>);
-        
-        var map_options = {
-          zoom: 8,
-          mapTypeId: google.maps.MapTypeId.ROADMAP,
-          center: myLatlng
-        }
-        var map = new google.maps.Map(map_canvas, map_options);
-        var marker = new google.maps.Marker({
-			position: myLatlng,
-			map: map,
-			title: 'Hello World!'
-		});
-
-      }
-      google.maps.event.addDomListener(window, 'load', initialize);
-    </script>
-    
-  <title>
-   File Upload
-  </title>
- </head>
-<body>
-
-	 <div id="map_canvas"></div>
-
-</body>
 </html>

@@ -10,7 +10,7 @@
     <meta name="author" content="">
     <link rel="shortcut icon" href="../../assets/ico/favicon.ico">
 
-    <title>Starter Template for Bootstrap</title>
+    <title>My World</title>
 
     <!-- Bootstrap core CSS -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
@@ -55,6 +55,7 @@
 	 $_SESSION['userid'] = pg_fetch_result($result,0,3);	
 	 $_SESSION['fn'] = pg_fetch_result($result,0,0);
 	 $_SESSION['ln'] = pg_fetch_result($result,0,1);
+	 $_SESSION['usrn'] = pg_fetch_result($result, 0, 4);
 	 }
 	  ?>
    <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
@@ -79,7 +80,13 @@
 			?></a></li>			
           </ul>
 		  <form class="navbar-form navbar-right" name="form" action="loggedout.php" method = "post">            
-				<button type="submit" class="btn btn-success">Sign Out, <?php echo $dbfn.' '.$dbln;?></button>
+				<button type="submit" class="btn btn-success">Sign Out, <?php echo ucwords($dbusrn);?></button>
+			</form>
+		  <form class="navbar-form navbar-right" name="form" action="befriends.php" method = "post">            
+				<div class="form-group">
+					<input type="text" placeholder="Username" class="form-control" name = "person" id = "person">					
+				</div>
+				<button type="submit" class="btn btn-success">Add Friend</button>
 			</form>
         </div><!--/.nav-collapse -->
       </div>
@@ -98,29 +105,19 @@
 </div>
 
 	<div class="container">
+		<div class="starter-template">
+			<h1></h1> 
+			<form action="upload_file.php" method="post" enctype="multipart/form-data">	
+				Album Name: <input type = "Text" value = "" name = "an" id="an"><br />
+				<label for="file">Filename: </label>
+				<input type="file" name="file" id="file"><br>
+			<input type="submit" name="submit" value="Upload">
+			</form>
+		</div>
 
-      <div class="starter-template">
-        <h1></h1>
-           
-   <form name="form" method="post" action="befriends.php">
-   <input type="Text" value="" name="person" id="person">
-	<input type="submit" value="Friend">
-   </form>	
-   	<form action="upload_file.php" method="post" enctype="multipart/form-data">
-	
-	Album Name: <input type = "Text" value = "" name = "an" id="an">
-
-	<br />
-	   <label for="file">Filename:</label>
-	<input type="file" name="file" id="file"><br>
-	<input type="submit" name="submit" value="Upload">
-	</form>
-      </div>
-
-<div class="container">
-	<?php 		
-	?>
-</div>	
+		<div class="container">
+			<?php 	?>
+		</div>	
 
     </div><!-- /.container -->
 	 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
