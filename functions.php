@@ -61,7 +61,7 @@ function addFriend($userid,$frdID,$type) {
     if ($type=="decline") {
         $delete_request = pg_query($db, "DELETE FROM friendreq WHERE userid=$frdID AND friendreqid=$userid"); 
     }
-	//pg_close($db);
+	pg_close($db);
 }
 
 function check_gps($pos){
@@ -109,4 +109,52 @@ function profile_picture($userid){
 	pg_close($db);
 	return $path;
 }
+
+function albumnum($userid){
+	$db = pg_connect("host=postgres.cise.ufl.edu port=5432 dbname=atheteodb user=jclewis password=2991Uf!1855")or die('connection failed');
+
+	 $count = pg_query($db, "select count(albumid) from albums where userid=$userid");
+ 	 $count = pg_fetch_result($count,0,0);
+
+	pg_close($db);
+	return $count;
+}
+
+function album_ids($userid, $count){
+	$db = pg_connect("host=postgres.cise.ufl.edu port=5432 dbname=atheteodb user=jclewis password=2991Uf!1855")or die('connection failed');
+	$covers = pg_query($db, "select coverid from albums where userid=$userid");
+	$stack = array();
+	for($i = 0; $i < $count; $i++) {
+		$cover = pg_fetch_result($covers,$i,0);
+		array_push($stack, $cover); 
+	}
+	pg_close($db);
+	return $stack;
+}
+
+function album_cover($covers, $count){
+	$db = pg_connect("host=postgres.cise.ufl.edu port=5432 dbname=atheteodb user=jclewis password=2991Uf!1855")or die('connection failed');
+	$path = null;
+	$stack=array();
+	for($i = 0; $i < $count; $i++) {
+		$info = pg_query($db, "select photoname, lat, lon, albumname from photo natural join albums where photoid=$covers[$i]");
+		$covername = pg_fetch_result($info,0,0);
+		$latitude = pg_fetch_result($info,0,1);
+		$longitude = pg_fetch_result($info,0,2);
+		$albumname = pg_fetch_result($info,0,3);
+		array_push($stack, $latitude, $longitude, $albumname);
+		$covername = '<img src="'. $covername . '" alt="image" width=150 height=auto />';
+		echo $covername;
+	}
+	pg_close($db);
+	return $stack;
+}
+
+function printalbums($userid){
+	$max_cnt = albumnum($userid);
+	$covers=album_ids($userid, $max_cnt);
+	$gps = album_cover($covers, $max_cnt);
+	return $gps;
+}
+
 ?>

@@ -58,22 +58,16 @@
       <div class="container">
 	<div id="form-container">
       	<form name='form' method='post' action='welcome.php'>
-	<ul>
-	<h1>Haven't Joined the Club?</h1>
-        <li><label>First Name:</label><input type="Text" value="" name="fn" id="fn" required></li>      	
-
-  	<li><label>Last Name:</label><input type="Text" value="" name="ln" id="ln" required></li>   	
-
-  	<li><label>Username:</label><input type="Text" value="" name="un" id="un" required></li>   	
-
-  	<li><label>Password:</label><input type="password" value="" name="pw" id="pw" required></li>
-   	
-  	<li><label>Confirm Password:</label><input type="password" value="" name="vpw" id="vpw" required></li>
-   	
-  	<li><label>E-mail:</label><input type="email" value="" name="em" id="em" required></li>
-
-        <li><label></label><button type="submit" class="btn btn-success">Sign up</button></li>
-   	</ul>
+			<ul>
+				<h1>Haven't Joined the Club?</h1>
+				<li><label>First Name:</label><input type="Text" value="" name="fn" id="fn" required></li>   
+				<li><label>Last Name:</label><input type="Text" value="" name="ln" id="ln" required></li>   
+				<li><label>Username:</label><input type="Text" value="" name="un" id="un" required></li>   
+				<li><label>Password:</label><input type="password" value="" name="pw" id="pw" required></li>  	
+				<li><label>Confirm Password:</label><input type="password" value="" name="vpw" id="vpw" required></li>  	
+				<li><label>E-mail:</label><input type="email" value="" name="em" id="em" required></li>			
+				<li><label></label><button type="submit" class="btn btn-success">Sign up</button></li>
+			</ul>
 	        
   	</form> 
 	</div>

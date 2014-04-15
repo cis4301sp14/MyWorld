@@ -1,6 +1,7 @@
 #!/usr/local/bin/php
 
 <html>
+	
  <head>
 	<meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -9,7 +10,7 @@
     <meta name="author" content="">
     <link rel="shortcut icon" href="../../assets/ico/favicon.ico">
 
-    <title>Starter Template for Bootstrap</title>
+    <title>Profile</title>
 
     <!-- Bootstrap core CSS -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
@@ -18,7 +19,7 @@
     <link href="starter-template.css" rel="stylesheet">
 
   <title>
-   Login
+   My World
   </title>
     
  </head>
@@ -44,14 +45,15 @@
 	$dbfn = pg_fetch_result($result, 0, 0);
 	$dbln = pg_fetch_result($result, 0, 1);
 	$dbpass = pg_fetch_result($result, 0, 2);
+	$user_id = pg_fetch_result($result,0,3);
 	$dbusrn = pg_fetch_result($result, 0, 4);
-	
-	
 	
 	 echo "Welcome, $dbfn $dbln\n";	 
 	 $_SESSION['userid'] = pg_fetch_result($result,0,3);	
-
 	 }
+	 
+	$frdreq = pg_query($dbconn, "select count(friendreqid) from friendreq where userid='$user_id'");
+	$frdreqcount = pg_fetch_result($frdreq,0,0);
 	  ?>
    <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
       <div class="container">
@@ -66,13 +68,19 @@
         </div>
         <div class="collapse navbar-collapse">
           <ul class="nav navbar-nav">
-            <li class="active"><a href="#"><?php echo $dbfn.' '.$dbln; ?></a></li>
+            <li class="active"><a href="#">Preview</a></li>
+            <li><a href="home.php">Home</a></li>
             <li><a href="friends.php">Friends</a></li>
-			<li><a href="friendreq.php">Friends Request</a></li>
+			<li><a href="friendreq.php"><?php 
+				if(!($frdreqcount)) {echo 'Friend Requests';}			
+				else{echo 'Friend Requests ('.$frdreqcount.')';}
+			?></a></li>
+			<li style="padding-left:250px" ><a href="friends.php">Sign Out?</a></li>
           </ul>
         </div><!--/.nav-collapse -->
       </div>
     </div>
+    
 <div class="container">
 	
 	<?php 
@@ -82,41 +90,20 @@
 	echo "<br>";
 	echo "<br>";
 	$path = null;
-	$path=profile_picture($_SESSION['userid']);
-	$path = '<img src="'.$path. '" alt="image" width=200 height=auto />';
+	$path=profile_picture($user_id);
+	$path = '<img src="'.$path. '" alt="image" width=300 height=auto />';
 	echo $path;
 	?>
+	<h2><?php echo $dbfn.' '.$dbln; ?></h2>
 </div>
 
-	<div class="container">
-
-      <div class="starter-template">
-        <h1>Bootstrap starter template</h1>
-           <form name="form" method="post" action="friendreq.php">
-   <input type="submit" value="Friend Requests"> 
-   </form>
-   <form name="form" method="post" action="befriends.php">
-   <input type="Text" value="" name="person" id="person">
-	<input type="submit" value="Friend">
-   </form>
-	<form name="form" method="post" action="loggedout.php">
-	<input type="submit" value="Signout">
-	</form>
-   	<form action="upload_file.php" method="post" enctype="multipart/form-data">
 	
-	Album Name: <input type = "Text" value = "" name = "an" id="an">
-	<!--<select name="dropdown">
-		<option value="">item1</option>
-		<option value="">item2</option>
-		<option value="">item3</option>
-	</select>-->
 
-	<br />
-	   <label for="file">Filename:</label>
-	<input type="file" name="file" id="file"><br>
-	<input type="submit" name="submit" value="Upload">
-	</form>
-      </div>
+<div class="container">
+	<?php 		
+	printalbums($user_id);
+	?>
+</div>	
 
     </div><!-- /.container -->
 	 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
@@ -125,3 +112,45 @@
 
 </html>
 
+
+
+<html>
+ <head>
+	  <style>
+      #map_canvas {
+        width: 500px;
+        height: 400px;
+      }
+    </style>
+    <script src="https://maps.googleapis.com/maps/api/js?sensor=false"></script>
+    <script>
+      function initialize() {
+        var map_canvas = document.getElementById('map_canvas');
+        var myLatlng = new google.maps.LatLng(<?php echo $lat.', '.$long; ?>);
+        
+        var map_options = {
+          zoom: 8,
+          mapTypeId: google.maps.MapTypeId.ROADMAP,
+          center: myLatlng
+        }
+        var map = new google.maps.Map(map_canvas, map_options);
+        var marker = new google.maps.Marker({
+			position: myLatlng,
+			map: map,
+			title: 'Hello World!'
+		});
+
+      }
+      google.maps.event.addDomListener(window, 'load', initialize);
+    </script>
+    
+  <title>
+   File Upload
+  </title>
+ </head>
+<body>
+
+	 <div id="map_canvas"></div>
+
+</body>
+</html>
