@@ -19,7 +19,10 @@
     <link href="starter-template.css" rel="stylesheet">
 
     <link rel="stylesheet" href="nivo-slider/nivo-slider.css" type="text/css" media="screen"/>
-    <link rel="stylesheet" href="nivo-slider/themes/default/default.css" type="text/css" media="screen"/>     
+    <link rel="stylesheet" href="nivo-slider/themes/default/default.css" type="text/css" media="screen"/>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    <script src="nivo-slider/jquery.nivo.slider.pack.js" type="text/javascript"></script> 
+     
  </head>
  <body>
   <?php  
@@ -33,9 +36,8 @@
 	$usrn = $_SESSION['user'];
 
 	$dbconn = pg_connect("host=postgres.cise.ufl.edu port=5432 dbname=atheteodb user=jclewis password=2991Uf!1855") or die('connection failed');
-    $result = pg_query($dbconn, "select firstn, lastn, pw, userid, username from users natural join password where username='$usrn'");
-	
-	
+        $result = pg_query($dbconn, "select firstn, lastn, pw, userid, username from users natural join password where username='$usrn'");
+		
 	if (!$result) {
 	 echo "An error has occurred.\n";
 	 exit;
@@ -76,35 +78,29 @@
           </ul>
 		  <form class="navbar-form navbar-right" name="form" action="loggedout.php" method = "post">            
 				<button type="submit" class="btn btn-success">Sign Out, <?php echo ucwords($dbusrn);?></button>
-			</form>
+		  </form>
 		  <form class="navbar-form navbar-right" name="form" action="befriends.php" method = "post">            
 				<div class="form-group">
 					<input type="text" placeholder="Name or Username" class="form-control" name = "person" id = "person">					
 				</div>
 				<button type="submit" class="btn btn-success">Search</button>
-			</form>
+		  </form>
         </div><!--/.nav-collapse -->
       </div>
     </div>
-
-<div class="jumbotron">
-     
+    
 <div class="slider-wrapper theme-default">    
 	<div id="slider" class="nivoSlider">
-    		<img src="nivo-slider/demo/images/toystory.jpg" data-thumb="nivo-slider/demo/images/toystory.jpg" alt="" />
-                <a href="http://dev7studios.com"><img src="nivo-slider/demo/images/up.jpg" data-thumb="nivo-slider/demo/images/up.jpg" alt="" title="This is an example of a caption" /></a>
-                <img src="nivo-slider/demo/images/walle.jpg" data-thumb="nivo-slider/demo/images/walle.jpg" alt="" data-transition="slideInLeft" />
-                <img src="nivo-slider/demo/images/nemo.jpg" data-thumb="nivo-slider/demo/images/nemo.jpg" alt="" title="#htmlcaption" />
+    		<img src="upload/18photo.JPG" data-thumb="upload/18photo.JPG" alt="" />
+                <a href="http://dev7studios.com"><img src="upload/16photo 1.JPG" data-thumb="upload/16photo 1.JPG" alt="" title="This is an example of a caption" /></a>
+                <img src="images/walle.JPG" data-thumb="images/walle.JPG" alt="" data-transition="slideInLeft" />
+                <img src="images/nemo.JPG" data-thumb="images/nemo.JPG" alt="" title="#htmlcaption" />
 	</div>
-</div>
-
 <div id="htmlcaption" class="nivo-html-caption">
     <strong>This</strong> is an example of a <em>HTML</em> caption with <a href="#">a link</a>.
 </div>
 </div>
 
-<script src="nivo-slider/scripts/jquery-1.9.0.min.js" type="text/javascript"></script>
-<script src="nivo-slider/jquery.nivo.slider.pack.js" type="text/javascript"></script> 
 <script type="text/javascript">
 $(window).load(function() {
     $('#slider').nivoSlider();
@@ -112,8 +108,7 @@ $(window).load(function() {
 </script>
 
 <!--
-<div class="container">
-	
+<div class="container">	
 	<?php 
 	require 'functions.php';
 	echo "<br>";
@@ -127,27 +122,19 @@ $(window).load(function() {
 	?>
 	<h2><?php echo $dbfn.' '.$dbln; ?></h2>
 </div>
-
-	
-
 <div class="container">
 	<?php 		
 	printalbums($user_id);
 	?>
-</div> -->
-
-    </div><!-- /.container -->
-	 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
-    <script src="js/bootstrap.min.js"></script>
+</div>
+   <script src="js/bootstrap.min.js"></script>
+-->
  </body>
-
 </html>
-
-
 
 <html>
  <head>
-	  <style>
+    <style>
       #map_canvas {
         width: 500px;
         height: 400px;
@@ -180,8 +167,6 @@ $(window).load(function() {
   </title>
  </head>
 <body>
-
 	 <div id="map_canvas"></div>
-
 </body>
 </html>
