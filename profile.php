@@ -21,8 +21,8 @@
     <link rel="stylesheet" href="nivo-slider/nivo-slider.css" type="text/css" media="screen"/>
     <link rel="stylesheet" href="nivo-slider/themes/default/default.css" type="text/css" media="screen"/>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
-    <script src="nivo-slider/jquery.nivo.slider.pack.js" type="text/javascript"></script> 
-     
+    <script src="nivo-slider/jquery.nivo.slider.pack.js" type="text/javascript"></script>
+        
  </head>
  <body>
   <?php  
@@ -79,7 +79,7 @@
 		  <form class="navbar-form navbar-right" name="form" action="loggedout.php" method = "post">            
 				<button type="submit" class="btn btn-success">Sign Out, <?php echo ucwords($dbusrn);?></button>
 		  </form>
-		  <form class="navbar-form navbar-right" name="form" action="befriends.php" method = "post">            
+		  <form class="navbar-form navbar-right" name="form" action="search.php" method = "post">            
 				<div class="form-group">
 					<input type="text" placeholder="Name or Username" class="form-control" name = "person" id = "person">					
 				</div>
@@ -94,16 +94,13 @@
     		<img src="upload/18photo.JPG" data-thumb="upload/18photo.JPG" alt="" />
                 <a href="http://dev7studios.com"><img src="upload/16photo 1.JPG" data-thumb="upload/16photo 1.JPG" alt="" title="This is an example of a caption" /></a>
                 <img src="upload/17photo 3.JPG" data-thumb="upload/17photo 3.JPG" alt="" data-transition="slideInLeft" />
-                <img src="upload/11photo(1).JPG" data-thumb="upload/11photo(1).JPG" alt="" title="#htmlcaption" />
+                <img src="upload/11photo(1).JPG" data-thumb="upload/11photo(1).JPG" alt="" />
 	</div>
-<div id="htmlcaption" class="nivo-html-caption">
-    <strong>This</strong> is an example of a <em>HTML</em> caption with <a href="#">a link</a>.
-</div>
 </div>
 
 <script type="text/javascript">
 $(window).load(function() {
-    $('#slider').nivoSlider();
+    $('#slider').nivoSlider({effect: 'slideInLeft'});
 });
 </script>
 

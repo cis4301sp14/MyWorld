@@ -108,7 +108,7 @@
 						<?php 												
 						$path = null;
 						$path=profile_picture($frdr);
-						$destination = '<a href="friendprofile.php/?frdun='.$frun;
+						$destination = '<a href="friendprofile.php?frdun='.$frun;
 						$path = $destination.'"><img src="'.$path. '" alt="image" width=150 height=auto />';
 						echo $path;
 						?>

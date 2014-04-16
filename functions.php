@@ -102,10 +102,15 @@ function profile_picture($userid){
 
 	 $picture = pg_query($db, "select max from profilepic where userid=$userid");
  	 $picture_id = pg_fetch_result($picture,0,0);
- 	 
- 	 $path = pg_query($db, "select photoname from photo where photoid=$picture_id");
- 	 $path = pg_fetch_result($path,0,0);
-
+	 
+	if(!($picture_id)){
+		$path = pg_query($db, "select photoname from photo where photoid=1");
+		$path = pg_fetch_result($path,0,0);
+	}
+	else {
+		$path = pg_query($db, "select photoname from photo where photoid=$picture_id");
+		$path = pg_fetch_result($path,0,0);
+	}
 	pg_close($db);
 	return $path;
 }

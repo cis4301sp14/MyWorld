@@ -82,19 +82,25 @@
 	$result = pg_query($dbconn, "select username, userid, firstn, lastn from users where username like '$frd%' or firstn like '$frd%' or firstn like '$frdU%'");
 	$max_rows = pg_num_rows($result);
 	
-	if($c == 1 && $max_rows) {		 
-		for($i = 0; $i < $max_rows; $i++) {	
-					$uid = pg_fetch_result($result,$i,1);
-					$fn = pg_fetch_result($result,$i,2);
-					$ln =	pg_fetch_result($result,$i,3);
-					$un = pg_fetch_result($result,$i,0);
-					?>									
-				
+	
+	if($c == 1 && $max_rows) {
+		echo '<table align="center">';		 
+		$tmp = 0;
+			for($row = 0; $row < ($max_rows/5); $row++) {
+				echo '<tr>';	
+				for($col = 0; $col < ($tmp+5) && $col != $max_rows; $col++) {	
+					$uid = pg_fetch_result($result,$tmp+$col,1);
+					$fn = pg_fetch_result($result,$tmp+$col,2);
+					$ln =	pg_fetch_result($result,$tmp+$col,3);
+					$un = pg_fetch_result($result,$tmp+$col,0);
+
+					if($uid) {
+					?>
+														
+					<td ALIGN=CENTER>
 					<form name="form" method="get" action="search.php">	
-					&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp				
-					<?php echo "$fn $ln ";?>
-					
-					<div class="container">
+					<ul style="list-style: none;"><li><label><?php echo "$fn $ln ";?></label>					
+					<div class="container" style="width: 175px">
 	
 						<?php 												
 						$path = null;
@@ -103,14 +109,15 @@
 						$path = $destination.'"><img src="'.$path. '" alt="image" width=150 height=auto />';
 						echo $path;
 						?>
-					</div>	
-					&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp					
-					<input type="hidden" name="frn" value="<?php print "$fn"?>">
-					<input type="hidden" name="frd" value="<?php print "$uid"?>">
-					<input type="submit" name="fav" value="view profile">						
-					</form>					
+					</div>															
+					</form></li></ul></td>					
 					<?php
+					}
 				}
+			$tmp = $tmp+5;
+			}
+		
+		echo '</table>';
 	}
 	else if($c == 2) {	
 		for($i = 0; $i < $max_rows; $i++) {	
@@ -123,8 +130,8 @@
 					if($lnL == $pln) {					
 					?>
 					<form name="form" method="get" action="search.php">	
-					&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp				
-					<?php echo "$fn $ln ";?>
+					<!--&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp				
+					--><li><Label><?php echo "$fn $ln ";?></label>
 					
 					<div class="container">
 	
@@ -135,12 +142,8 @@
 						$path = $destination.'"><img src="'.$path. '" alt="image" width=150 height=auto />';
 						echo $path;
 						?>
-					</div>	
-					&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp					
-					<input type="hidden" name="frn" value="<?php print "$fn"?>">
-					<input type="hidden" name="frd" value="<?php print "$uid"?>">
-					<input type="submit" name="fav" value="view profile">						
-					</form>					
+					</div>						
+					</form></li>					
 					<?php
 					}
 					else {

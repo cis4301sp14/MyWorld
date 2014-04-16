@@ -12,24 +12,14 @@
       <script type="text/javascript">
 		     <?php 
 	 $db = pg_connect("host=postgres.cise.ufl.edu port=5432 dbname=atheteodb user=jclewis password=2991Uf!1855")or die('connection failed');
-	 $picture = pg_query($db, "select photoid, lat, lon from photo limit 5");
+	 $picture = pg_query($db, "select albumname, lat, lon from albums");
  	  $row=0; 
  	  while($pic = pg_fetch_assoc($picture)){ 
 		  $location[$row]=$pic['lat'].", ".$pic['lon'];
-		  $photo_id[$row++]=$pic['photoid'];
+		  $albname[$row++]=$pic['albumname'];
 	  }
-	 // var_dump($location);
 ?>
-        var locations = [
-          ['Stadtbibliothek Zanklhof', 47.06976, 15.43154, 1],
-          ['Stadtbibliothek dieMediathek', 47.06975, 15.43116, 2],
-          ['Stadtbibliothek Gösting', 47.09399, 15.40548, 3],
-          ['Stadtbibliothek Graz West', 47.06993, 15.40727, 4],
-          ['Stadtbibliothek Graz Ost', 47.06934, 15.45888, 5],
-          ['Stadtbibliothek Graz Süd', 47.04572, 15.43234, 6],
-          ['Stadtbibliothek Graz Nord', 47.08350, 15.43212, 7],
-          ['Stadtbibliothek Andritz', 47.10280, 15.42137, 8]
-        ];
+      
 
         var map = new google.maps.Map(document.getElementById('map'), {
           zoom: 5,
@@ -40,16 +30,16 @@
         var infowindow = new google.maps.InfoWindow();
 
         var marker, i;
-        <?php for($i = 0; $i < 5; $i++){
+        <?php for($i = 0; $i < count($albname); $i++){
          echo "var marker$i = new google.maps.Marker({
             position: new google.maps.LatLng(".$location[$i]."),
             map: map,
-			photoid:$photo_id[$i]
+			albumname:\"$albname[$i]\"
 			
           });
 		google.maps.event.addListener(marker$i, 'click', (function(marker, index) {
             return function() {
-              infowindow.setContent(''+$photo_id[$i]);
+              infowindow.setContent(\"$albname[$i]\");
               infowindow.open(map, marker);
             }
           })(marker$i, $i));

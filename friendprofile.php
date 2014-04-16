@@ -1,5 +1,5 @@
 #!/usr/local/bin/php
-
+<!DOCTYPE html>
 <html>
 	
  <head>
@@ -17,7 +17,24 @@
 
     <!-- Custom styles for this template -->
     <link href="starter-template.css" rel="stylesheet">
-
+	<script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+	<script> $( document ).ready(function() {
+        console.log( "document loaded" );
+		$('#propic1').click(function(){
+			console.log("propic click");
+			$.ajax({
+			  type: "POST",
+			  url: "some.php",
+			  data: { name: "John", location: "Boston" }
+			})
+			  .done(function( msg ) {
+				alert( "Data Saved: " + msg );
+			  });
+		return false;
+		});
+		
+    });
+	</script>
   <title>
    My World
   </title>
@@ -96,7 +113,7 @@
 	echo $frd_fn ."   ". $frd_ln."!!!!!!!!!!!!!!!<br>";
 	$path = null;
 	$path = profile_picture($frd_id);
-	$path = '<img src="'.$path. '" alt"image"  width=300 height=auto />';
+	$path = '<img src="'.$path. '" alt"image"  width=300 height=auto id="propic1" />';
 	echo $path;
 	?>
 
