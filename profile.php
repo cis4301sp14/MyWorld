@@ -91,16 +91,16 @@
     
 <div class="slider-wrapper theme-default">    
 	<div id="slider" class="nivoSlider">
-    		<img src="upload/18photo.JPG" data-thumb="upload/18photo.JPG" alt="" />
-                <a href="http://dev7studios.com"><img src="upload/16photo 1.JPG" data-thumb="upload/16photo 1.JPG" alt="" title="This is an example of a caption" /></a>
-                <img src="upload/17photo 3.JPG" data-thumb="upload/17photo 3.JPG" alt="" data-transition="slideInLeft" />
+    		<img src="upload/18photo.JPG" data-thumb="upload/18photo.JPG" alt="" title="" />
+                <img src="upload/16photo 1.JPG" data-thumb="upload/16photo 1.JPG" alt="" />
+                <img src="upload/17photo 3.JPG" data-thumb="upload/17photo 3.JPG" alt="" />
                 <img src="upload/11photo(1).JPG" data-thumb="upload/11photo(1).JPG" alt="" />
 	</div>
 </div>
 
 <script type="text/javascript">
 $(window).load(function() {
-    $('#slider').nivoSlider({effect: 'slideInLeft'});
+    $('#slider').nivoSlider({effect: 'fade'});
 });
 </script>
 
