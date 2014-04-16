@@ -56,9 +56,9 @@
 			</form>
 			<form class="navbar-form navbar-right" name="form" action="befriends.php" method = "post">            
 				<div class="form-group">
-					<input type="text" placeholder="Username" class="form-control" name = "person" id = "person">					
+					<input type="text" placeholder="Name or Username" class="form-control" name = "person" id = "person">					
 				</div>
-				<button type="submit" class="btn btn-success">Add Friend</button>
+				<button type="submit" class="btn btn-success">Search</button>
 			</form>
 			</div><!--/.nav-collapse -->
 		</div>

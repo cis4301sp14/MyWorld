@@ -82,16 +82,18 @@
 		  <form class="navbar-form navbar-right" name="form" action="loggedout.php" method = "post">            
 				<button type="submit" class="btn btn-success">Sign Out, <?php echo ucwords($dbusrn);?></button>
 			</form>
-		  <form class="navbar-form navbar-right" name="form" action="befriends.php" method = "post">            
+		  <form class="navbar-form navbar-right" name="form" action="search.php" method = "post">   <!--this is now a test for search.php -->         
 				<div class="form-group">
-					<input type="text" placeholder="Username" class="form-control" name = "person" id = "person">					
+					<input type="text" placeholder="Name or Username" class="form-control" name = "person" id = "person">					
 				</div>
-				<button type="submit" class="btn btn-success">Add Friend</button>
+				<button type="submit" class="btn btn-success">Search</button>
 			</form>
         </div><!--/.nav-collapse -->
       </div>
     </div>
-    
+ 
+
+   
 <div class="container">
 <br /><br /><br />
 	<?php 
@@ -117,7 +119,32 @@
 
 		<div class="container">
 			<?php 	?>
-		</div>	
+		</div>
+
+	
+        <div style="height: 500px; width:600px;">
+	 <?php
+	  include 'newsfeed.php';
+	  
+  	  if (!$news_feed_result ) {
+    	   echo "An error occurred.\n";
+    	   exit;
+  	  }
+	  
+	  echo '<table style="width:550px;">';
+  	  while ( $row = pg_fetch_row($news_feed_result )) {
+    	   //echo "$row[0]<br /> <br />";
+	   echo '<tr> <td>';
+    	   echo "$row[2] $row[3] added photo to $row[1]";
+	   echo '</td> <td>';
+    	   echo '<img src="'.$row[0].'" alt="image" width="200" height="auto"/> <br /> <br />';
+       	   echo '</td></tr>';	
+	  }	
+	  echo'</table>';
+	 ?>
+	</div>
+
+	
 
     </div><!-- /.container -->
 	 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>

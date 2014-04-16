@@ -3,7 +3,7 @@
 <html>
 	
  <head>
-	<meta charset="utf-8">
+    <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
@@ -18,10 +18,8 @@
     <!-- Custom styles for this template -->
     <link href="starter-template.css" rel="stylesheet">
 
-    <link rel="stylesheet" href="nivo-slider/nivo-slider.css" type="text/css" />
-    <link rel="stylesheet" href="nivo-slider/themes/default/default.css" type="text/css" />
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js" type="text/javascript"></script>
-    <script src="jquery.nivo.slider.pack.js" type="text/javascript"></script>  
+    <link rel="stylesheet" href="nivo-slider/nivo-slider.css" type="text/css" media="screen"/>
+    <link rel="stylesheet" href="nivo-slider/themes/default/default.css" type="text/css" media="screen"/>     
  </head>
  <body>
   <?php  
@@ -79,36 +77,40 @@
 		  <form class="navbar-form navbar-right" name="form" action="loggedout.php" method = "post">            
 				<button type="submit" class="btn btn-success">Sign Out, <?php echo ucwords($dbusrn);?></button>
 			</form>
+		  <form class="navbar-form navbar-right" name="form" action="befriends.php" method = "post">            
+				<div class="form-group">
+					<input type="text" placeholder="Name or Username" class="form-control" name = "person" id = "person">					
+				</div>
+				<button type="submit" class="btn btn-success">Search</button>
+			</form>
         </div><!--/.nav-collapse -->
       </div>
     </div>
 
-<div class="container">
-<?php
-echo "<br>";
-	echo "<br>";
-	echo "<br>";
-	echo "<br>";
-?>
+<div class="jumbotron">
+     
 <div class="slider-wrapper theme-default">    
 	<div id="slider" class="nivoSlider">
-    		<img src="nivo-slider/demo/images/nemo.jpg" alt="" />
-    		<a href="http://dev7studios.com"><img src="nivo-slider/demo/images/toystory.jpg" alt="" title="#htmlcaption" /></a>
-    		<img src="nivo-slider/demo/images/walle.jpg" alt="" title="This is an example of a caption" />
-    		<img src="nivo-slider/demo/images/up.jpg" alt="" />
+    		<img src="nivo-slider/demo/images/toystory.jpg" data-thumb="nivo-slider/demo/images/toystory.jpg" alt="" />
+                <a href="http://dev7studios.com"><img src="nivo-slider/demo/images/up.jpg" data-thumb="nivo-slider/demo/images/up.jpg" alt="" title="This is an example of a caption" /></a>
+                <img src="nivo-slider/demo/images/walle.jpg" data-thumb="nivo-slider/demo/images/walle.jpg" alt="" data-transition="slideInLeft" />
+                <img src="nivo-slider/demo/images/nemo.jpg" data-thumb="nivo-slider/demo/images/nemo.jpg" alt="" title="#htmlcaption" />
 	</div>
 </div>
 
 <div id="htmlcaption" class="nivo-html-caption">
     <strong>This</strong> is an example of a <em>HTML</em> caption with <a href="#">a link</a>.
 </div>
+</div>
 
+<script src="nivo-slider/scripts/jquery-1.9.0.min.js" type="text/javascript"></script>
+<script src="nivo-slider/jquery.nivo.slider.pack.js" type="text/javascript"></script> 
 <script type="text/javascript">
 $(window).load(function() {
     $('#slider').nivoSlider();
 });
 </script>
-</div>
+
 <!--
 <div class="container">
 	

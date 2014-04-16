@@ -89,16 +89,17 @@
 	echo "<br>";
 	echo "<br>";
 	echo "<br>";
-	$frdinfo = pg_query($dbconn, "select userid, firstn, lastn from users where userid='$frd_un'");
+	$frdinfo = pg_query($dbconn, "select userid, firstn, lastn from users where username='$frd_un'");
 	$frd_id = pg_fetch_result($frdinfo,0,0);
 	$frd_fn = pg_fetch_result($frdinfo,0,1);
 	$frd_ln = pg_fetch_result($frdinfo,0,2);
 	echo $frd_fn ."   ". $frd_ln."!!!!!!!!!!!!!!!<br>";
 	$path = null;
-	$path=profile_picture($frd_id);
-	$path = '<img src="'.$path. '" alt="image" width=300 height=auto />';
+	$path = profile_picture($frd_id);
+	$path = '<img src="'.$path. '" alt"image"  width=300 height=auto />';
 	echo $path;
 	?>
+
 	<h2><?php echo $frd_fn.' '.$frd_ln; ?></h2>
 </div>
 
