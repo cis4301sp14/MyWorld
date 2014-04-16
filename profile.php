@@ -93,8 +93,8 @@
 	<div id="slider" class="nivoSlider">
     		<img src="upload/18photo.JPG" data-thumb="upload/18photo.JPG" alt="" />
                 <a href="http://dev7studios.com"><img src="upload/16photo 1.JPG" data-thumb="upload/16photo 1.JPG" alt="" title="This is an example of a caption" /></a>
-                <img src="images/walle.JPG" data-thumb="images/walle.JPG" alt="" data-transition="slideInLeft" />
-                <img src="images/nemo.JPG" data-thumb="images/nemo.JPG" alt="" title="#htmlcaption" />
+                <img src="upload/17photo 3.JPG" data-thumb="upload/17photo 3.JPG" alt="" data-transition="slideInLeft" />
+                <img src="upload/11photo(1).JPG" data-thumb="upload/11photo(1).JPG" alt="" title="#htmlcaption" />
 	</div>
 <div id="htmlcaption" class="nivo-html-caption">
     <strong>This</strong> is an example of a <em>HTML</em> caption with <a href="#">a link</a>.
@@ -132,6 +132,7 @@ $(window).load(function() {
  </body>
 </html>
 
+<!--
 <html>
  <head>
     <style>
@@ -170,3 +171,4 @@ $(window).load(function() {
 	 <div id="map_canvas"></div>
 </body>
 </html>
+-->
