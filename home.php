@@ -93,8 +93,7 @@
   
    <div style="display: table-row;">
     <div style="display: table-cell; vertical-align:top; "align="left">
-     <div class="container" style="padding-left:100px; width:500px;">
-      <br /><br /><br />
+     <div class="container" style="margin-top:60px; padding-left:100px; width:500px;">      
       <?php 
  	   echo "<div border-bottom:10px><u><h2> Welcome, $dbfn $dbln </h2></u></div><br/>";	
 	   require 'functions.php';	
@@ -110,19 +109,21 @@
 	   <h1></h1> 
 	   <!--<form action="upload_file.php" method="post" enctype="multipart/form-data">-->
 		<form class="navbar-form navbar-center" name="form" action="upload_file.php" method = "post" enctype="multipart/form-data">
-	    Album Name: <input type = "Text" value = "" name = "an" id="an"><br />
-		<!--<label for="an" class="col-sm-2 control-label">Album Name</label>
-		<input type="text" class="form-control" placeholder="Album Name" name="an" id="an"><br />-->
+	    
 		<div id=fileinputs style="position: relative">
 	    <label for="file">Filename: </label>
 	    <input type="file" name="file" id="file"><br />
 	    </div>
+		
+		<!--Album Name: <input type = "Text" value = "" name = "an" id="an"><br />-->		
+		<input type="text" class="form-control" placeholder="Album Name" name="an" id="an"><br /><br/>		
 	    <button type="submit" class="btn btn-info btn-sm" name="submit" value="Upload">Upload</button>
 	   </form>
       </div>
       <div class="container">	   
       </div>
      </div>
+
     </div>
    
     <div id="container" style="margin-top:90px;">
@@ -136,8 +137,7 @@
   	   }
 	   
 	   echo '<table style="width:550px;">';
-  	   while ( $row = pg_fetch_row($news_feed_result )) {
-    	   //echo "$row[0]<br /> <br />";
+  	   while ( $row = pg_fetch_row($news_feed_result )) {    	   
 	   echo '<tr> <td>';
        echo "$row[2] $row[3] added photo to $row[1]";
 	   echo '</td> <td>';
@@ -145,10 +145,7 @@
        echo '</td></tr>';	
 	   }	
 	   echo'</table>';
-	  ?>
-	
-     
-     
+	  ?>    
      
     </div>
     </div>
@@ -162,5 +159,3 @@
  </body>
 
 </html>
-
-

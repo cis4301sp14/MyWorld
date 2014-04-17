@@ -143,7 +143,7 @@
 						$path = null;
 						$path=profile_picture($uid);
 						$destination = '<a href="profile.php?un='.$un;
-						$path = $destination.'"><img src="'.$path. '" alt="image" width=150 height=auto class="img-circle" />';
+						$path = $destination.'" style="outline : 0; border: 0; text-decoration:none;"><img src="'.$path. '" alt="image" width=150 height=auto class="img-circle" />';
 						echo $path;
 						?>					
 								
@@ -187,7 +187,7 @@
 						$path = null;
 						$path=profile_picture($uid);
 						$destination = '<a href="profile.php?un='.$un;
-						$path = $destination.'"><img src="'.$path. '" alt="image" width=150 height=auto />';
+						$path = $destination.'" style="outline : 0; border: 0; text-decoration:none;"><img src="'.$path. '" alt="image" width=150 height=auto />';
 						echo $path;
 						?>
 						

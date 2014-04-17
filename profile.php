@@ -117,15 +117,11 @@
         </div><!--/.nav-collapse -->
       </div>
     </div>
-    
+<div class="container" style="margin-top:70px"></div>    
 <table align="center" >
 	<tr>
 	<?php 
-	require 'functions.php';
-	echo "<br>";
-	echo "<br>";
-	echo "<br>";
-	echo "<br>";
+	require 'functions.php';	
 	$frdinfo = pg_query($dbconn, "select userid, firstn, lastn from users where username='$frd_un'");
 	$frd_id = pg_fetch_result($frdinfo,0,0);
 	$frd_fn = pg_fetch_result($frdinfo,0,1);
