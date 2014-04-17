@@ -29,10 +29,10 @@
 			$dbusrn = $_SESSION['usrn'];
 			
 			$dbconn = pg_connect("host=postgres.cise.ufl.edu port=5432 dbname=atheteodb user=jclewis password=2991Uf!1855") or die('connection failed');					
-			$frdID = $_GET["frd"];
-			$frn = $_GET["frn"];				
+			$frdID = $_POST["frd"];
+			$frn = $_POST["frn"];				
 			
-			if($_GET["acc"]) {				
+			if($_POST["acc"]) {				
 				$str = "You have accepted $frn's friend request <br /><br />";
 				?> &nbsp&nbsp&nbsp&nbsp <?php
 				echo $str;
@@ -40,7 +40,7 @@
 				$query2 = pg_query($dbconn, "insert into friends(userid, friendid) values ($frdID, $urid)");
 				$delete_request = pg_query($dbconn, "DELETE FROM friendreq WHERE userid=$urid AND friendreqid=$frdID");					
 			}						
-			else if($_GET["dec"]) {				
+			else if($_POST["dec"]) {				
 				$delete_request = pg_query($dbconn, "DELETE FROM friendreq WHERE userid=$urid AND friendreqid=$frdID");				
 			}
 			
@@ -88,8 +88,8 @@
 			
 			$max_rows = pg_num_rows($requests);	
 			if(!($max_rows)){				
-				?> <table align="center"><tr><td align="center"><?php 		
-				echo "You have no friend requests at this time.</td></tr></table>";
+				?> <div class="container" style="margin-top:50px"><table align="center"><tr><td align="center"><?php 		
+				echo "You have no friend requests at this time.</td></tr></table></div>";
 
 			}
 			else {
@@ -97,7 +97,7 @@
 				$tmp = 0;
 				for($row = 0; $row < ($max_rows/5); $row++) {
 					echo '<tr>';	
-					for($col = 0; $col < ($tmp+5) && $col != $max_rows; $col++) {	
+					for($col = 0; $col < 5 && $col != $max_rows; $col++) {	
 						$frdr = pg_fetch_result($requests,$tmp+$col,0);
 						$frn = pg_fetch_result($requests,$tmp+$col,1);
 						$lsn =	pg_fetch_result($requests,$tmp+$col,2);
@@ -108,23 +108,24 @@
 						?>
 														
 							<td ALIGN=CENTER>
-							<form name="form" method="get" action="friendreq.php">	
-							<ul style="list-style: none;"><li><label><?php echo "$frn $lsn ";?></label>					
+							
+							<form class="navbar-form navbar-right" name="form" action="friendreq.php" method = "post">
+							<ul style="list-style: none;"><li>												
+							<label><?php echo "$frn $lsn";?></label>										
 							<div class="container" style="width: 175px">
 	
 							<?php 												
 							$path = null;
 							$path=profile_picture($frdr);
 							$destination = '<a href="profile.php?frdun='.$frun;
-							$path = $destination.'"><img src="'.$path. '" alt="image" width=150 height=auto class="img-thumbnail" />';
+							$path = $destination.'"><img src="'.$path. '" alt="image" width=150 height=auto class="img-circle" />';
 							echo $path;
 							?>								
 							
-							<br/>
 							<input type="hidden" name="frn" value="<?php print "$frn"?>">
-							<input type="hidden" name="frd" value="<?php print "$frdr"?>"><br/>
-							<input type="submit" name="acc" value="accept">	
-							<input type="submit" name="dec" value="decline">	
+							<input type="hidden" name="frd" value="<?php print "$frdr"?>"><br/>								
+							<button type="submit" class="btn btn-info btn-xs" name="acc" value="accept">accept</button>	
+							<button type="submit" class="btn btn-info btn-xs" name="dec" value="decline">decline</button>
 							</div>
 							</form></li></ul></td>					
 							<?php

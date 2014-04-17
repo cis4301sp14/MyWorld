@@ -30,11 +30,11 @@
        exit;	
      }
    else {
-     $usrn = $_POST['un'];
+     $usrn = trim($_POST['un']);
      $passw = $_POST['pw'];
      $email = $_POST['em'];
-	 $firstn = $_POST['fn'];
-	 $lastn = $_POST['ln'];
+	 $firstn = ucwords(trim($_POST['fn']));
+	 $lastn = ucwords(trim($_POST['ln']));
      }
   ?>
    
@@ -52,12 +52,16 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="index.php">Project name</a>
+          <a class="navbar-brand" href="index.php">My World</a>
         </div>
         <div class="collapse navbar-collapse">
-          <ul class="nav navbar-nav">
-            <li class="active"><a href="#">Home</a></li>
-          </ul>
+          <form class="navbar-form navbar-right" name="form" action="login.php" method = "post">
+            <div class="form-group">
+              <input type="text" placeholder="Username" class="form-control" name = "un" id = "un" required>
+              <input type="password" placeholder="Password" class="form-control" name = "pw" id = "pw" required>
+            </div>
+            <button type="submit" class="btn btn-success">Log In</button>
+          </form>
         </div><!--/.nav-collapse -->
       </div>
     </div>
@@ -71,11 +75,13 @@
 	$dbusrn = pg_fetch_result($chkUsrn,0,0);
 	if($dbusrn == $usrn || $dbemail == $email){
 	if ($dbusrn == $usrn) {
-	 echo "This username is already taken.\n";
+		?> <div class="container" style="margin-top:50px"><table align="center"><tr><td align="center"><?php 		
+		echo "This username is already taken.</td></tr></table></div>";
 	}
 	$dbemail = pg_fetch_result($chkEmail,0,0);
 	if ($dbemail == $email) {
-	 echo "This email is already taken.\n";
+		?> <div class="container" style="margin-top:50px"><table align="center"><tr><td align="center"><?php 		
+		echo "This email is already taken.</td></tr></table></div>";
 	}
 	}else {
 	 $maxId = pg_query($dbconn, "select max(userid) from users");
@@ -85,16 +91,12 @@
 	 pg_query($dbconn, "insert into password (userid, pw) values ($newId,'$passw')");	 
 	 //pg_close($dbconn);
 	 
-	 echo "Welcome to the club, $usrn";
+	 
+	 ?> <div class="container" style="margin-top:50px"><table align="center"><tr><td align="center"><?php 		
+	 echo "Welcome to the club, $usrn. Sign in to access your profile.</td></tr></table></div>";
 	}
 	pg_close($dbconn);
    ?>
-  <form name='form' method='post' action='index.php'>
-   <input type="Submit" value="Back">
-  </form>
-
-
-
 
     </div><!-- /.container -->
 

@@ -67,13 +67,13 @@
 		
 		<?php
 			require 'functions.php';											
-			$frdID = $_GET["frd"];
-			$frn = $_GET["frn"];			
-						
-			if($_GET["fav"]) {				
+			$frdID = $_POST["frd"];
+			$frn = $_POST["frn"];			
+			
+			if($_POST["fav"]) {				
 				$query = pg_query($dbconn, "insert into fav(userid, friendid) values ($urid, $frdID)");							
 			}						
-			if($_GET["rem"]) {	
+			else if($_POST["rem"]) {	
 				echo "You have removed $frn's from your friends list.";
 				$delete_request = pg_query($dbconn, "DELETE FROM friends WHERE userid=$urid AND friendid=$frdID");
 				$delete_request2 = pg_query($dbconn, "DELETE FROM friends WHERE userid=$frdID AND friendid=$urid");				
@@ -84,16 +84,17 @@
 			$max_rows = pg_num_rows($requests);	
 			?> <br /><br /><br /> <?php
 			if(!($max_rows)){
-				?> <br/><br/><table align="center"><tr><td align="center"><?php 		
-				echo "You have no friends at this time.</td></tr></table>";
+				?> <div class="container" style="margin-top:50px"><table align="center"><tr><td align="center"><?php 		
+				echo "You have no friends at this time.</td></tr></table></div>";
 			
 			}
 			else {
 				echo '<div class="container" style="margin-top:50px"><table align="center">';		 
 				$tmp = 0;
-				for($row = 0; $row < ($max_rows/5); $row++) {
-					echo '<tr>';	
-					for($col = 0; $col < ($tmp+5) && $col != $max_rows; $col++) {	
+				
+				for($row = 0; $row < ($max_rows/5); $row++) {	
+					echo '<tr>';
+					for($col = 0; $col < 5 && $col != $max_rows; $col++) {	
 						$frdr = pg_fetch_result($requests,$tmp+$col,0);
 						$frn = pg_fetch_result($requests,$tmp+$col,1);
 						$lsn =	pg_fetch_result($requests,$tmp+$col,2);
@@ -104,23 +105,24 @@
 						?>
 														
 							<td ALIGN=CENTER>
-							<form name="form" method="get" action="friends.php">	
-							<ul style="list-style: none;"><li><label><?php echo "$frn $lsn ";?></label>					
-							<div class="container" style="width: 175px" pa>
+							
+							<form class="navbar-form navbar-right" name="form" action="friends.php" method = "post">
+							<ul style="list-style: none;"><li>												
+							<label><?php echo "$frn $lsn";?></label>										
+							<div class="container" style="width: 175px">
 	
 							<?php 												
 							$path = null;
 							$path=profile_picture($frdr);
 							$destination = '<a href="profile.php?un='.$frun;
-							$path = $destination.'"><img src="'.$path. '" alt="image" width=150 height=auto class="img-thumbnail" />';
+							$path = $destination.'"><img src="'.$path. '" alt="image" width=150 height=auto class="img-circle" />';
 							echo $path;
 							?>
-							
-							<br/>			
+																	
 							<input type="hidden" name="frn" value="<?php print "$frn"?>">
 							<input type="hidden" name="frd" value="<?php print "$frdr"?>"><br/>
-							<input type="submit" name="fav" value="favorite">	
-							<input type="submit" name="rem" value="remove">	
+							<button type="submit" class="btn btn-info btn-xs" name="fav" value="no">favorite</button>	
+							<button type="submit" class="btn btn-info btn-xs" name="rem" value="go">remove</button>
 							</div>
 							</form></li></ul></td>					
 							<?php

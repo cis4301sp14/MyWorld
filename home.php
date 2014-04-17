@@ -83,7 +83,7 @@
 	    <div class="form-group">
 	     <input type="text" placeholder="Name or Username" class="form-control" name = "person" id = "person">					
 	    </div>
-        <button type="submit" class="btn btn-success">Search</button>
+        <button type="submit" class="btn btn-success" requierd />Search</button>
 	   </form>
       </div><!--/.nav-collapse -->
      </div>
@@ -93,7 +93,7 @@
   
    <div style="display: table-row;">
     <div style="display: table-cell; vertical-align:top; "align="left">
-     <div class="container" style=" padding-left:100px; width:500px;">
+     <div class="container" style="padding-left:100px; width:500px;">
       <br /><br /><br />
       <?php 
  	   echo "<div border-bottom:10px><u><h2> Welcome, $dbfn $dbln </h2></u></div><br/>";	
@@ -108,13 +108,16 @@
      <div class="container" style=" padding-left:100px; width:500px;">
       <div class="starter-template">
 	   <h1></h1> 
-	   <form action="upload_file.php" method="post" enctype="multipart/form-data">	
+	   <!--<form action="upload_file.php" method="post" enctype="multipart/form-data">-->
+		<form class="navbar-form navbar-center" name="form" action="upload_file.php" method = "post" enctype="multipart/form-data">
 	    Album Name: <input type = "Text" value = "" name = "an" id="an"><br />
+		<!--<label for="an" class="col-sm-2 control-label">Album Name</label>
+		<input type="text" class="form-control" placeholder="Album Name" name="an" id="an"><br />-->
 		<div id=fileinputs style="position: relative">
 	    <label for="file">Filename: </label>
 	    <input type="file" name="file" id="file"><br />
 	    </div>
-	    <input type="submit" name="submit" value="Upload">
+	    <button type="submit" class="btn btn-info btn-sm" name="submit" value="Upload">Upload</button>
 	   </form>
       </div>
       <div class="container">	   

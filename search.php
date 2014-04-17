@@ -64,7 +64,7 @@
         </div><!--/.nav-collapse -->
       </div>
     </div>
-	<br /> <br /> <br />
+	<div class="container" style="margin-top:60px"></div>
  
 	<?php  	
 	require "functions.php";
@@ -73,32 +73,35 @@
 	$frd = $arr[0];
 	$frdU = ucwords($arr[0]);
 	$userid = $_SESSION['userid'];   
-	$usrn = $_SESSION["user"]; 
+	$usrn = $_SESSION["user"]; 	
 	
-	
-	if($_GET['fir']) {
-		$frid = $_GET["friendid"];
-		$frn = $_GET["friendname"];
-		$fr = $_GET["name"];
+	if($_POST['fir']) {
+		$frid = $_POST["friendid"];
+		$frn = $_POST["friendname"];
+		$fr = $_POST["name"];
 		
 		$fd = pg_query($dbconn, "select userid from friends where friendid = $urid and userid = $frid");		
 		$friend = pg_fetch_result($fd,0,0);
 		$fr = pg_query($dbconn, "select userid from friendreq where friendreqid = $urid and userid = $frid");
 		$friendr = pg_fetch_result($fr,0,0);
-
-		if($friendr) {
-			?><div class="container" style="margin-top:50px"></div><table align="center"><tr><td align="center"><?php 
-			echo "You have already sent a friend request to $frn.</td></tr></table>";	
+		
+		if($frid == $userid) {
+			?> <div class="container" style="margin-top:50px"><table align="center"><tr><td align="center"><?php 
+			echo "You cannot friend yourself.</td></tr></table></div>";	
+		}
+		else if($friendr) {
+			?> <div class="container" style="margin-top:50px"><table align="center"><tr><td align="center"><?php 
+			echo "You have already sent a friend request to $frn.</td></tr></table></div>";	
 		}
 
 		else if(!$friend) {
 			$tur = pg_query($dbconn, "insert into friendreq values ($frid, $urid)"); 
-			?><div class="container" style="margin-top:50px"></div><table align="center"><tr><td align="center"><?php 		
-			echo "Friend request sent to $frn.</td></tr></table>";
+			?> <div class="container" style="margin-top:50px"><table align="center"><tr><td align="center"><?php 		
+			echo "Friend request sent to $frn.</td></tr></table></div>";
 		}
 		else {
-			?><div class="container" style="margin-top:50px"></div><table align="center"><tr><td align="center"><?php 
-			echo "You are already friends with ".ucwords($frn).".</td></tr></table>";	
+			?> <div class="container" style="margin-top:50px"><table align="center"><tr><td align="center"><?php 
+			echo "You are already friends with ".ucwords($frn).".</td></tr></table></div>";	
 		}
 		exit;	
 	}
@@ -109,13 +112,17 @@
 	$result = pg_query($dbconn, "select username, userid, firstn, lastn from users where username like '$frd%' or firstn like '$frd%' or firstn like '$frdU%'");
 	$max_rows = pg_num_rows($result);
 	
-	
-	if($c == 1 && $max_rows) {
+	if($arr[0] == "") {
+		?> <div class="container" style="margin-top:50px"><table align="center"><tr><td align="center"><?php 
+		echo "Please enter a name or username.</td></tr></table></div>";	
+	}
+	else if($c == 1 && $max_rows) {
 		echo '<div class="container" style="margin-top:50px"><table align="center">';		 
 		$tmp = 0;
+		echo '<tr>';
 			for($row = 0; $row < ($max_rows/5); $row++) {
-				echo '<tr>';	
-				for($col = 0; $col < ($tmp+5) && $col != $max_rows; $col++) {	
+					
+				for($col = 0; $col < 5 && $col != $max_rows; $col++) {	
 					$uid = pg_fetch_result($result,$tmp+$col,1);
 					$fn = pg_fetch_result($result,$tmp+$col,2);
 					$ln =	pg_fetch_result($result,$tmp+$col,3);
@@ -126,28 +133,26 @@
 														
 						<td ALIGN=CENTER>			
 						
-						<form class="navbar-form navbar-right" name="form" action="search.php" method = "get">
+						<form class="navbar-form navbar-right" name="form" action="search.php" method = "post">
 						<ul style="list-style: none;"><li>
-						<button type="submit" class="btn btn-success">friend</button>
-						</form>
-						<label><?php echo "$fn $ln";?></label>											
+						<button type="submit" class="btn btn-info btn-xs" name="fir" value="go">Friend</button>						
+						<label><?php echo "$fn $ln";?></label>										
 						<div class="container" style="width: 175px">
 	
 						<?php 												
 						$path = null;
 						$path=profile_picture($uid);
-						$destination = '<a href="profile.php/?frdun='.$un;
-						$path = $destination.'"><img src="'.$path. '" alt="image" width=150 height=auto class="img-thumbnail" />';
+						$destination = '<a href="profile.php?un='.$un;
+						$path = $destination.'"><img src="'.$path. '" alt="image" width=150 height=auto class="img-circle" />';
 						echo $path;
-						?>
-						
-						<br/>			
+						?>					
+								
 						<input type="hidden" name="friendid" value="<?php print "$uid"?>">
 						<input type="hidden" name="friendname" value="<?php print "$fn"?>"><br/>
 						<input type="hidden" name="name" value="<?php print "$frd"?>"><br/>
 												
 						</div>															
-						</form></li></ul></td>					
+						</li></ul></td></form>					
 						<?php
 					}
 				}
@@ -181,7 +186,7 @@
 						<?php 												
 						$path = null;
 						$path=profile_picture($uid);
-						$destination = '<a href="friendprofile.php/?frdun='.$un;
+						$destination = '<a href="profile.php?un='.$un;
 						$path = $destination.'"><img src="'.$path. '" alt="image" width=150 height=auto />';
 						echo $path;
 						?>
