@@ -744,7 +744,7 @@ pre code {
     display: block;
     list-style: none;
     padding: 0;    
-    width: 350px;
+    width: 400px;
 }
 
 #form-container li {
@@ -4413,7 +4413,7 @@ a.list-group-item.active > .badge,
 @media screen and (min-width: 768px) {
   .jumbotron {
     padding-top: 6%;
-    padding-bottom: 11%;
+    padding-bottom: 8%;
     padding-left: 59%;
   }
   .container .jumbotron {
@@ -4422,7 +4422,7 @@ a.list-group-item.active > .badge,
   }
   .jumbotron h1,
   .jumbotron .h1 {
-    font-size: 63px;
+    font-size: 35px;
   }
 }
 .thumbnail {
