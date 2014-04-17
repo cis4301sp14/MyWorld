@@ -124,8 +124,8 @@
 							
 							<input type="hidden" name="frn" value="<?php print "$frn"?>">
 							<input type="hidden" name="frd" value="<?php print "$frdr"?>"><br/>								
-							<button type="submit" class="btn btn-info btn-xs" name="acc" value="accept">accept</button>	
-							<button type="submit" class="btn btn-info btn-xs" name="dec" value="decline">decline</button>
+							<button type="submit" class="btn btn-info btn-xs" name="acc" value="Accept">accept</button>	
+							<button type="submit" class="btn btn-info btn-xs" name="dec" value="Decline">decline</button>
 							</div>
 							</form></li></ul></td>					
 							<?php
