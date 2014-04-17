@@ -43,7 +43,7 @@
 			</div>
         <div class="collapse navbar-collapse">
 			<ul class="nav navbar-nav">
-				<li><a href="profile.php">Preview</a></li>
+				<?php echo '<li><a href="profile.php?un='.$dbusrn.'">Preview</a></li>';?>	
 				<li><a href="home.php">Home</a></li>
 				<li class="active"><a href="#">Friends</a></li>
 				<li><a href="friendreq.php"><?php 
@@ -54,7 +54,7 @@
 			<form class="navbar-form navbar-right" name="form" action="loggedout.php" method = "post">            
 				<button type="submit" class="btn btn-success">Sign Out, <?php echo ucwords($dbusrn);?></button>
 			</form>
-			<form class="navbar-form navbar-right" name="form" action="befriends.php" method = "post">            
+			<form class="navbar-form navbar-right" name="form" action="search.php" method = "post">            
 				<div class="form-group">
 					<input type="text" placeholder="Name or Username" class="form-control" name = "person" id = "person">					
 				</div>
@@ -81,47 +81,56 @@
 			
 			$requests = pg_query($dbconn, "select userid, firstn, lastn, username from (select friendid as userid from friends where userid = $urid)q natural join users;");
 			
-			$max_req = pg_num_rows($requests);	
+			$max_rows = pg_num_rows($requests);	
 			?> <br /><br /><br /> <?php
-			if(!($max_req)){
-				$str = "You have no friends at this time";
-				?> &nbsp&nbsp&nbsp&nbsp <?php
-				echo $str;
-				?> <br /> <?php
+			if(!($max_rows)){
+				?> <br/><br/><table align="center"><tr><td align="center"><?php 		
+				echo "You have no friends at this time.</td></tr></table>";
+			
 			}
 			else {
-				for($i = 0; $i < $max_req; $i++) {	
-					$frdr = pg_fetch_result($requests,$i,0);
-					$frn = pg_fetch_result($requests,$i,1);
-					$lsn =	pg_fetch_result($requests,$i,2);
-					$frun = pg_fetch_result($requests,$i,3);
-					?>
-
-									
-				
-					<form name="form" method="get" action="friends.php">	
-					&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp				
-					<?php echo "$frn $lsn ";?>
+				echo '<div class="container" style="margin-top:50px"><table align="center">';		 
+				$tmp = 0;
+				for($row = 0; $row < ($max_rows/5); $row++) {
+					echo '<tr>';	
+					for($col = 0; $col < ($tmp+5) && $col != $max_rows; $col++) {	
+						$frdr = pg_fetch_result($requests,$tmp+$col,0);
+						$frn = pg_fetch_result($requests,$tmp+$col,1);
+						$lsn =	pg_fetch_result($requests,$tmp+$col,2);
+						$frun = pg_fetch_result($requests,$tmp+$col,3);
 					
-					<div class="container">
-	
-						<?php 												
-						$path = null;
-						$path=profile_picture($frdr);
-						$destination = '<a href="friendprofile.php?frdun='.$frun;
-						$path = $destination.'"><img src="'.$path. '" alt="image" width=150 height=auto />';
-						echo $path;
+						
+						if($frdr) {
 						?>
-					</div>	
-					&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp					
-					<input type="hidden" name="frn" value="<?php print "$frn"?>">
-					<input type="hidden" name="frd" value="<?php print "$frdr"?>">
-					<input type="submit" name="fav" value="favorite">	
-					<input type="submit" name="rem" value="remove">		
-					</form>					
-					<?php
+														
+							<td ALIGN=CENTER>
+							<form name="form" method="get" action="friends.php">	
+							<ul style="list-style: none;"><li><label><?php echo "$frn $lsn ";?></label>					
+							<div class="container" style="width: 175px" pa>
+	
+							<?php 												
+							$path = null;
+							$path=profile_picture($frdr);
+							$destination = '<a href="profile.php?un='.$frun;
+							$path = $destination.'"><img src="'.$path. '" alt="image" width=150 height=auto class="img-thumbnail" />';
+							echo $path;
+							?>
+							
+							<br/>			
+							<input type="hidden" name="frn" value="<?php print "$frn"?>">
+							<input type="hidden" name="frd" value="<?php print "$frdr"?>"><br/>
+							<input type="submit" name="fav" value="favorite">	
+							<input type="submit" name="rem" value="remove">	
+							</div>
+							</form></li></ul></td>					
+							<?php
+						}	
+					}
+				$tmp = $tmp+5;	
 				}
-			}	
+			echo '</table></div>';	
+			}
+		
 			pg_close($dbconn);
 		?>		
 	</body>	

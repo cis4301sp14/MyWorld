@@ -1,9 +1,9 @@
 #!/usr/local/bin/php
-
+<!DOCTYPE html>
 <html>
 	
  <head>
-    <meta charset="utf-8">
+	<meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
@@ -17,12 +17,30 @@
 
     <!-- Custom styles for this template -->
     <link href="starter-template.css" rel="stylesheet">
-
-    <link rel="stylesheet" href="nivo-slider/nivo-slider.css" type="text/css" media="screen"/>
-    <link rel="stylesheet" href="nivo-slider/themes/default/default.css" type="text/css" media="screen"/>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
-    <script src="nivo-slider/jquery.nivo.slider.pack.js" type="text/javascript"></script>
-        
+    <script src="http://maps.google.com/maps/api/js?sensor=false"
+              type="text/javascript"></script>
+	<script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+	<script> $( document ).ready(function() {
+        console.log( "document loaded" );
+		$('#propic1').click(function(){
+			console.log("propic click");
+			$.ajax({
+			  type: "POST",
+			  url: "some.php",
+			  data: { name: "John", location: "Boston" }
+			})
+			  .done(function( msg ) {
+				alert( "Data Saved: " + msg );
+			  });
+		return false;
+		});
+		
+    });
+	</script>
+  <title>
+   My World
+  </title>
+    
  </head>
  <body>
   <?php  
@@ -34,10 +52,12 @@
 	else {
 
 	$usrn = $_SESSION['user'];
-
+	$frd_un = $_GET['un'];
 	$dbconn = pg_connect("host=postgres.cise.ufl.edu port=5432 dbname=atheteodb user=jclewis password=2991Uf!1855") or die('connection failed');
-        $result = pg_query($dbconn, "select firstn, lastn, pw, userid, username from users natural join password where username='$usrn'");
-		
+    $result = pg_query($dbconn, "select firstn, lastn, pw, userid, username from users natural join password where username='$usrn'");
+
+	
+	
 	if (!$result) {
 	 echo "An error has occurred.\n";
 	 exit;
@@ -48,7 +68,6 @@
 	$user_id = pg_fetch_result($result,0,3);
 	$dbusrn = pg_fetch_result($result, 0, 4);
 	
-	 echo "Welcome, $dbfn $dbln\n";	 
 	 $_SESSION['userid'] = pg_fetch_result($result,0,3);	
 	 }
 	 
@@ -68,104 +87,114 @@
         </div>
         <div class="collapse navbar-collapse">
           <ul class="nav navbar-nav">
-            <li class="active"><a href="#">Preview</a></li>
-            <li><a href="home.php">Home</a></li>
-            <li><a href="friends.php">Friends</a></li>
+			  <?php 
+				if($frd_un != $dbusrn) {
+					echo '<li class="active"><a href="profile.php?un='.$dbusrn.'">Preview</a></li>
+					<li><a href="home.php">Home</a></li>
+					<li><a href="friends.php">Friends</a></li>';
+					}			
+				else{
+					echo '<li><a href="profile.php?un='.$frd_un.'">Preview</a></li>
+					<li><a href="home.php">Home</a></li>
+					<li class="active"><a href="friends.php">Friends</a></li>';
+					}
+			?>
+			
 			<li><a href="friendreq.php"><?php 
 				if(!($frdreqcount)) {echo 'Friend Requests';}			
 				else{echo 'Friend Requests ('.$frdreqcount.')';}
-			?></a></li>			
-          </ul>
-		  <form class="navbar-form navbar-right" name="form" action="loggedout.php" method = "post">            
-				<button type="submit" class="btn btn-success">Sign Out, <?php echo ucwords($dbusrn);?></button>
-		  </form>
-		  <form class="navbar-form navbar-right" name="form" action="search.php" method = "post">            
-				<div class="form-group">
-					<input type="text" placeholder="Name or Username" class="form-control" name = "person" id = "person">					
-				</div>
-				<button type="submit" class="btn btn-success">Search</button>
-		  </form>
+			?></a></li></ul>
+			<form class="navbar-form navbar-right" name="form" action="loggedout.php" method = "post">            
+			<button type="submit" class="btn btn-success">Sign Out, <?php echo ucwords($dbusrn);?></button>
+			</form>
+			<form class="navbar-form navbar-right" name="form" action="search.php" method = "post">            
+			<div class="form-group">
+			<input type="text" placeholder="Name or Username" class="form-control" name = "person" id = "person">					
+			</div>
+			<button type="submit" class="btn btn-success">Search</button>
+			</form>
+
         </div><!--/.nav-collapse -->
       </div>
     </div>
     
-<div class="slider-wrapper theme-default">    
-	<div id="slider" class="nivoSlider">
-    		<img src="upload/18photo.JPG" data-thumb="upload/18photo.JPG" alt="" title="" />
-                <img src="upload/16photo 1.JPG" data-thumb="upload/16photo 1.JPG" alt="" />
-                <img src="upload/17photo 3.JPG" data-thumb="upload/17photo 3.JPG" alt="" />
-                <img src="upload/11photo(1).JPG" data-thumb="upload/11photo(1).JPG" alt="" />
-	</div>
-</div>
-
-<script type="text/javascript">
-$(window).load(function() {
-    $('#slider').nivoSlider({effect: 'fade'});
-});
-</script>
-
-<!--
-<div class="container">	
+<table align="center" >
+	<tr>
 	<?php 
 	require 'functions.php';
 	echo "<br>";
 	echo "<br>";
 	echo "<br>";
 	echo "<br>";
+	$frdinfo = pg_query($dbconn, "select userid, firstn, lastn from users where username='$frd_un'");
+	$frd_id = pg_fetch_result($frdinfo,0,0);
+	$frd_fn = pg_fetch_result($frdinfo,0,1);
+	$frd_ln = pg_fetch_result($frdinfo,0,2);
+	
 	$path = null;
-	$path=profile_picture($user_id);
-	$path = '<img src="'.$path. '" alt="image" width=300 height=auto />';
+	$path = profile_picture($frd_id);
+	$path = '<td ALIGN=CENTER><img src="'.$path. '" alt"image"  width=300 height=auto id="propic1" class="img-thumbnail" />';
 	echo $path;
+	
 	?>
-	<h2><?php echo $dbfn.' '.$dbln; ?></h2>
-</div>
-<div class="container">
-	<?php 		
-	printalbums($user_id);
+	<h2><?php echo $frd_fn.' '.$frd_ln; ?></h2>
+	</td>
+	<td ALIGN=CENTER>
+	<div class="col-md-4 col-md-offset-4" id="map" style="width: 500px; height: 400px;"></div>
+	</td></tr>
+ </table>
+	
+<div class="container" style="margin-top:50px"><table align="center"> 
+	<tr>
+		<td ALIGN=CENTER>
+	<div class="container">
+		<?php printalbums($frd_id);	?>
+	</div>
+	</td>
+	</tr>
+</table></div>
+ <script type="text/javascript">
+	<?php 
+	 $db = pg_connect("host=postgres.cise.ufl.edu port=5432 dbname=atheteodb user=jclewis password=2991Uf!1855")or die('connection failed');
+	 $picture = pg_query($db, "select albumname, lat, lon from albums where userid = $frd_id");
+ 	  $row=0; 
+ 	  while($pic = pg_fetch_assoc($picture)){ 
+		  $location[$row]=$pic['lat'].", ".$pic['lon'];
+		  $albname[$row++]=$pic['albumname'];
+	  }
 	?>
-</div>
-   <script src="js/bootstrap.min.js"></script>
--->
- </body>
-</html>
+      
 
-<!--
-<html>
- <head>
-    <style>
-      #map_canvas {
-        width: 500px;
-        height: 400px;
-      }
-    </style>
-    <script src="https://maps.googleapis.com/maps/api/js?sensor=false"></script>
-    <script>
-      function initialize() {
-        var map_canvas = document.getElementById('map_canvas');
-        var myLatlng = new google.maps.LatLng(<?php echo $lat.', '.$long; ?>);
-        
-        var map_options = {
-          zoom: 8,
-          mapTypeId: google.maps.MapTypeId.ROADMAP,
-          center: myLatlng
+        var map = new google.maps.Map(document.getElementById('map'), {
+          zoom: 5,
+          center: new google.maps.LatLng(<?php echo $location[0];?>),
+          mapTypeId: google.maps.MapTypeId.ROADMAP
+        });
+
+        var infowindow = new google.maps.InfoWindow();
+
+        var marker, i;
+        <?php for($i = 0; $i < count($albname); $i++){
+         echo "var marker$i = new google.maps.Marker({
+            position: new google.maps.LatLng(".$location[$i]."),
+            map: map,
+			albumname:\"$albname[$i]\"
+			
+          });
+		google.maps.event.addListener(marker$i, 'click', (function(marker, index) {
+            return function() {
+              infowindow.setContent(\"$albname[$i]\");
+              infowindow.open(map, marker);
+            }
+          })(marker$i, $i));
+          ";
         }
-        var map = new google.maps.Map(map_canvas, map_options);
-        var marker = new google.maps.Marker({
-			position: myLatlng,
-			map: map,
-			title: 'Hello World!'
-		});
+		?>
+      </script>
 
-      }
-      google.maps.event.addDomListener(window, 'load', initialize);
-    </script>
-    
-  <title>
-   File Upload
-  </title>
- </head>
-<body>
-	 <div id="map_canvas"></div>
-</body>
+    </div><!-- /.container -->
+	 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+ </body>
+
 </html>
--->

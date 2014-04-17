@@ -60,7 +60,7 @@
 			</div>
 			<div class="collapse navbar-collapse">
 			<ul class="nav navbar-nav">
-				<li><a href="profile.php">Preview</a></li>
+				<?php echo '<li><a href="profile.php?un='.$dbusrn.'">Preview</a></li>';?>		
 				<li><a href="home.php">Home</a></li>
 				<li><a href="friends.php">Friends</a></li>
 				<li class="active"><a href="friendreq.php"><?php 
@@ -71,7 +71,7 @@
 			<form class="navbar-form navbar-right" name="form" action="loggedout.php" method = "post">            
 				<button type="submit" class="btn btn-success">Sign Out, <?php echo ucwords($dbusrn);?></button>
 			</form>
-			<form class="navbar-form navbar-right" name="form" action="befriends.php" method = "post">            
+			<form class="navbar-form navbar-right" name="form" action="search.php" method = "post">            
 				<div class="form-group">
 					<input type="text" placeholder="Name or Username" class="form-control" name = "person" id = "person">					
 				</div>
@@ -86,40 +86,53 @@
 			
 			$requests = pg_query($dbconn, "select userid, firstn, lastn from (select friendreqid as userid from friendreq where userid = $urid)q natural join users;");			
 			
-			$max_req = pg_num_rows($requests);	
-			if(!($max_req)){
-				$str2 = "You have no friend requests at this time";
-				?> &nbsp&nbsp&nbsp&nbsp <?php
-				echo $str2;
+			$max_rows = pg_num_rows($requests);	
+			if(!($max_rows)){				
+				?> <br/><br/><table align="center"><tr><td align="center"><?php 		
+				echo "You have no friend requests at this time.</td></tr></table>";
+
 			}
 			else {
-				for($i = 0; $i < $max_req; $i++) {	
-					$frdr = pg_fetch_result($requests,$i,0);
-					$frn = pg_fetch_result($requests,$i,1);
-					$lsn =	pg_fetch_result($requests,$i,2);
-					?>									
-				
-					<form name="form" method="get" action="friendreq.php">	
-					&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
-					<?php echo "$frn $lsn "; ?>
+				echo '<div class="container" style="margin-top:50px"><table align="center">';		 
+				$tmp = 0;
+				for($row = 0; $row < ($max_rows/5); $row++) {
+					echo '<tr>';	
+					for($col = 0; $col < ($tmp+5) && $col != $max_rows; $col++) {	
+						$frdr = pg_fetch_result($requests,$tmp+$col,0);
+						$frn = pg_fetch_result($requests,$tmp+$col,1);
+						$lsn =	pg_fetch_result($requests,$tmp+$col,2);
+						$frun = pg_fetch_result($requests,$tmp+$col,3);
 					
-					<div class="container">
-	
-						<?php 												
-						$path = null;
-						$path=profile_picture($frdr);
-						$path = '<img src="'.$path. '" alt="image" width=150 height=auto />';
-						echo $path;
+						
+						if($frdr) {
 						?>
-					</div>	
-					&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
-					<input type="hidden" name="frn" value="<?php print "$frn"?>">
-					<input type="hidden" name="frd" value="<?php print "$frdr"?>">
-					<input type="submit" name="acc" value="accept">	
-					<input type="submit" name="dec" value="decline">		
-					</form>
-					<?php
+														
+							<td ALIGN=CENTER>
+							<form name="form" method="get" action="friendreq.php">	
+							<ul style="list-style: none;"><li><label><?php echo "$frn $lsn ";?></label>					
+							<div class="container" style="width: 175px">
+	
+							<?php 												
+							$path = null;
+							$path=profile_picture($frdr);
+							$destination = '<a href="profile.php?frdun='.$frun;
+							$path = $destination.'"><img src="'.$path. '" alt="image" width=150 height=auto class="img-thumbnail" />';
+							echo $path;
+							?>								
+							
+							<br/>
+							<input type="hidden" name="frn" value="<?php print "$frn"?>">
+							<input type="hidden" name="frd" value="<?php print "$frdr"?>"><br/>
+							<input type="submit" name="acc" value="accept">	
+							<input type="submit" name="dec" value="decline">	
+							</div>
+							</form></li></ul></td>					
+							<?php
+						}	
+					}
+				$tmp = $tmp+5;	
 				}
+			echo '</table></div>';	
 			}
 			pg_close($dbconn);
 		?>		

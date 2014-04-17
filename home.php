@@ -1,7 +1,6 @@
 #!/usr/local/bin/php
 
-<html>
-	
+<html>	
  <head>
 	<meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -17,11 +16,7 @@
 
     <!-- Custom styles for this template -->
     <link href="starter-template.css" rel="stylesheet">
-
-  <title>
-   Login
-  </title>
-    
+  
  </head>
  <body>
   <?php  
@@ -52,101 +47,113 @@
 	$frdreqcount = pg_fetch_result($frdreq,0,0);
 	
 	  
-	 $_SESSION['userid'] = pg_fetch_result($result,0,3);	
-	 $_SESSION['fn'] = pg_fetch_result($result,0,0);
-	 $_SESSION['ln'] = pg_fetch_result($result,0,1);
-	 $_SESSION['usrn'] = pg_fetch_result($result, 0, 4);
-	 }
-	  ?>
-   <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-      <div class="container">
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <a class="navbar-brand" href="#">My World</a>
-        </div>
-        <div class="collapse navbar-collapse">
-          <ul class="nav navbar-nav">
-            <li><a href="profile.php">Preview</a></li>
-            <li class="active"><a href="#">Home</a></li>
-            <li><a href="friends.php">Friends</a></li>
-			<li><a href="friendreq.php"><?php 
-				if(!($frdreqcount)) {echo 'Friend Requests';}			
-				else{echo 'Friend Requests ('.$frdreqcount.')';}
-			?></a></li>			
-          </ul>
-		  <form class="navbar-form navbar-right" name="form" action="loggedout.php" method = "post">            
-				<button type="submit" class="btn btn-success">Sign Out, <?php echo ucwords($dbusrn);?></button>
-			</form>
-		  <form class="navbar-form navbar-right" name="form" action="search.php" method = "post">   <!--this is now a test for search.php -->         
-				<div class="form-group">
-					<input type="text" placeholder="Name or Username" class="form-control" name = "person" id = "person">					
-				</div>
-				<button type="submit" class="btn btn-success">Search</button>
-			</form>
-        </div><!--/.nav-collapse -->
+	$_SESSION['userid'] = pg_fetch_result($result,0,3);	
+	$_SESSION['fn'] = pg_fetch_result($result,0,0);
+	$_SESSION['ln'] = pg_fetch_result($result,0,1);
+	$_SESSION['usrn'] = pg_fetch_result($result, 0, 4);
+	}
+  ?>
+  <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+     <div class="container">
+      <div class="navbar-header">
+       <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+       </button>
+       <a class="navbar-brand" href="#">My World</a>
       </div>
+      <div class="collapse navbar-collapse">
+       <ul class="nav navbar-nav">
+        <?php echo '<li><a href="profile.php?un='.$dbusrn.'">Preview</a></li>';?>	
+        <li class="active"><a href="#">Home</a></li>
+        <li><a href="friends.php">Friends</a></li>
+	    <li><a href="friendreq.php">
+	     <?php 
+	 	  if(!($frdreqcount)) {echo 'Friend Requests';}			
+		  else{echo 'Friend Requests ('.$frdreqcount.')';}
+	     ?>
+	    </a></li>			
+       </ul>
+	   <form class="navbar-form navbar-right" name="form" action="loggedout.php" method = "post">            
+	    <button type="submit" class="btn btn-success">Sign Out, <?php echo ucwords($dbusrn);?></button>
+	   </form>
+	   <form class="navbar-form navbar-right" name="form" action="search.php" method = "post">   <!--this is now a test for search.php -->         
+	    <div class="form-group">
+	     <input type="text" placeholder="Name or Username" class="form-control" name = "person" id = "person">					
+	    </div>
+        <button type="submit" class="btn btn-success">Search</button>
+	   </form>
+      </div><!--/.nav-collapse -->
+     </div>
+  </div>
+  <div id="jumborn">
+  <div id="table" style="display: table; width:100%;" align="center">
+  
+   <div style="display: table-row;">
+    <div style="display: table-cell; vertical-align:top; "align="left">
+     <div class="container" style=" padding-left:100px; width:500px;">
+      <br /><br /><br />
+      <?php 
+ 	   echo "<div border-bottom:10px><u><h2> Welcome, $dbfn $dbln </h2></u></div><br/>";	
+	   require 'functions.php';	
+	   $path = null;
+	   $path=profile_picture($user_id);
+	   $path = '<img src="'.$path. '" alt="image" width=200 height=auto class="img-thumbnail"/>';
+	   echo $path;
+      ?>
+     </div>
+
+     <div class="container" style=" padding-left:100px; width:500px;">
+      <div class="starter-template">
+	   <h1></h1> 
+	   <form action="upload_file.php" method="post" enctype="multipart/form-data">	
+	    Album Name: <input type = "Text" value = "" name = "an" id="an"><br />
+		<div id=fileinputs style="position: relative">
+	    <label for="file">Filename: </label>
+	    <input type="file" name="file" id="file"><br />
+	    </div>
+	    <input type="submit" name="submit" value="Upload">
+	   </form>
+      </div>
+      <div class="container">	   
+      </div>
+     </div>
     </div>
- 
-
    
-<div class="container">
-<br /><br /><br />
-	<?php 
-	echo "<h2> Welcome, $dbfn $dbln </h2><br/>";	
-	require 'functions.php';	
-	$path = null;
-	$path=profile_picture($user_id);
-	$path = '<img src="'.$path. '" alt="image" width=200 height=auto />';
-	echo $path;
-	?>
-</div>
-
-	<div class="container">
-		<div class="starter-template">
-			<h1></h1> 
-			<form action="upload_file.php" method="post" enctype="multipart/form-data">	
-				Album Name: <input type = "Text" value = "" name = "an" id="an"><br />
-				<label for="file">Filename: </label>
-				<input type="file" name="file" id="file"><br>
-			<input type="submit" name="submit" value="Upload">
-			</form>
-		</div>
-
-		<div class="container">
-			<?php 	?>
-		</div>
-
-	
-        <div style="height: 500px; width:600px;">
-	 <?php
-	  include 'newsfeed.php';
-	  
-  	  if (!$news_feed_result ) {
-    	   echo "An error occurred.\n";
-    	   exit;
-  	  }
-	  
-	  echo '<table style="width:550px;">';
-  	  while ( $row = pg_fetch_row($news_feed_result )) {
+    <div id="container" style="margin-top:90px;">
+    <div style="display: table-cell; margin-right:500px;">
+     
+	  <?php
+	   include 'newsfeed.php';	  
+  	   if (!$news_feed_result ) {
+        echo "An error occurred.\n";
+    	exit;
+  	   }
+	   
+	   echo '<table style="width:550px;">';
+  	   while ( $row = pg_fetch_row($news_feed_result )) {
     	   //echo "$row[0]<br /> <br />";
 	   echo '<tr> <td>';
-    	   echo "$row[2] $row[3] added photo to $row[1]";
+       echo "$row[2] $row[3] added photo to $row[1]";
 	   echo '</td> <td>';
-    	   echo '<img src="'.$row[0].'" alt="image" width="200" height="auto"/> <br /> <br />';
-       	   echo '</td></tr>';	
-	  }	
-	  echo'</table>';
-	 ?>
-	</div>
-
+       echo '<img src="'.$row[0].'" alt="image" width="200" height="auto" class="img-thumbnail"/> <br /> <br />';
+       echo '</td></tr>';	
+	   }	
+	   echo'</table>';
+	  ?>
 	
-
-    </div><!-- /.container -->
+     
+     
+     
+    </div>
+    </div>
+    
+   </div>
+  </div>
+</div>
+  <!--</div><!-- /.container -->
 	 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
  </body>

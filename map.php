@@ -8,9 +8,10 @@
     </head>
 
     <body>
-<div id="map" style="width: 500px; height: 400px;"></div>
-      <script type="text/javascript">
-		     <?php 
+
+<div class="col-md-4" id="map" style="width: 500px; height: 400px;"></div>
+ <script type="text/javascript">
+	<?php 
 	 $db = pg_connect("host=postgres.cise.ufl.edu port=5432 dbname=atheteodb user=jclewis password=2991Uf!1855")or die('connection failed');
 	 $picture = pg_query($db, "select albumname, lat, lon from albums");
  	  $row=0; 
@@ -18,7 +19,7 @@
 		  $location[$row]=$pic['lat'].", ".$pic['lon'];
 		  $albname[$row++]=$pic['albumname'];
 	  }
-?>
+	?>
       
 
         var map = new google.maps.Map(document.getElementById('map'), {

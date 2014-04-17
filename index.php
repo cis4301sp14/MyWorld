@@ -39,7 +39,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="#">My World</a>
+          <a class="navbar-brand" href="index.php">My World</a>
         </div>
         <div class="navbar-collapse collapse">
           <form class="navbar-form navbar-right" name="form" action="login.php" method = "post">

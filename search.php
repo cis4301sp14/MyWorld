@@ -73,8 +73,35 @@
 	$frd = $arr[0];
 	$frdU = ucwords($arr[0]);
 	$userid = $_SESSION['userid'];   
-	$usrn = $_SESSION["user"];
-	$urid = $_SESSION["userid"];  
+	$usrn = $_SESSION["user"]; 
+	
+	
+	if($_GET['fir']) {
+		$frid = $_GET["friendid"];
+		$frn = $_GET["friendname"];
+		$fr = $_GET["name"];
+		
+		$fd = pg_query($dbconn, "select userid from friends where friendid = $urid and userid = $frid");		
+		$friend = pg_fetch_result($fd,0,0);
+		$fr = pg_query($dbconn, "select userid from friendreq where friendreqid = $urid and userid = $frid");
+		$friendr = pg_fetch_result($fr,0,0);
+
+		if($friendr) {
+			?> <br/><br/><table align="center"><tr><td align="center"><?php 
+			echo "You have already sent a friend request to $frn.</td></tr></table>";	
+		}
+
+		else if(!$friend) {
+			$tur = pg_query($dbconn, "insert into friendreq values ($frid, $urid)"); 
+			?> <br/><br/><table align="center"><tr><td align="center"><?php 		
+			echo "Friend request sent to $frn.</td></tr></table>";
+		}
+		else {
+			?> <br/><br/><table align="center"><tr><td align="center"><?php 
+			echo "You are already friends with ".ucwords($frn).".</td></tr></table>";	
+		}
+		exit;	
+	}
 	
 	$c = count($arr);		
 	$pln = strtolower($arr[1]);
@@ -84,7 +111,7 @@
 	
 	
 	if($c == 1 && $max_rows) {
-		echo '<table align="center">';		 
+		echo '<div class="container" style="margin-top:50px"><table align="center">';		 
 		$tmp = 0;
 			for($row = 0; $row < ($max_rows/5); $row++) {
 				echo '<tr>';	
@@ -95,45 +122,59 @@
 					$un = pg_fetch_result($result,$tmp+$col,0);
 
 					if($uid) {
-					?>
+						?>
 														
-					<td ALIGN=CENTER>
-					<form name="form" method="get" action="search.php">	
-					<ul style="list-style: none;"><li><label><?php echo "$fn $ln ";?></label>					
-					<div class="container" style="width: 175px">
+						<td ALIGN=CENTER>
+						<form name="form" method="get" action="search.php">		
+						<ul style="list-style: none;"><li>
+						<input type="submit" name="fir" value="friend">
+						<label><?php echo "$fn $ln";?></label>											
+						<div class="container" style="width: 175px">
 	
 						<?php 												
 						$path = null;
 						$path=profile_picture($uid);
-						$destination = '<a href="friendprofile.php/?frdun='.$un;
-						$path = $destination.'"><img src="'.$path. '" alt="image" width=150 height=auto />';
+						$destination = '<a href="profile.php/?frdun='.$un;
+						$path = $destination.'"><img src="'.$path. '" alt="image" width=150 height=auto class="img-thumbnail" />';
 						echo $path;
 						?>
-					</div>															
-					</form></li></ul></td>					
-					<?php
+						
+						<br/>			
+						<input type="hidden" name="friendid" value="<?php print "$uid"?>">
+						<input type="hidden" name="friendname" value="<?php print "$fn"?>"><br/>
+						<input type="hidden" name="name" value="<?php print "$frd"?>"><br/>
+												
+						</div>															
+						</form></li></ul></td>					
+						<?php
 					}
 				}
+			echo '</tr>';
 			$tmp = $tmp+5;
-			}
-		
-		echo '</table>';
+			}		
+		echo '</table></div>';
 	}
 	else if($c == 2) {	
-		for($i = 0; $i < $max_rows; $i++) {	
-					$uid = pg_fetch_result($result,$i,1);
-					$fn = pg_fetch_result($result,$i,2);
-					$ln =	pg_fetch_result($result,$i,3);
+		echo '<table align="center">';		 
+		$tmp = 0;
+			for($row = 0; $row < ($max_rows/5); $row++) {
+				echo '<tr>';	
+				for($col = 0; $col < ($tmp+5) && $col != $max_rows; $col++) {
+					$uid = pg_fetch_result($result,$tmp+$col,1);
+					$fn = pg_fetch_result($result,$tmp+$col,2);
+					$ln =	pg_fetch_result($result,$tmp+$col,3);
 					$lnL = strtolower($ln);
-					$un = pg_fetch_result($result,$i,0);
+					$un = pg_fetch_result($result,$tmp+$col,0);
 					
-					if($lnL == $pln) {					
+					if($lnL == $pln && $uid) {					
 					?>
-					<form name="form" method="get" action="search.php">	
-					<!--&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp				
-					--><li><Label><?php echo "$fn $ln ";?></label>
-					
-					<div class="container">
+						<td ALIGN=CENTER>
+						<form name="form" method="get" action="search.php">	
+						<ul style="list-style: none;"><li>
+						<input type="submit" name="fir" value="friend">
+
+						<label><?php echo "$fn $ln ";?></label>					
+						<div class="container" style="width: 175px">
 	
 						<?php 												
 						$path = null;
@@ -142,14 +183,23 @@
 						$path = $destination.'"><img src="'.$path. '" alt="image" width=150 height=auto />';
 						echo $path;
 						?>
-					</div>						
-					</form></li>					
-					<?php
+						
+						<br/>			
+						<input type="hidden" name="friendid" value="<?php print "$uid"?>">
+						<input type="hidden" name="friendname" value="<?php print "$fn"?>"><br/>					
+						<input type="hidden" name="name" value="<?php print "$frd"?>"><br/>												
+						</div>						
+						</form></li></ul></td>							
+						<?php
 					}
 					else {
 						
 					}
 				}
+			echo '</tr>';	
+			$tmp = $tmp+5;
+			}		
+	echo '</table>';	
 	}
 	
 	pg_close($dbconn);

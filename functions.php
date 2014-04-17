@@ -148,7 +148,7 @@ function album_cover($covers, $count){
 		$longitude = pg_fetch_result($info,0,2);
 		$albumname = pg_fetch_result($info,0,3);
 		array_push($stack, $latitude, $longitude, $albumname);
-		$covername = '<img src="'. $covername . '" alt="image" width=150 height=auto />';
+		$covername = '<img src="'. $covername . '" alt="image" width=150 height=auto class="img-thumbnail"/>';
 		echo $covername;
 	}
 	pg_close($db);

@@ -96,7 +96,7 @@ if (true)/*(($_FILES["file"]["type"] == "image/gif")
     <div class="myotherdiv">Unable to upload image. No location detected.</div>
 <?php } ?> 
 
-<form name = 'form' method = 'post' action = 'profile.php'>
+<form name = 'form' method = 'post' action = 'home.php'>
 			<input type = "Submit" value = "Go Back">
 </body>
 </html>
