@@ -82,7 +82,7 @@
 			$requests = pg_query($dbconn, "select userid, firstn, lastn, username from (select friendid as userid from friends where userid = $urid)q natural join users;");
 			
 			$max_rows = pg_num_rows($requests);	
-			?> <br /><br /><br /> <?php
+			?> <div class="container" style="margin-top:60px"></div> <?php
 			if(!($max_rows)){
 				?> <div class="container" style="margin-top:50px"><table align="center"><tr><td align="center"><?php 		
 				echo "You have no friends at this time.</td></tr></table></div>";
@@ -121,8 +121,8 @@
 																	
 							<input type="hidden" name="frn" value="<?php print "$frn"?>">
 							<input type="hidden" name="frd" value="<?php print "$frdr"?>"><br/>
-							<button type="submit" class="btn btn-info btn-xs" name="fav" value="no">favorite</button>	
-							<button type="submit" class="btn btn-info btn-xs" name="rem" value="go">remove</button>
+							<button type="submit" class="btn btn-info btn-xs" name="fav" value="no">Favorite</button>	
+							<button type="submit" class="btn btn-info btn-xs" name="rem" value="go">Remove</button>
 							</div>
 							</form></li></ul></td>					
 							<?php
