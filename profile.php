@@ -3,7 +3,7 @@
 <html>
 	
  <head>
-    <meta charset="utf-8">
+	<meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
@@ -54,7 +54,7 @@
 	$usrn = $_SESSION['user'];
 	$frd_un = $_GET['un'];
 	$dbconn = pg_connect("host=postgres.cise.ufl.edu port=5432 dbname=atheteodb user=jclewis password=2991Uf!1855") or die('connection failed');
-        $result = pg_query($dbconn, "select firstn, lastn, pw, userid, username from users natural join password where username='$usrn'");
+    $result = pg_query($dbconn, "select firstn, lastn, pw, userid, username from users natural join password where username='$usrn'");
 
 	
 	
@@ -86,19 +86,17 @@
           <a class="navbar-brand" href="#">My World</a>
         </div>
         <div class="collapse navbar-collapse">
-          <ul class="nav navbar-nav">
-				<br/><br/><br/>
+          <ul class="nav navbar-nav">			
 			  <?php 
-				echo $frd_un.' '.$dbusrn;
-				if($frd_un != $dbusrn) {
-					echo '<li class="active"><a href="profile.php?un='.$dbusrn.'">Preview</a></li>
-					<li><a href="home.php">Home</a></li>
-					<li><a href="friends.php">Friends</a></li>';
+				if($frd_un == $dbusrn) {					
+					echo '<li class="active"><a href="profile.php?un='.$dbusrn.'">Preview</a></li>';
+					echo '<li><a href="home.php">Home</a></li>';
+					echo '<li><a href="friends.php">Friends</a></li>';
 					}			
-				else{
-					echo '<li><a href="profile.php?un='.$frd_un.'">Preview</a></li>
-					<li><a href="home.php">Home</a></li>
-					<li class="active"><a href="friends.php">Friends</a></li>';
+				else{					
+					echo '<li><a href="profile.php?un='.$frd_un.'">Preview</a></li>';
+					echo '<li><a href="home.php">Home</a></li>';
+					echo '<li class="active"><a href="friends.php">Friends</a></li>';
 					}
 			?>
 			
@@ -119,13 +117,15 @@
         </div><!--/.nav-collapse -->
       </div>
     </div>
-  
-<div class="container" style="padding-top: 150px">  
+    
 <table align="center" >
 	<tr>
 	<?php 
 	require 'functions.php';
-	
+	echo "<br>";
+	echo "<br>";
+	echo "<br>";
+	echo "<br>";
 	$frdinfo = pg_query($dbconn, "select userid, firstn, lastn from users where username='$frd_un'");
 	$frd_id = pg_fetch_result($frdinfo,0,0);
 	$frd_fn = pg_fetch_result($frdinfo,0,1);
@@ -143,8 +143,7 @@
 	<div class="col-md-4 col-md-offset-4" id="map" style="width: 500px; height: 400px;"></div>
 	</td></tr>
  </table>
-</div>	
-
+	
 <div class="container" style="margin-top:50px"><table align="center"> 
 	<tr>
 		<td ALIGN=CENTER>
