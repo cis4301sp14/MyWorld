@@ -3,7 +3,7 @@
 <html>
 	
  <head>
-	<meta charset="utf-8">
+    <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
@@ -87,14 +87,14 @@
         </div>
         <div class="collapse navbar-collapse">
           <ul class="nav navbar-nav">			
-			  <?php 
+			  <?php 				
 				if($frd_un == $dbusrn) {					
 					echo '<li class="active"><a href="profile.php?un='.$dbusrn.'">Preview</a></li>';
 					echo '<li><a href="home.php">Home</a></li>';
 					echo '<li><a href="friends.php">Friends</a></li>';
 					}			
 				else{					
-					echo '<li><a href="profile.php?un='.$frd_un.'">Preview</a></li>';
+					echo '<li><a href="profile.php?un='.$dbusrn.'">Preview</a></li>';
 					echo '<li><a href="home.php">Home</a></li>';
 					echo '<li class="active"><a href="friends.php">Friends</a></li>';
 					}
