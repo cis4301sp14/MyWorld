@@ -87,17 +87,17 @@
 		$friendr = pg_fetch_result($fr,0,0);
 
 		if($friendr) {
-			?> <br/><br/><table align="center"><tr><td align="center"><?php 
+			?><div class="container" style="margin-top:50px"></div><table align="center"><tr><td align="center"><?php 
 			echo "You have already sent a friend request to $frn.</td></tr></table>";	
 		}
 
 		else if(!$friend) {
 			$tur = pg_query($dbconn, "insert into friendreq values ($frid, $urid)"); 
-			?> <br/><br/><table align="center"><tr><td align="center"><?php 		
+			?><div class="container" style="margin-top:50px"></div><table align="center"><tr><td align="center"><?php 		
 			echo "Friend request sent to $frn.</td></tr></table>";
 		}
 		else {
-			?> <br/><br/><table align="center"><tr><td align="center"><?php 
+			?><div class="container" style="margin-top:50px"></div><table align="center"><tr><td align="center"><?php 
 			echo "You are already friends with ".ucwords($frn).".</td></tr></table>";	
 		}
 		exit;	
@@ -124,10 +124,12 @@
 					if($uid) {
 						?>
 														
-						<td ALIGN=CENTER>
-						<form name="form" method="get" action="search.php">		
+						<td ALIGN=CENTER>			
+						
+						<form class="navbar-form navbar-right" name="form" action="search.php" method = "get">
 						<ul style="list-style: none;"><li>
-						<input type="submit" name="fir" value="friend">
+						<button type="submit" class="btn btn-success">friend</button>
+						</form>
 						<label><?php echo "$fn $ln";?></label>											
 						<div class="container" style="width: 175px">
 	

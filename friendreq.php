@@ -81,14 +81,14 @@
 			</div>
 			</div>
 
-			<br /><br /><br />
+			<div class="container" style="margin-top:60px"></div>
 			<?php				 
 			
 			$requests = pg_query($dbconn, "select userid, firstn, lastn from (select friendreqid as userid from friendreq where userid = $urid)q natural join users;");			
 			
 			$max_rows = pg_num_rows($requests);	
 			if(!($max_rows)){				
-				?> <br/><br/><table align="center"><tr><td align="center"><?php 		
+				?> <table align="center"><tr><td align="center"><?php 		
 				echo "You have no friend requests at this time.</td></tr></table>";
 
 			}
