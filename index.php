@@ -55,9 +55,9 @@
 
     <!-- Main jumbotron for a primary marketing message or call to action -->
     <div class="jumbotron">
-      <div class="container">
+      <div class="container" style="width:500px">
 	<div id="form-container">
-      	<form name='form' method='post' action='welcome.php'>
+      	<!--<form name='form' method='post' action='welcome.php'>
 			<ul>
 				<h1>Haven't Joined the Club?</h1>
 				<li><label>First Name:</label><input type="Text" value="" name="fn" id="fn" required></li>   
@@ -67,9 +67,50 @@
 				<li><label>Confirm Password:</label><input type="password" value="" name="vpw" id="vpw" required></li>  	
 				<li><label>E-mail:</label><input type="email" value="" name="em" id="em" required></li>			
 				<li><label></label><button type="submit" class="btn btn-success">Sign up</button></li>
-			</ul>
-	        
-  	</form> 
+			</ul>	        
+  	</form>--> 
+	
+		<form class="form-horizontal" role="form" method="post" action='welcome.php'>
+			<ul>
+			<h1>Haven't joined the club?</h1><br/>
+			<div class="form-group">
+			
+			<div class="col-sm-10">
+			<input type="text" class="form-control" id="fn" name="fn" placeholder="First Name" required>
+			</div>
+			</div>
+			<div class="form-group">
+			
+			<div class="col-sm-10">
+			<input type="text" class="form-control" id="ln" name="ln" placeholder="Last Name" required>
+			</div>
+			</div>
+			<div class="form-group">
+			
+			<div class="col-sm-10">
+			<input type="test" class="form-control" id="un" name="un" placeholder="Username" required>
+			</div>
+			</div>
+			<div class="form-group">
+			
+			<div class="col-sm-10">
+			<input type="password" class="form-control" id="pw" name="pw" placeholder="Password" required>
+			</div>
+			</div>
+			<div class="form-group">
+			
+			<div class="col-sm-10">
+			<input type="password" class="form-control" id="vpw" name="vpw" placeholder="Confirm Password" required>
+			</div>
+			</div>
+			<div class="form-group">
+			
+			<div class="col-sm-10">
+			<input type="email" class="form-control" id="em" name="em" placeholder="E-mail" required>
+			</div>
+			</div><br/>
+			<button type="submit" class="btn btn-success">Sign up</button>
+			</ul></form>
 	</div>
       </div>
     </div>

@@ -34,7 +34,7 @@
      $passw = $_POST['pw'];
      $email = $_POST['em'];
 	 $firstn = ucwords(trim($_POST['fn']));
-	 $lastn = ucwords(trim($_POST['ln']));
+	 $lastn = ucwords(trim($_POST['ln']));	 
      }
   ?>
    

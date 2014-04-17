@@ -1,2 +1,2 @@
 AddHandler cgi-script .php
-DirectoryIndex index.html index.php home.php profile.php befriends.php friendreq.php signup.php functions.php welcome.php upload_file.php config.php friends.php search.php map.php pictureview.php
+DirectoryIndex index.html index.php home.php profile.php befriends.php friendreq.php signup.php functions.php welcome.php upload_file.php config.php friends.php search.php map.php pictureview.php insidealbum.php
