@@ -1,1 +1,4 @@
-<p>&copy; <?php echo date("Y"); ?> Treasure Hunters. All rights reserved.</p>
+<p align=center> <?php 
+	
+echo '  '.date("Y").' &copy Treasure Hunters. All rights reserved.  '; 
+?> </p>

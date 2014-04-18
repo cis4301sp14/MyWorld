@@ -28,7 +28,7 @@
     <![endif]-->
   </head>
 
-  <body>
+  <body style="background-color:#E6E6E6;">
 
     <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
       <div class="container">
@@ -54,9 +54,9 @@
     </div>
 
     <!-- Main jumbotron for a primary marketing message or call to action -->
-    <div class="jumbotron">
-      <div class="container" style="width:500px">
-	<div id="form-container">
+    <div class="jumbotron" style="background-color:#E6E6E6; height:600px">
+      <div class="container" style="width:450px" align="right">
+	<div id="form-container" style="position:right; margin-left:50px;">
       	<!--<form name='form' method='post' action='welcome.php'>
 			<ul>
 				<h1>Haven't Joined the Club?</h1>
@@ -72,44 +72,49 @@
 	
 		<form class="form-horizontal" role="form" method="post" action='welcome.php'>
 			<ul>
-			<h1>Haven't joined the club?</h1><br/>
-			<div class="form-group">
+			<h1 style="text-align:right;">Haven't joined the club?</h1><br/>
 			
-			<div class="col-sm-10">
+			
+			<div class="form-group">			
+			<div class="col-sm-10" style="position:right; margin-left:40px;">
+			
 			<input type="text" class="form-control" id="fn" name="fn" placeholder="First Name" required>
 			</div>
 			</div>
 			<div class="form-group">
 			
-			<div class="col-sm-10">
+			<div class="col-sm-10" style="position:right; margin-left:40px;">
 			<input type="text" class="form-control" id="ln" name="ln" placeholder="Last Name" required>
 			</div>
 			</div>
 			<div class="form-group">
 			
-			<div class="col-sm-10">
+			<div class="col-sm-10" style="position:right; margin-left:40px;">
 			<input type="test" class="form-control" id="un" name="un" placeholder="Username" required>
 			</div>
 			</div>
 			<div class="form-group">
 			
-			<div class="col-sm-10">
+			<div class="col-sm-10" style="position:right; margin-left:40px;">
 			<input type="password" class="form-control" id="pw" name="pw" placeholder="Password" required>
 			</div>
 			</div>
 			<div class="form-group">
 			
-			<div class="col-sm-10">
+			<div class="col-sm-10" style="position:right; margin-left:40px;">
 			<input type="password" class="form-control" id="vpw" name="vpw" placeholder="Confirm Password" required>
 			</div>
 			</div>
 			<div class="form-group">
 			
-			<div class="col-sm-10">
+			<div class="col-sm-10" style="position:right; margin-left:40px;">
 			<input type="email" class="form-control" id="em" name="em" placeholder="E-mail" required>
 			</div>
 			</div><br/>
-			<button type="submit" class="btn btn-success">Sign up</button>
+			
+			<div id=textsub style="position: relative"  align="right">
+			<button type="submit" class="btn btn-success" style="text-align:right;">Sign up</button>
+			</div>			
 			</ul></form>
 	</div>
       </div>

@@ -18,7 +18,7 @@
     <link href="starter-template.css" rel="stylesheet">
   
  </head>
- <body>
+ <body style="background-color:#E6E6E6;">
   <?php  
 	session_start();
 	if ($_SESSION['user'] == '') {
@@ -62,7 +62,7 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
        </button>
-       <a class="navbar-brand" href="#">My World</a>
+       <a class="navbar-brand" href="home.php">My World</a>
       </div>
       <div class="collapse navbar-collapse">
        <ul class="nav navbar-nav">
@@ -92,10 +92,10 @@
   <div id="table" style="display: table; width:100%;" align="center">
   
    <div style="display: table-row;">
-    <div style="display: table-cell; vertical-align:top; "align="left">
+    <div style="display: table-cell; vertical-align:top;" align="center">
      <div class="container" style="margin-top:60px; padding-left:100px; width:500px;">      
       <?php 
- 	   echo "<div border-bottom:10px><u><h2> Welcome, $dbfn $dbln </h2></u></div><br/>";	
+ 	   echo '<div border-bottom:30px ><h2 style="color:#00CCFF"> Welcome, '.$dbfn.' '.$dbln.'</h2></u></div><br/>';	
 	   require 'functions.php';	
 	   $path = null;
 	   $path=profile_picture($user_id);
@@ -103,30 +103,30 @@
 	   echo $path;
       ?>
      </div>
-
+	<br/>
      <div class="container" style=" padding-left:100px; width:500px;">
       <div class="starter-template">
 	   <h1></h1> 
 	   <!--<form action="upload_file.php" method="post" enctype="multipart/form-data">-->
 		<form class="navbar-form navbar-center" name="form" action="upload_file.php" method = "post" enctype="multipart/form-data">
 	    
-		<div id=fileinputs style="position: relative">
+		<div id=fileinputs style="position: relative"  align="left">
 	    <label for="file">Filename: </label>
 	    <input type="file" name="file" id="file"><br />
 	    </div>
 		
-		<!--Album Name: <input type = "Text" value = "" name = "an" id="an"><br />-->		
+		<!--Album Name: <input type = "Text" value = "" name = "an" id="an"><br />-->	
+		<div id=textsub style="position: relative"  align="left">
 		<input type="text" class="form-control" placeholder="Album Name" name="an" id="an"><br /><br/>		
 	    <button type="submit" class="btn btn-info btn-sm" name="submit" value="Upload">Upload</button>
+		</div>
 	   </form>
-      </div>
-      <div class="container">	   
-      </div>
+      </div>      
      </div>
 
     </div>
-   
-    <div id="container" style="margin-top:90px;">
+	
+    <div style="margin-top:90px; margin-right:-80px; height:530px; width:600px; overflow-y:scroll;"> 
     <div style="display: table-cell; margin-right:500px;">
      
 	  <?php
@@ -135,12 +135,12 @@
         echo "An error occurred.\n";
     	exit;
   	   }
-	   
-	   echo '<table style="width:550px;">';
+	    
+	   echo '<table style="width:560px; height:200px; overflow:auto;">';
   	   while ( $row = pg_fetch_row($news_feed_result )) {    	   
-	   echo '<tr> <td>';
+	   echo '<tr> <td style="width:300px;" align=right>';
        echo "$row[2] $row[3] added photo to $row[1]";
-	   echo '</td> <td>';
+	   echo '</td> <td align=right>';
        echo '<img src="'.$row[0].'" alt="image" width="200" height="auto" class="img-thumbnail"/> <br /> <br />';
        echo '</td></tr>';	
 	   }	
@@ -149,10 +149,10 @@
      
     </div>
     </div>
-    
+    </div>
    </div>
   </div>
-</div>
+
   <!--</div><!-- /.container -->
 	 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
     <script src="js/bootstrap.min.js"></script>

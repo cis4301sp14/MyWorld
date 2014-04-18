@@ -16,33 +16,60 @@
     <link href="css/bootstrap.min.css" rel="stylesheet">
 
     <!-- Custom styles for this template -->
-    <link href="starter-template.css" rel="stylesheet">
+    <!--link href="starter-template.css" rel="stylesheet"-->
     <script src="http://maps.google.com/maps/api/js?sensor=false"
               type="text/javascript"></script>
 	<script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
-	<script> $( document ).ready(function() {
+
+		
+	
+	/*$( document ).ready(function() {
         console.log( "document loaded" );
 		$('#propic1').click(function(){
 			console.log("propic click");
 			$.ajax({
 			  type: "POST",
-			  url: "some.php",
+			  url: "bucket.php",
 			  data: { name: "John", location: "Boston" }
 			})
-			  .done(function( msg ) {
-				alert( "Data Saved: " + msg );
-			  });
-		return false;
 		});
-		
     });
+   */
+
+	<script>
+function togglebucklist(theid){
+		console.log("double click "+theid);
+		/*$.ajax({
+		type: "POST",
+		url: bucket.php,
+		data: {id:theid},
+		success: success,
+		dataType: integer}
+		);*/
+	}
 	</script>
+	
+	<style type="text/css" >
+#map {
+    left: 0; 
+    right: 0; 
+    bottom:0; 
+    z-index: 1; 
+    overflow: hidden;
+    border:solid 3px #FFFFFF; 
+    border-radius:15px; 
+    -moz-border-radius:15px;
+    -webkit-mask-border-radius:15px;
+    -webkit-border-radius:15px;
+}
+
+</style>
   <title>
    My World
   </title>
     
  </head>
- <body>
+ <body style="background-color:#E6E6E6;">
   <?php  
 	session_start();
 	if ($_SESSION['user'] == '') {
@@ -83,7 +110,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="#">My World</a>
+          <a class="navbar-brand" href="home.php">My World</a>
         </div>
         <div class="collapse navbar-collapse">
           <ul class="nav navbar-nav">			
@@ -129,29 +156,21 @@
 	
 	$path = null;
 	$path = profile_picture($frd_id);
-	$path = '<td ALIGN=CENTER><img src="'.$path. '" alt"image"  width=300 height=auto id="propic1" class="img-thumbnail" />';
+	$path = '<td ALIGN=CENTER><img src="'.$path. '" alt"image"  width=300 height=auto id="propic1" class="img-thumbnail" ondblclick="togglebucketlist(2)"/>';
 	echo $path;
-	
+	/**/
 	?>
 	<h2><?php echo $frd_fn.' '.$frd_ln; ?></h2>
 	</td>
 	<td ALIGN=CENTER>
-	<div class="col-md-4 col-md-offset-4" id="map" style="width: 500px; height: 400px;"></div>
+
+	<div class="col-md-4 col-md-offset-4" id="map" style="width: 500px; height: 400px; "></div>
+
 	</td></tr>
  </table>
-	
-<div class="container" style="margin-top:50px"><table align="center"> 
-	<tr>
-		<td ALIGN=CENTER>
-	<div class="container">
-		<?php printalbums($frd_id);	?>
-	</div>
-	</td>
-	</tr>
-</table></div>
- <script type="text/javascript">
+	<script type="text/javascript">
 	<?php 
-	 $db = pg_connect("host=postgres.cise.ufl.edu port=5432 dbname=atheteodb user=jclewis password=2991Uf!1855")or die('connection failed');
+	$db = pg_connect("host=postgres.cise.ufl.edu port=5432 dbname=atheteodb user=jclewis password=2991Uf!1855")or die('connection failed');
 	 $picture = pg_query($db, "select albumname, lat, lon from albums where userid = $frd_id");
  	  $row=0; 
  	  while($pic = pg_fetch_assoc($picture)){ 
@@ -187,6 +206,15 @@
         }
 		?>
       </script>
+<div class="container" style="margin-top:50px"><table align="center" > 
+	<tr><td ALIGN=CENTER>
+	<div class="container">
+		<?php printalbums($frd_id);	
+		pg_close($dbconn);
+		pg_close($db);?>
+	</div></td></tr>
+</table></div>
+ 
 
     
 	 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>

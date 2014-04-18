@@ -115,6 +115,20 @@ function profile_picture($userid){
 	return $path;
 }
 
+
+function display_photos($albumid){
+	$db = pg_connect("host=postgres.cise.ufl.edu port=5432 dbname=atheteodb user=jclewis password=2991Uf!1855")or die('connection failed');
+	$path = null;
+	$allphoto = pg_query($db, "select photoname from photo where albumid=$albumid");
+	$stack = array();
+	while($path = pg_fetch_assoc($allphoto)){ 
+		$name =  $path['photoname'];
+		array_push($stack,$name);
+	}
+	pg_close($db);
+	return $stack;
+}
+
 function albumnum($userid){
 	$db = pg_connect("host=postgres.cise.ufl.edu port=5432 dbname=atheteodb user=jclewis password=2991Uf!1855")or die('connection failed');
 
@@ -137,32 +151,27 @@ function album_ids($userid, $count){
 	return $stack;
 }
 
-function album_cover($covers, $count){
+function album_cover($covers, $count,$userid){
 	$db = pg_connect("host=postgres.cise.ufl.edu port=5432 dbname=atheteodb user=jclewis password=2991Uf!1855")or die('connection failed');
-	$path = null;
-	$stack=array();
+	$un = pg_query($db, "select username from users where userid=$userid");
+	$coverun = pg_fetch_result($un,0,0);
 	for($i = 0; $i < $count; $i++) {
-		$info = pg_query($db, "select photoname, lat, lon, albumname from photo natural join albums where photoid=$covers[$i]");
+		$info = pg_query($db, "select photoname, albumid from photo natural join albums where photoid=$covers[$i]");
 		$covername = pg_fetch_result($info,0,0);
-		$latitude = pg_fetch_result($info,0,1);
-		$longitude = pg_fetch_result($info,0,2);
-		$albumname = pg_fetch_result($info,0,3);
-		array_push($stack, $latitude, $longitude, $albumname);
-		$destination = '<a href="insidealbum.php?an='.$albumname.'">';				
+		$albumid = pg_fetch_result($info,0,1);		
+		$destination = '<a href="insidealbum.php?un='.$coverun.'&an='.$albumid.'">';				
 		$covername = $destination.'<img src="'. $covername . '" alt="image" width=150 height=auto class="img-thumbnail"/>';
 		echo $covername;
 	}
 	pg_close($db);
-	return $stack;
 }
-
-
-
+	
 function printalbums($userid){
 	$max_cnt = albumnum($userid);
 	$covers=album_ids($userid, $max_cnt);
-	$gps = album_cover($covers, $max_cnt);
-	return $gps;
+	album_cover($covers, $max_cnt,$userid);
+
 }
+
 
 ?>

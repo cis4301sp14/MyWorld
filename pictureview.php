@@ -64,6 +64,7 @@
 		$path = pg_query($dbconn, "select photoname from photo where photoid=$picture_id");
 		$path = pg_fetch_result($path,0,0);
 	}
+	
 	pg_close($dbconn);
   ?>
    <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
@@ -103,8 +104,10 @@
 <div class="slider-wrapper theme-default">    
 	<div id="slider" class="nivoSlider">
 			<?php
+			for($i = 1; $i < 2; $i++){								
 			$path = '<img src="'.$path. '" data-thumb="'.$path.'" alt="" title="" />';
-			echo $path
+			echo $path;
+			}
 			?>
 	    <img src="upload/18photo.JPG" data-thumb="upload/18photo.JPG" alt="" title="" />
             <img src="upload/16photo 1.JPG" data-thumb="upload/16photo 1.JPG" alt="" />
@@ -131,43 +134,3 @@ $(window).load(function() {
  </body>
 </html>
 
-<!--
-<html>
- <head>
-    <style>
-      #map_canvas {
-        width: 500px;
-        height: 400px;
-      }
-    </style>
-    <script src="https://maps.googleapis.com/maps/api/js?sensor=false"></script>
-    <script>
-      function initialize() {
-        var map_canvas = document.getElementById('map_canvas');
-        var myLatlng = new google.maps.LatLng(<?php echo $lat.', '.$long; ?>);
-        
-        var map_options = {
-          zoom: 8,
-          mapTypeId: google.maps.MapTypeId.ROADMAP,
-          center: myLatlng
-        }
-        var map = new google.maps.Map(map_canvas, map_options);
-        var marker = new google.maps.Marker({
-			position: myLatlng,
-			map: map,
-			title: 'Hello World!'
-		});
-
-      }
-      google.maps.event.addDomListener(window, 'load', initialize);
-    </script>
-    
-  <title>
-   File Upload
-  </title>
- </head>
-<body>
-	 <div id="map_canvas"></div>
-</body>
-</html>
--->

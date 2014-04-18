@@ -19,7 +19,7 @@
 		
 		<title> Search </title>
  </head>
- <body>
+ <body style="background-color:#E6E6E6;">
 	<?php 
 	
 	session_start();	

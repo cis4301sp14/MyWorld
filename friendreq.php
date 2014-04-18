@@ -21,7 +21,7 @@
 		<title>Friend Requests</title>		
 		
 	 </head>
-	<body>
+	<body style="background-color:#E6E6E6;">
 		<?php
 			require 'functions.php';
 			session_start();
@@ -56,7 +56,7 @@
 				<span class="icon-bar"></span>
 				<span class="icon-bar"></span>
 			</button>
-			<a class="navbar-brand" href="#">My World</a>
+			<a class="navbar-brand" href="home.php">My World</a>
 			</div>
 			<div class="collapse navbar-collapse">
 			<ul class="nav navbar-nav">

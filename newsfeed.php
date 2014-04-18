@@ -11,4 +11,5 @@
 				LIMIT 10");
 
    pg_close($dbconn);
+ 
   ?>

@@ -19,7 +19,13 @@
     <!-- Custom styles for this template -->
     <link href="starter-template.css" rel="stylesheet">
 
-   <?php 
+   
+   
+   
+  </head>
+
+  <body style="background-color:#E6E6E6;">
+	<?php 
    if ($_POST['pw'] != $_POST['vpw'])
      {
        echo "passwords were not the same";
@@ -37,12 +43,8 @@
 	 $lastn = ucwords(trim($_POST['ln']));	 
      }
   ?>
-   
-   
-  </head>
-
-  <body>
-
+	
+	
     <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
       <div class="container">
         <div class="navbar-header">

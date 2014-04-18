@@ -739,31 +739,6 @@ pre code {
   margin-right: auto;
   margin-left: auto;
 }
-
-#form-container ul {
-    display: block;
-    list-style: none;
-    padding: 0;    
-    width: 400px;
-}
-
-#form-container li {
-    display: block;
-    list-style: none;
-    padding: 50px 0 0 0;
-    margin: 0 0 0 0;
-}
-
-#form-container li label {
-    width: 150px;
-    float: left;
-}
-
-#form-container li input {
-    width: 200px;
-    float: left;
-}
-
 @media (min-width: 768px) {
   .container {
     width: 750px;
@@ -4390,8 +4365,8 @@ a.list-group-item.active > .badge,
   margin-left: 3px;
 }
 .jumbotron {
-  padding: 1%;
-  margin-bottom: 1%;
+  padding: 30px;
+  margin-bottom: 30px;
   color: inherit;
   background-color: #eee;
 }
@@ -4412,9 +4387,8 @@ a.list-group-item.active > .badge,
 }
 @media screen and (min-width: 768px) {
   .jumbotron {
-    padding-top: 6%;
-    padding-bottom: 8%;
-    padding-left: 42%;
+    padding-top: 48px;
+    padding-bottom: 48px;
   }
   .container .jumbotron {
     padding-right: 60px;
@@ -4422,7 +4396,7 @@ a.list-group-item.active > .badge,
   }
   .jumbotron h1,
   .jumbotron .h1 {
-    font-size: 35px;
+    font-size: 63px;
   }
 }
 .thumbnail {
