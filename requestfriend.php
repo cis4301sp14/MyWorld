@@ -29,14 +29,14 @@
 		$friendreq = pg_fetch_result($resultTF2,0,0);
 		
 		if($friend == $fid){
-			echo "0";
+			echo "You are already friends.";
 		 }
 		 else if($friendreq == $fid){			
-			echo "0";
+			echo "You have already sent a request.";
 		 }
 		 else {
 			$tur = pg_query($dbconn, "insert into friendreq values ($fid, $user_id)");
-			echo "1";
+			echo "Friend request sent.";
 		 }
 	
 	}

@@ -167,6 +167,8 @@
 					$fn = pg_fetch_result($result,$tmp+$col,2);
 					$ln =	pg_fetch_result($result,$tmp+$col,3);
 					$un = pg_fetch_result($result,$tmp+$col,0);
+					$fn = ucwords($fn);
+					$ln = ucwords($ln);
 					
 					$fd = pg_query($dbconn, "select userid from friends where friendid = $urid and userid = $uid");		
 					$friend = pg_fetch_result($fd,0,0);
@@ -220,29 +222,39 @@
 					$ln =	pg_fetch_result($result,$tmp+$col,3);
 					$lnL = strtolower($ln);
 					$un = pg_fetch_result($result,$tmp+$col,0);
+					$fn = ucwords($fn);
+					$ln = ucwords($ln);
+					
+					$fd = pg_query($dbconn, "select userid from friends where friendid = $urid and userid = $uid");		
+					$friend = pg_fetch_result($fd,0,0);
 					
 					if($lnL == $pln && $uid) {					
 					?>
-						<td ALIGN=CENTER>
-						<form name="form" method="get" action="search.php">	
+						<td align="center" style="position: relative; ">
+							
+						<form class="navbar-form navbar-right" name="form" action="javascript:frdrequest(<?php echo $uid; ?>)" method = "post">
 						<ul style="list-style: none;"><li>
-						<input type="submit" name="fir" value="friend">
-
-						<label><?php echo "$fn $ln ";?></label>					
+						<?php
+						if($friend != $uid){								
+						echo '<button type="submit" class="btn btn-info btn-xs" name="fir" value="go">Friend</button>';
+						}?>						
+						<label><?php echo "$fn $ln";?></label>										
 						<div class="container" style="width: 175px">
 	
 						<?php 												
 						$path = null;
-						$path=profile_picture($uid);
+						$array=profile_picture($uid);
+						$path = $array[0];
 						$destination = '<a href="profile.php?un='.$un;
-						$path = $destination.'" style="outline : 0; border: 0; text-decoration:none;"><img src="'.$path. '" alt="image" width=150 height=auto />';
+						$path = $destination.'" style="outline : 0; border: 0; text-decoration:none;"><img src="'.$path. '" alt="image" width=150 height=auto class="img-circle" />';
 						echo $path;
 						?>
 						
 						<br/>			
 						<input type="hidden" name="friendid" value="<?php print "$uid"?>">
 						<input type="hidden" name="friendname" value="<?php print "$fn"?>"><br/>					
-						<input type="hidden" name="name" value="<?php print "$frd"?>"><br/>												
+						<input type="hidden" name="name" value="<?php print "$frd"?>"><br/>		
+						<div style="height:40px;"><div class="success" id="message_box<?php echo $uid; ?>" style="height:100px;"></div></div>										
 						</div>						
 						</form></li></ul></td>							
 						<?php

@@ -29,6 +29,7 @@ if (true)/*(($_FILES["file"]["type"] == "image/gif")
 			
 			$filename = "upload/" . $PhotoId . $_FILES["file"]["name"];
 			echo $filename;
+			$_SESSION['filenameUp'] = $filenameUp;
 			
 			$pic = null;
 			exec("./exif/Image-ExifTool-9.56/exiftool -a -u -j -g1 '$filename' ", $pic);
@@ -36,12 +37,15 @@ if (true)/*(($_FILES["file"]["type"] == "image/gif")
 			$pic = join("\n", $pic);
 			$g = json_decode($pic, true);
 			$pos = $g[0]["Composite"]["GPSPosition"];
-			$result = check_gps($pos);
+			$gpsresult = check_gps($pos);
+			$_SESSION['gpsresult'] = $gpsresult;
 			
-			if($result){
+			if($gpsresult){
 				$location = decimal_lat_long($pos);
 				$lat = $location[0];
 				$long = $location[1];
+				$_SESSION['lat'] = $lat;
+				$_SESSION['lon'] = $long;
 				savePhoto($usrn, $filename, $lat, $long, $alname);
 			}else{ 
 			unlink(realpath($filename));
@@ -90,12 +94,13 @@ if (true)/*(($_FILES["file"]["type"] == "image/gif")
  </head>
 <body>
 
-<? if($result) { ?>
+<? if($gpsresult) { ?>
 	 <div id="map_canvas"></div>
 <?php } else { ?>
     <div class="myotherdiv">Unable to upload image. No location detected.</div>
 <?php } 
 pg_close($db);
+header("Location: editphoto.php")
 ?> 
 
 <form name = 'form' method = 'post' action = 'home.php'>

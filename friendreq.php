@@ -81,7 +81,7 @@
 			<div class="container" style="margin-top:60px"></div>
 			<?php				 
 			
-			$requests = pg_query($dbconn, "select userid, firstn, lastn from (select friendreqid as userid from friendreq where userid = $urid)q natural join users;");			
+			$requests = pg_query($dbconn, "select userid, firstn, lastn, username from (select friendreqid as userid from friendreq where userid = $urid)q natural join users;");			
 			
 			$max_rows = pg_num_rows($requests);	
 			if(!($max_rows)){				
@@ -99,7 +99,8 @@
 						$frn = pg_fetch_result($requests,$tmp+$col,1);
 						$lsn =	pg_fetch_result($requests,$tmp+$col,2);
 						$frun = pg_fetch_result($requests,$tmp+$col,3);
-					
+						$frn = ucwords($frn);
+						$lsn = ucwords($lsn);
 						
 						if($frdr) {
 						?>
@@ -115,7 +116,7 @@
 							$path = null;
 							$array=profile_picture($frdr);
 							$path = $array[0];
-							$destination = '<a href="profile.php?frdun='.$frun;
+							$destination = '<a href="profile.php?un='.$frun;
 							$path = $destination.'" style="outline : 0; border: 0; text-decoration:none;"><img src="'.$path. '" alt="image" width=150 height=auto class="img-circle" />';
 							echo $path;
 							?>								

@@ -98,7 +98,8 @@
 						$frn = pg_fetch_result($requests,$tmp+$col,1);
 						$lsn =	pg_fetch_result($requests,$tmp+$col,2);
 						$frun = pg_fetch_result($requests,$tmp+$col,3);
-					
+						$frn = ucwords($frn);
+						$lsn = ucwords($lsn);
 						
 						if($frdr) {
 						?>
@@ -107,7 +108,7 @@
 							
 							<form class="navbar-form navbar-right" name="form" action="friends.php" method = "post">
 							<ul style="list-style: none;"><li>												
-							<label><?php echo "$frn $lsn";?></label>										
+							<label><button type="submit" class="btn btn-info btn-xs" name="rem" value="go">Remove</button><?php echo " $frn $lsn";?></label>										
 							<div class="container" style="width: 175px">
 	
 							<?php 												
@@ -117,12 +118,10 @@
 							$destination = '<a href="profile.php?un='.$frun;
 							$path = $destination.'" style="outline : 0; border: 0; text-decoration:none;"><img src="'.$path.'" alt="image" width=150 height=auto class="img-circle" />';
 							echo $path;
-							?>
-							<br/>										
+							?>															
 							<input type="hidden" name="frn" value="<?php print "$frn"?>">
-							<input type="hidden" name="frd" value="<?php print "$frdr"?>"><br/>
-							<button type="submit" class="btn btn-info btn-xs" name="fav" value="no">Favorite</button>	
-							<button type="submit" class="btn btn-info btn-xs" name="rem" value="go">Remove</button>
+							<input type="hidden" name="frd" value="<?php print "$frdr"?>"><br/>							
+							
 							</div>
 							</form></li></ul></td>					
 							<?php

@@ -57,19 +57,8 @@
   <title>
    My World
   </title>
-  
-
-   
-    <script type="text/javascript">
-		/*
-		visibility: hidden;
-		
-		$( document ).ready(function() {
-        	$('#propic1').click(function(){
-				console.log("propic click");
-			});
-		});*/
-		
+     
+    <script type="text/javascript">	
 	function togglebucklist(theid)
 	{
 		$.ajax({
@@ -85,7 +74,24 @@
 			}
 		});
 	}
-	</script>
+	function frdrequest(theid)
+	{
+		console.log("hello"+theid);
+		$.ajax({
+		type: "POST",
+		url: "requestfriend.php",
+		data: {id:theid},
+		success:  function( data,  textStatus,  jqXHR){
+				$("#message_box"+theid).html("");
+				$("#message_box"+theid).hide();
+				$("#message_box"+theid).html("Friend request sent");
+				$("#message_box"+theid).fadeIn( "slow", function (){});
+				$("#message_box"+theid).fadeOut( 2000, function (){});	
+			}		
+		});
+	}
+	
+	</script>	
  </head>
  <body >
   <?php  
@@ -97,10 +103,16 @@
 	else {
 
 	$usrn = $_SESSION['user'];
+	$urid = $_SESSION['userid'];
 	$frd_un = $_GET['un'];
 	$dbconn = pg_connect("host=postgres.cise.ufl.edu port=5432 dbname=atheteodb user=jclewis password=2991Uf!1855") or die('connection failed');
     $result = pg_query($dbconn, "select firstn, lastn, pw, userid, username from users natural join password where username='$usrn'");
-
+	
+	$checkid = pg_query($dbconn, "select userid from users where username='$frd_un'");
+	$check_id = pg_fetch_result($checkid, 0,0);
+	
+	$checkfr = pg_query($dbconn, "select userid from friends where userid = $urid and friendid=$check_id");
+	$check_fr = pg_fetch_result($checkfr,0,0);
 	
 	
 	if (!$result) {
@@ -167,7 +179,7 @@
 <div class="container" style="margin-top:70px" style="margin-bottom:100px"></div>  
 
 <table align="center" >
-	<tr> 
+	<tr align="center"> 
 	<?php 
 	require 'functions.php';	
 	$frdinfo = pg_query($dbconn, "select userid, firstn, lastn from users where username='$frd_un'");
@@ -175,18 +187,43 @@
 	$frd_fn = pg_fetch_result($frdinfo,0,1);
 	$frd_ln = pg_fetch_result($frdinfo,0,2);
 	
+	
+	
 	$path = null;
 	$array = profile_picture($frd_id);
 	$path = $array[0];
-	$path = '<td ALIGN=CENTER><div ondblClick="javascript:togglebucklist('.$array[1].')" id="propic1"><img src="'.$path. '" alt"image"  
-	width=300 height=auto id="propic1" class="img-thumbnail"/></div>';
+	$path = '<td align="center"><div ondblClick="javascript:togglebucklist('.$array[1].')" id="propic1"><img src="'.$path. '" alt"image"  
+	width=300 height=auto id="propic1" class="img-thumbnail"/></div>';		
 	echo $path;
+	?>	
+	
+	<?php
+	if(!$check_fr && $check_id != $urid){
+	$frd_fn = ucwords($frd_fn);
+	$frd_ln = ucwords($frd_ln);
+	echo '<h2><form class="navbar-form" name="form" action="javascript:frdrequest('.$check_id.')" method = "post">';
+	echo '<button type="submit" class="btn btn-info" name="fir" value="go">Friend</button>';
+	echo '    '.$frd_fn.' '.$frd_ln.'</form></h2>';
+	echo '<div style="height:40px;"><div class="success" id="message_box'.$check_id.'" style="height:100px;"></div></div>';
+	
+	}
+	else {
+		$frd_fn = ucwords($frd_fn);
+		$frd_ln = ucwords($frd_ln);
+		echo '<h2>'.$frd_fn.' '.$frd_ln.'</h2>';
+		echo '<div style="height:40px;"><div class="success" id="message_box"></div></div>';
+	}
+	
+	?>	
+	<?php 
+	
 	?>
 	
-	<h2><?php echo $frd_fn.' '.$frd_ln; ?></h2>
-	<div style="height:40px;"><div class="success" id="message_box"></div></div>
 	</td>
-	<td ALIGN=CENTER>
+	<?php 
+	if($check_fr || $check_id == $urid) {
+	?>
+	<td ALIGN=CENTER><!--this is where the information on the profile starts -->
 
 	<div class="col-md-4 col-md-offset-4" id="map" style="width: 500px; height: 400px; "></div>
 
@@ -197,15 +234,20 @@
 	<script type="text/javascript">
 	<?php 
 	$db = pg_connect("host=postgres.cise.ufl.edu port=5432 dbname=atheteodb user=jclewis password=2991Uf!1855")or die('connection failed');
-	 $picture = pg_query($db, "select albumname, lat, lon from albums where userid = $frd_id");
+	 $picture = pg_query($db, "select albumname, lat, lon, coverid from albums where userid = $frd_id");
  	  $row=0; 
  	  while($pic = pg_fetch_assoc($picture)){ 
+		  $cover = $pic['coverid'];
+		  $result = pg_query($db, "select photoname from photo where photoid = $cover");
+		  
+		  $path[$row] = pg_fetch_result($result, 0, 0);
 		  $location[$row]=$pic['lat'].", ".$pic['lon'];
 		  $albname[$row++]=$pic['albumname'];
 	  }
+	  
 	?>
       
-
+	
         var map = new google.maps.Map(document.getElementById('map'), {
           zoom: 5,
           center: new google.maps.LatLng(<?php echo $location[0];?>),
@@ -216,6 +258,9 @@
 
         var marker, i;
         <?php for($i = 0; $i < count($albname); $i++){
+		$j = $i + 1;
+		$covername = '<div><img src=\"'.$path[$i].'\"width=100 height=auto /></div>';
+
          echo "var marker$i = new google.maps.Marker({
             position: new google.maps.LatLng(".$location[$i]."),
             map: map,
@@ -224,12 +269,22 @@
           });
 		google.maps.event.addListener(marker$i, 'click', (function(marker, index) {
             return function() {
-              infowindow.setContent(\"$albname[$i]\");
+				
+              infowindow.setContent(\"$j.$albname[$i]\");
               infowindow.open(map, marker);
             }
           })(marker$i, $i));
           ";
         }
+		/*
+		var iWC = infoWindow.getContent();
+
+        iWC = '<div><h1>My Title</h1><div>Body something to be here><p>A description of some sort...</p><p>And a link:<a href="http://foo.bar.com">http://foo.bar.com</a></p></div></div>'
+
+
+        infoWindow.setContent(iWC);
+
+        infoWindow.open(map, marker);*/
 		?>
       </script>
 <div class="container" style="margin-top:100px"><table align="center"  > 
@@ -239,7 +294,9 @@
 		pg_close($dbconn);
 		pg_close($db);?>
 	</div></td></tr>
-</table></div>
+</table>
+<?php }?>
+</div>
  
     <script src="js/bootstrap.min.js"></script>
 	 

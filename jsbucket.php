@@ -13,6 +13,23 @@
 
 		<!-- Bootstrap core CSS -->
 		<link href="css/bootstrap.min.css" rel="stylesheet">
+		<script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+		<script type="text/javascript">	
+	function mark_gone(thephotoid)
+	{
+		console.log(thephotoid);
+		$.ajax({
+		type: "POST",
+		url: "mybucket.php",
+		data: {pid:thephotoid},
+		success:  function( data,  textStatus,  jqXHR){
+				console.log();
+			}
+		});
+	}
+	
+	
+	</script>	
 	 </head>
 	<body style="background-color:#E6E6E6;">
 		<?php 
@@ -62,44 +79,52 @@
 		
 		<?php
 			//require 'functions.php';													
-			echo '<br>';
-			echo '<br>';
-			echo '<br>';
+			
 			pg_close($dbconn);
 			
 		?>
-		<div>
-		<h3>My Bucket</h3>
-		<h5> Double click on any picture that you will want to go to and watch it appear in your bucket.</h5>
-		<h5> You can double click again to delete it from your bucket.</h5>
-		<h5> Once you have gone to the places click the chekbox.</h5>
-		<ul class="list-group">
+		<div style="margin-top: 70px;">
+		<h3 align="center">My Bucket</h3>
+		
+		<h5 align="center"> Click the button once you have visited these places.</h5>
+		<div style="width:300px;"></div><table align="center">
+		<ul class="list-group">	
 		<?php
 
 		 $db = pg_connect("host=postgres.cise.ufl.edu port=5432 dbname=atheteodb user=jclewis password=2991Uf!1855") or die('connection failed');
 		 $result = pg_query($db, "select * from photo natural join bucket where userid = $urid");
 		 $results = pg_fetch_result($result, 0, 0);
+		 
 		 if(!$results)
-			echo 'You have no must go places.';
+			echo '<h5 align="center"> Double click on any picture that you will want to go to and watch it appear in your bucket.</h5>
+		<h5 align="center"> You can double click again to delete it from your bucket.</h5>';
 		else{
-		
 			 while($arr = pg_fetch_array($result)){
+
+				echo '<tr align="center"><li class="list-group-item" style="width:1200px; margin-left:auto; margin-right:auto;">';
 				
-				echo '<li class="list-group-item">';
-				echo '<label><input type="checkbox"> Completed</label>';
+				
+				if($arr['gone']=="f"){
+				
+					echo '<form name="form" action="jsbucket.php" method = "post"><button type="submit" class="btn btn-success" onclick="mark_gone('.$arr['photoid'].');">Completed</button></form>';
+				}else{
+					echo '<button type="submit" class="btn btn-success" style="background-color:#E6E6E6; disabled);">Completed</button>';
+				}
 				echo '&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp';
 				$path = $arr['photoname'];
 				echo '<img src="';
 				echo $path;
-				echo '" alt"image"  width=50 height=auto class="img-thumbnail"/>';
-				echo '<span class="badge">';
-				echo $arr['lat'].', '.$arr['lon'];
-				echo '</span></li>';
+				echo '" alt"image"  width=150 height=auto class="img-thumbnail"/>';
+				echo '<span class="badge"><a href="https://maps.google.com/maps?z=18&q='.$arr['lat'].','.$arr['lon'].'" target="_blank">';
+				echo $arr['lat'].', '.$arr['lon'],'</a></span>';
+				echo '</li></tr>';
 				}
-				 
-			}
+				// https://maps.google.com/maps?z=18&q=10.8061,106.7130 onclick="mark_gone();"
+			/*	
+				*/
+			} 
 		?>
- 
+		</table></div>
 </ul>
 </div>
  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>

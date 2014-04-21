@@ -79,8 +79,13 @@
 				<li><label></label><button type="submit" class="btn btn-success">Sign up</button></li>
 			</ul>	        
   	</form>--> 
+	<table><tr>		
+		<td align="center">
 	
-		<form class="form-horizontal" role="form" method="post" action='welcome.php'>
+		<img src="upload/logo.jpg" alt="">
+	
+		</td>		
+		<td><form class="form-horizontal" role="form" method="post" action='welcome.php'>
 			<ul>
 			<h1 style="text-align:right;">Haven't joined the club?</h1><br/>
 			
@@ -125,7 +130,8 @@
 			<div id=textsub style="position: relative"  align="right">
 			<button type="submit" class="btn btn-success" style="text-align:right;">Sign up</button>
 			</div>			
-			</ul></form>
+			</ul></form></td>
+			</tr></table>
 	</div>
       </div>
     </div>

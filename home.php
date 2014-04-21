@@ -18,12 +18,12 @@
     <!--link href="starter-template.css" rel="stylesheet"-->
 	<script type="text/javascript">
 	
-	function togglebucklist(theid)
+	function addtophoto(albumname, filename)
 	{
-		console.log("inside");
-		$.ajax({
+		console.log(albumname + " " filename);
+		/*$.ajax({
 		type: "POST",
-		url: "bucket.php",
+		url: "upload_file.php",
 		data: {id:theid},
 		success:  function( data,  textStatus,  jqXHR){
 				$("#message_box").html("");
@@ -32,7 +32,7 @@
 				$("#message_box").fadeIn( "slow", function (){});
 				$("#message_box").fadeOut( 2000, function (){});	
 			}
-		});
+		});*/
 	}
 	</script>
   </head>
@@ -94,7 +94,6 @@
 	     ?>
 	    </a></li>
 		<li><a href="jsbucket.php"> My Bucket</a></li>		
-		<li><a href="editphoto.php">Edit Photos</a></li>
        </ul>
 	   <form class="navbar-form navbar-right" name="form" action="loggedout.php" method = "post">            
 	    <button type="submit" class="btn btn-success">Sign Out, <?php echo ucwords($dbusrn);?></button>
@@ -103,7 +102,7 @@
 	    <div class="form-group">
 	     <input type="text" placeholder="Name or Username" class="form-control" name = "person" id = "person" required>					
 	    </div>
-        <button type="submit" class="btn btn-success" requierd />Search</button>
+        <button type="submit" class="btn btn-success" required />Search</button>
 	   </form>
       </div><!--/.nav-collapse -->
      </div>
@@ -115,6 +114,8 @@
     <div style="display: table-cell; vertical-align:top;" align="center">
      <div class="container" style="margin-top:60px; margin-right:20px; padding-right:150px; width:500px;">      
       <?php 
+		$dbfn = ucwords($dbfn);
+		$dbln = ucwords($dbln);
  	   echo '<div border-bottom:30px ><h2 style="color:#00CCFF"> Welcome, '.$dbfn.' '.$dbln.'</h2></u></div><br/>';	
 	   require 'functions.php';	
 	   $path = null;
@@ -128,18 +129,16 @@
      <div class="container" style=" padding-left:50px; padding-top:50px; width:500px; margin-right:0px;">
       <div class="starter-template">
 	   <h1></h1> 
-	   <!--<form action="upload_file.php" method="post" enctype="multipart/form-data">-->
+	   <!--<form action="editphoto.php" method="post" enctype="multipart/form-data">-->
 		<form class="navbar-form navbar-center" name="form" action="upload_file.php" method = "post" enctype="multipart/form-data">
 	    
 		<div id=fileinputs style="position: relative"  align="left">
 	    <label for="file">Filename: </label>
 	    <input type="file" name="file" id="file"><br />
 	    </div>
-		
-		<!--Album Name: <input type = "Text" value = "" name = "an" id="an"><br />-->	
 		<div id=textsub style="position: relative"  align="left">
 		<input type="text" class="form-control" placeholder="Album Name" name="an" id="an"><br /><br/>		
-	    <button type="submit" class="btn btn-info btn-sm" name="submit" value="Upload">Upload</button>
+	    <button type="submit" class="btn btn-info btn-sm" name="submit" value="Upload">Upload</button>  
 		</div>
 	   </form>
 

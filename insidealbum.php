@@ -189,8 +189,9 @@
 	$path = '<td ALIGN=CENTER><img src="'.$path. '" alt"image"  width=300 height=auto id="propic1" class="img-thumbnail" />';
 	echo $path;*/?>	
 
-	<td ALIGN=CENTER width="30%">	
-	<h2><?php echo $frd_fn.' '.$frd_ln; ?></h2>
+	<td ALIGN=CENTER width="30%">
+	<?php echo '<a href="profile.php?un='.$unalbum.'">';?>
+	<h2><?php echo $frd_fn.' '.$frd_ln; ?></h2> </a>
 	<div class="slider-wrapper theme-default" style="width:500px; height:400px;">    
 	<div id="slider" class="nivoSlider">
 			<?php
@@ -246,6 +247,7 @@
 
         var marker, i;
         <?php for($i = 0; $i < count($albname); $i++){
+			$j = $i + 1;
          echo "var marker$i = new google.maps.Marker({
             position: new google.maps.LatLng(".$location[$i]."),
             map: map,
@@ -254,7 +256,7 @@
           });
 		google.maps.event.addListener(marker$i, 'click', (function(marker, index) {
             return function() {
-              infowindow.setContent(\"$albname[$i]\");
+              infowindow.setContent(\"$j\");
               infowindow.open(map, marker);
             }
           })(marker$i, $i));
