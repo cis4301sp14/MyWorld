@@ -29,6 +29,13 @@
   </head>
 
   <body style="background-color:#E6E6E6;">
+   <?php
+    session_start();
+    if($_SESSION['user'] != '') {
+     header("Location: home.php");
+    }
+
+   ?>
 
     <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
       <div class="container">
@@ -42,7 +49,7 @@
           <a class="navbar-brand" href="index.php">My World</a>
         </div>
         <div class="navbar-collapse collapse">
-          <form class="navbar-form navbar-right" name="form" action="login.php" method = "post">
+          <form class="navbar-form navbar-right" name="form" action="login.php" method = "post" id="loggedin">
             <div class="form-group">
               <input type="text" placeholder="Username" class="form-control" name = "un" id = "un" required>
               <input type="password" placeholder="Password" class="form-control" name = "pw" id = "pw" required>
@@ -54,9 +61,12 @@
     </div>
 
     <!-- Main jumbotron for a primary marketing message or call to action -->
-    <div class="jumbotron" style="background-color:#E6E6E6; height:600px">
-      <div class="container" style="width:450px" align="right">
+    <div class="jumbotron" style="background-color:#E6E6E6; height:600px">	
+			
+      <div class="container" style="width:450px;" align="right">
+	
 	<div id="form-container" style="position:right; margin-left:50px;">
+	
       	<!--<form name='form' method='post' action='welcome.php'>
 			<ul>
 				<h1>Haven't Joined the Club?</h1>
@@ -129,6 +139,16 @@
     <!-- Placed at the end of the document so the pages load faster -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
+<script>
+$(document).ready(
+$("#loggedin")(function() {
+    var elements = document.getElementsByName("un");
+    for (var i = 0; i < elements.length; i++) {
+        elements[i].oninvalid = function(e) {
+            e.target.setCustomValidity("Please enter Room Topic Title");
+        };
+    }
+});</script>
   </body>
 </html>
 

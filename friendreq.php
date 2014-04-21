@@ -13,10 +13,6 @@
 
 		<!-- Bootstrap core CSS -->
 		<link href="css/bootstrap.min.css" rel="stylesheet">
-
-		<!-- Custom styles for this template -->
-		<link href="starter-template.css" rel="stylesheet">
-	
 	
 		<title>Friend Requests</title>		
 		
@@ -67,13 +63,14 @@
 				if(!($frdreqcount)) {echo 'Friend Requests';}			
 				else{echo 'Friend Requests ('.$frdreqcount.')';}
 			?></a></li>
+			<li><a href="jsbucket.php"> My Bucket</a></li>
 			</ul>
 			<form class="navbar-form navbar-right" name="form" action="loggedout.php" method = "post">            
 				<button type="submit" class="btn btn-success">Sign Out, <?php echo ucwords($dbusrn);?></button>
 			</form>
-			<form class="navbar-form navbar-right" name="form" action="search.php" method = "post">            
+			<form class="navbar-form navbar-right" name="form" action="search.php" method = "post" id="searchbar">            
 				<div class="form-group">
-					<input type="text" placeholder="Name or Username" class="form-control" name = "person" id = "person">					
+					<input type="text" placeholder="Name or Username" class="form-control" name = "person" id = "person" required>					
 				</div>
 				<button type="submit" class="btn btn-success">Search</button>
 			</form>
@@ -116,16 +113,17 @@
 	
 							<?php 												
 							$path = null;
-							$path=profile_picture($frdr);
+							$array=profile_picture($frdr);
+							$path = $array[0];
 							$destination = '<a href="profile.php?frdun='.$frun;
 							$path = $destination.'" style="outline : 0; border: 0; text-decoration:none;"><img src="'.$path. '" alt="image" width=150 height=auto class="img-circle" />';
 							echo $path;
 							?>								
-							
+							<br/>	
 							<input type="hidden" name="frn" value="<?php print "$frn"?>">
 							<input type="hidden" name="frd" value="<?php print "$frdr"?>"><br/>								
-							<button type="submit" class="btn btn-info btn-xs" name="acc" value="Accept">accept</button>	
-							<button type="submit" class="btn btn-info btn-xs" name="dec" value="Decline">decline</button>
+							<button type="submit" class="btn btn-info btn-xs" name="acc" value="Accept">Accept</button>	
+							<button type="submit" class="btn btn-info btn-xs" name="dec" value="Decline">Decline</button>
 							</div>
 							</form></li></ul></td>					
 							<?php
@@ -136,6 +134,7 @@
 			echo '</table></div>';	
 			}
 			pg_close($dbconn);
-		?>		
+		?>	 
+		
 	</body>	
 </html>

@@ -15,9 +15,27 @@
     <link href="css/bootstrap.min.css" rel="stylesheet">
 
     <!-- Custom styles for this template -->
-    <link href="starter-template.css" rel="stylesheet">
-  
- </head>
+    <!--link href="starter-template.css" rel="stylesheet"-->
+	<script type="text/javascript">
+	
+	function togglebucklist(theid)
+	{
+		console.log("inside");
+		$.ajax({
+		type: "POST",
+		url: "bucket.php",
+		data: {id:theid},
+		success:  function( data,  textStatus,  jqXHR){
+				$("#message_box").html("");
+				$("#message_box").hide();
+				$("#message_box").html(data);
+				$("#message_box").fadeIn( "slow", function (){});
+				$("#message_box").fadeOut( 2000, function (){});	
+			}
+		});
+	}
+	</script>
+  </head>
  <body style="background-color:#E6E6E6;">
   <?php  
 	session_start();
@@ -74,14 +92,16 @@
 	 	  if(!($frdreqcount)) {echo 'Friend Requests';}			
 		  else{echo 'Friend Requests ('.$frdreqcount.')';}
 	     ?>
-	    </a></li>			
+	    </a></li>
+		<li><a href="jsbucket.php"> My Bucket</a></li>		
+		<li><a href="editphoto.php">Edit Photos</a></li>
        </ul>
 	   <form class="navbar-form navbar-right" name="form" action="loggedout.php" method = "post">            
 	    <button type="submit" class="btn btn-success">Sign Out, <?php echo ucwords($dbusrn);?></button>
 	   </form>
-	   <form class="navbar-form navbar-right" name="form" action="search.php" method = "post">   <!--this is now a test for search.php -->         
+	   <form class="navbar-form navbar-right" name="form" action="search.php" method = "post" id="searchbar">   <!--this is now a test for search.php -->         
 	    <div class="form-group">
-	     <input type="text" placeholder="Name or Username" class="form-control" name = "person" id = "person">					
+	     <input type="text" placeholder="Name or Username" class="form-control" name = "person" id = "person" required>					
 	    </div>
         <button type="submit" class="btn btn-success" requierd />Search</button>
 	   </form>
@@ -91,20 +111,21 @@
   <div id="jumborn">
   <div id="table" style="display: table; width:100%;" align="center">
   
-   <div style="display: table-row;">
+   <div style="display: table-row;" >
     <div style="display: table-cell; vertical-align:top;" align="center">
-     <div class="container" style="margin-top:60px; padding-left:100px; width:500px;">      
+     <div class="container" style="margin-top:60px; margin-right:20px; padding-right:150px; width:500px;">      
       <?php 
  	   echo '<div border-bottom:30px ><h2 style="color:#00CCFF"> Welcome, '.$dbfn.' '.$dbln.'</h2></u></div><br/>';	
 	   require 'functions.php';	
 	   $path = null;
-	   $path=profile_picture($user_id);
-	   $path = '<img src="'.$path. '" alt="image" width=200 height=auto class="img-thumbnail"/>';
+	   $array=profile_picture($user_id);
+	   $path = $array[0];
+	   $path = '<img src="'.$path. '" alt="image" width=300 height=auto class="img-thumbnail"/>';
 	   echo $path;
       ?>
      </div>
 	<br/>
-     <div class="container" style=" padding-left:100px; width:500px;">
+     <div class="container" style=" padding-left:50px; padding-top:50px; width:500px; margin-right:0px;">
       <div class="starter-template">
 	   <h1></h1> 
 	   <!--<form action="upload_file.php" method="post" enctype="multipart/form-data">-->
@@ -121,12 +142,20 @@
 	    <button type="submit" class="btn btn-info btn-sm" name="submit" value="Upload">Upload</button>
 		</div>
 	   </form>
+
+	   <form class="navbar-form navbar-center" name="editPhotoform" action="editphoto.php" method = "post" enctype="multipart/form-data">
+	    <div></div>
+	    <label for="editPhoto">Go edit photos </label>
+	    <button type="submit" class="btn btn-info btn-sm" name="submit" value="Edit Photos">Edit Photo</button>
+		
+	   </form>
+
       </div>      
      </div>
 
     </div>
 	
-    <div style="margin-top:90px; margin-right:-80px; height:530px; width:600px; overflow-y:scroll;"> 
+    <div style="margin-top:90px; margin-right:160px; margin-left:-120px; height:675px; width:600px; overflow-y:scroll;"> 
     <div style="display: table-cell; margin-right:500px;">
      
 	  <?php
@@ -136,26 +165,42 @@
     	exit;
   	   }
 	    
-	   echo '<table style="width:560px; height:200px; overflow:auto;">';
+	   echo '<table style="width:560px; height:300px; overflow:auto;">';
   	   while ( $row = pg_fetch_row($news_feed_result )) {    	   
 	   echo '<tr> <td style="width:300px;" align=right>';
        echo "$row[2] $row[3] added photo to $row[1]";
 	   echo '</td> <td align=right>';
-       echo '<img src="'.$row[0].'" alt="image" width="200" height="auto" class="img-thumbnail"/> <br /> <br />';
+	   
+       echo '<div ondblClick="javascript:togglebucklist('.$ids[$i].')" id="propic1"><img src="'.$row[0].'" alt="image" width="200" height="auto" class="img-thumbnail"/></div> <br /> <br />';
        echo '</td></tr>';	
 	   }	
 	   echo'</table>';
 	  ?>    
-     
     </div>
     </div>
     </div>
    </div>
   </div>
+ <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+<!--<script> 
+$(document).ready(function(){
+	$("#searchbar").click(function() {
+		var text = $("#person").val();
+		if(text == "") {
+			return false;
+		} 
+		else {
+			return true;		
+		}
+
+	});
+});
+</script>
 
   <!--</div><!-- /.container -->
 	 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
+    <?php include 'Footer.php'; ?>
  </body>
 
 </html>

@@ -15,9 +15,48 @@
 		<link href="css/bootstrap.min.css" rel="stylesheet">
 
 		<!-- Custom styles for this template -->
-		<link href="starter-template.css" rel="stylesheet">
+		<!--link href="starter-template.css" rel="stylesheet"-->
 		
 		<title> Search </title>
+		
+		<script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+		
+		<script type="text/javascript">
+		/*
+		visibility: hidden;
+		
+		$( document ).ready(function() {
+        	$('#propic1').click(function(){
+				console.log("propic click");
+			});
+		});*/
+		
+	function frdrequest(theid)
+	{
+		console.log("hello"+theid);
+		$.ajax({
+		type: "POST",
+		url: "requestfriend.php",
+		data: {id:theid},
+		success:  function( data,  textStatus,  jqXHR){
+				console.log("hello"+data);
+				$("#message_box"+theid).html("");
+				$("#message_box"+theid).hide();
+				$("#message_box"+theid).html("Friend request sent");
+				$("#message_box"+theid).fadeIn( "slow", function (){});
+				$("#message_box"+theid).fadeOut( 2000, function (){});	
+			}
+		/*error: function( data,  textStatus,  jqXHR){
+				$("#message_box"+theid).html("");
+				$("#message_box"+theid).hide();
+				$("#message_box"+theid).html("Already friends");
+				$("#message_box"+theid).fadeIn( "slow", function (){});
+				$("#message_box"+theid).fadeOut( 2000, function (){});	
+			}*/
+		});
+	}
+	</script>
+		
  </head>
  <body style="background-color:#E6E6E6;">
 	<?php 
@@ -51,13 +90,14 @@
 				if(!($frdreqcount)) {echo 'Friend Requests';}			
 				else{echo 'Friend Requests ('.$frdreqcount.')';}
 			?></a></li>
+			<li><a href="jsbucket.php"> My Bucket</a></li>
           </ul>
 		  <form class="navbar-form navbar-right" name="form" action="loggedout.php" method = "post">            
 				<button type="submit" class="btn btn-success">Sign Out, <?php echo ucwords($dbusrn);?></button>
 			</form>
 		  <form class="navbar-form navbar-right" name="form" action="search.php" method = "post">   <!--this is now a test for search.php -->         
 				<div class="form-group">
-					<input type="text" placeholder="Name or Username" class="form-control" name = "person" id = "person">					
+					<input type="text" placeholder="Name or Username" class="form-control" name = "person" id = "person" required>					
 				</div>
 				<button type="submit" class="btn btn-success">Search</button>
 			</form>
@@ -109,7 +149,7 @@
 	$c = count($arr);		
 	$pln = strtolower($arr[1]);
 	
-	$result = pg_query($dbconn, "select username, userid, firstn, lastn from users where username like '$frd%' or firstn like '$frd%' or firstn like '$frdU%'");
+	$result = pg_query($dbconn, "select username, userid, firstn, lastn from (select * from users where userid <> $userid)q where username like '$frd%' or firstn like '$frd%' or firstn like '$frdU%'");
 	$max_rows = pg_num_rows($result);
 	
 	if($arr[0] == "") {
@@ -117,7 +157,7 @@
 		echo "Please enter a name or username.</td></tr></table></div>";	
 	}
 	else if($c == 1 && $max_rows) {
-		echo '<div class="container" style="margin-top:50px"><table align="center">';		 
+		echo '<div class="container" style="margin-top:50px"><table align="center" style="table-layout:fixed;">';		 
 		$tmp = 0;
 		echo '<tr>';
 			for($row = 0; $row < ($max_rows/5); $row++) {
@@ -127,30 +167,38 @@
 					$fn = pg_fetch_result($result,$tmp+$col,2);
 					$ln =	pg_fetch_result($result,$tmp+$col,3);
 					$un = pg_fetch_result($result,$tmp+$col,0);
-
+					
+					$fd = pg_query($dbconn, "select userid from friends where friendid = $urid and userid = $uid");		
+					$friend = pg_fetch_result($fd,0,0);
+					
+					
 					if($uid) {
 						?>
 														
-						<td ALIGN=CENTER>			
+						<td align="center" style="position: relative; ">			
 						
-						<form class="navbar-form navbar-right" name="form" action="search.php" method = "post">
+						<form class="navbar-form navbar-right" name="form" action="javascript:frdrequest(<?php echo $uid; ?>)" method = "post">
 						<ul style="list-style: none;"><li>
-						<button type="submit" class="btn btn-info btn-xs" name="fir" value="go">Friend</button>						
+						<?php
+						if($friend != $uid){								
+						echo '<button type="submit" class="btn btn-info btn-xs" name="fir" value="go">Friend</button>';
+						}?>						
 						<label><?php echo "$fn $ln";?></label>										
 						<div class="container" style="width: 175px">
 	
 						<?php 												
 						$path = null;
-						$path=profile_picture($uid);
+						$array=profile_picture($uid);
+						$path = $array[0];
 						$destination = '<a href="profile.php?un='.$un;
 						$path = $destination.'" style="outline : 0; border: 0; text-decoration:none;"><img src="'.$path. '" alt="image" width=150 height=auto class="img-circle" />';
 						echo $path;
 						?>					
 								
 						<input type="hidden" name="friendid" value="<?php print "$uid"?>">
-						<input type="hidden" name="friendname" value="<?php print "$fn"?>"><br/>
+						<input type="hidden" name="friendname" value="<?php print "$fn"?>">
 						<input type="hidden" name="name" value="<?php print "$frd"?>"><br/>
-												
+						<div style="height:40px;"><div class="success" id="message_box<?php echo $uid; ?>" style="height:100px;"></div></div> <!--where the message box shows up AJAX-->						
 						</div>															
 						</li></ul></td></form>					
 						<?php

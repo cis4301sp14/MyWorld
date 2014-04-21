@@ -26,13 +26,13 @@ if (true)/*(($_FILES["file"]["type"] == "image/gif")
 			$maxPhotoId = pg_query($db, "select max(photoid) from photo");
 			$PhotoId = pg_fetch_result($maxPhotoId,0,0)+1;
 			move_uploaded_file($_FILES["file"]["tmp_name"], "upload/" . $PhotoId . $_FILES["file"]["name"]);
-			pg_close($db);
+			
 			$filename = "upload/" . $PhotoId . $_FILES["file"]["name"];
 			echo $filename;
 			
 			$pic = null;
 			exec("./exif/Image-ExifTool-9.56/exiftool -a -u -j -g1 '$filename' ", $pic);
-			var_dump($pic);
+			
 			$pic = join("\n", $pic);
 			$g = json_decode($pic, true);
 			$pos = $g[0]["Composite"]["GPSPosition"];
@@ -94,7 +94,9 @@ if (true)/*(($_FILES["file"]["type"] == "image/gif")
 	 <div id="map_canvas"></div>
 <?php } else { ?>
     <div class="myotherdiv">Unable to upload image. No location detected.</div>
-<?php } ?> 
+<?php } 
+pg_close($db);
+?> 
 
 <form name = 'form' method = 'post' action = 'home.php'>
 			<input type = "Submit" value = "Go Back">

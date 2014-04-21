@@ -112,20 +112,36 @@ function profile_picture($userid){
 		$path = pg_fetch_result($path,0,0);
 	}
 	pg_close($db);
-	return $path;
+	return array($path,$picture_id);
 }
 
 
 function display_photos($albumid){
 	$db = pg_connect("host=postgres.cise.ufl.edu port=5432 dbname=atheteodb user=jclewis password=2991Uf!1855")or die('connection failed');
 	$path = null;
-	$allphoto = pg_query($db, "select photoname from photo where albumid=$albumid");
+	$allphoto = pg_query($db, "select photoname, photoid from photo where albumid=$albumid");
+	//$count = pg_query($db, "select count(photoid) from photo where albumid=$albumid");
+ 	//$count = pg_fetch_result($count,0,0);
 	$stack = array();
 	while($path = pg_fetch_assoc($allphoto)){ 
-		$name =  $path['photoname'];
+		$name = $path['photoname'];
 		array_push($stack,$name);
 	}
-	pg_close($db);
+	//pg_close($db);
+	return $stack;
+}
+function show_id($albumid){
+	$db = pg_connect("host=postgres.cise.ufl.edu port=5432 dbname=atheteodb user=jclewis password=2991Uf!1855")or die('connection failed');
+	$path = null;
+	$allphoto = pg_query($db, "select photoid from photo where albumid=$albumid");
+	//$count = pg_query($db, "select count(photoid) from photo where albumid=$albumid");
+ 	//$count = pg_fetch_result($count,0,0);
+	$stack = array();
+	while($path = pg_fetch_assoc($allphoto)){ 
+		$id = $path['photoid'];
+		array_push($stack,$id);
+	}
+	//pg_close($db);
 	return $stack;
 }
 
@@ -172,6 +188,10 @@ function printalbums($userid){
 	album_cover($covers, $max_cnt,$userid);
 
 }
+
+
+
+
 
 
 ?>

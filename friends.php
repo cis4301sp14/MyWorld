@@ -16,9 +16,7 @@
 
 		<!-- Custom styles for this template -->
 		<link href="starter-template.css" rel="stylesheet">
-	
-		<title>Friends</title>		
-		
+			
 	 </head>
 	<body style="background-color:#E6E6E6;">
 		<?php 
@@ -50,13 +48,14 @@
 				if(!($frdreqcount)) {echo 'Friend Requests';}			
 				else{echo 'Friend Requests ('.$frdreqcount.')';}
 			?></a></li>
+			<li><a href="jsbucket.php"> My Bucket</a></li>
 			</ul>
 			<form class="navbar-form navbar-right" name="form" action="loggedout.php" method = "post">            
 				<button type="submit" class="btn btn-success">Sign Out, <?php echo ucwords($dbusrn);?></button>
 			</form>
-			<form class="navbar-form navbar-right" name="form" action="search.php" method = "post">            
+			<form class="navbar-form navbar-right" name="form" action="search.php" method = "post" id="search">            
 				<div class="form-group">
-					<input type="text" placeholder="Name or Username" class="form-control" name = "person" id = "person">					
+					<input type="text" placeholder="Name or Username" class="form-control" name = "person" id = "person" required>					
 				</div>
 				<button type="submit" class="btn btn-success">Search</button>
 			</form>
@@ -113,12 +112,13 @@
 	
 							<?php 												
 							$path = null;
-							$path=profile_picture($frdr);
+							$array=profile_picture($frdr);
+							$path = $array[0];
 							$destination = '<a href="profile.php?un='.$frun;
 							$path = $destination.'" style="outline : 0; border: 0; text-decoration:none;"><img src="'.$path.'" alt="image" width=150 height=auto class="img-circle" />';
 							echo $path;
 							?>
-																	
+							<br/>										
 							<input type="hidden" name="frn" value="<?php print "$frn"?>">
 							<input type="hidden" name="frd" value="<?php print "$frdr"?>"><br/>
 							<button type="submit" class="btn btn-info btn-xs" name="fav" value="no">Favorite</button>	
@@ -134,6 +134,22 @@
 			}
 		
 			pg_close($dbconn);
-		?>		
+		?>
+ <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+<script> 
+$(document).ready(function(){
+	$("#searchbar").click(function() {
+		var theText = $("#person").val();
+		if(theText == "") {
+			return false;
+		} 
+		else {
+			return true;		
+		}
+
+	});
+});
+</script>
+	
 	</body>	
 </html>

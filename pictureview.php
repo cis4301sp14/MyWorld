@@ -27,6 +27,7 @@
  <body>
   <?php  
 	session_start();
+	require 'functions.php';
 	if ($_SESSION['user'] == '') {
 		header("Location: index.php");
 	 exit;
@@ -36,19 +37,26 @@
 	$usrn = $_SESSION['user'];
 
 	$dbconn = pg_connect("host=postgres.cise.ufl.edu port=5432 dbname=atheteodb user=jclewis password=2991Uf!1855") or die('connection failed');
-    $result = pg_query($dbconn, "select firstn, lastn, pw, userid, username from users natural join password where username='$usrn'");
+    $result = pg_query($dbconn, "select firstn, lastn, pw, userid, username from users natural join password where username='$usrn'");  	
+    		
+    $albumid = 1;
+	$path = display_photos($albumid);	
+	
+	$count = pg_query($dbconn, "select count(photoid) from photo where albumid=$albumid");	
+ 	$count = pg_fetch_result($count,0,0);		
     		
 	if (!$result) {
 	 echo "An error has occurred.\n";
 	 exit;
 	}
+	
+		
+	
 	$dbfn = pg_fetch_result($result, 0, 0);
 	$dbln = pg_fetch_result($result, 0, 1);
 	$dbpass = pg_fetch_result($result, 0, 2);
 	$user_id = pg_fetch_result($result,0,3);
 	$dbusrn = pg_fetch_result($result, 0, 4);
-	$picture = pg_query($dbconn, "select max from profilepic where userid=$user_id");
-	$picture_id = pg_fetch_result($picture,0,0);
 	
 	 echo "Welcome, $dbfn $dbln\n";	 
 	 $_SESSION['userid'] = pg_fetch_result($result,0,3);	
@@ -56,16 +64,16 @@
 	 
 	$frdreq = pg_query($dbconn, "select count(friendreqid) from friendreq where userid=$user_id");
 	$frdreqcount = pg_fetch_result($frdreq,0,0);
-	if(!($picture_id)){
+	/*if(!($picture_id)){
 		$path = pg_query($dbconn, "select photoname from photo where photoid=1");
 		$path = pg_fetch_result($path,0,0);
 	}
 	else {
 		$path = pg_query($dbconn, "select photoname from photo where photoid=$picture_id");
 		$path = pg_fetch_result($path,0,0);
-	}
+	}*/
 	
-	pg_close($dbconn);
+	pg_close($dbconn);	
   ?>
    <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
       <div class="container">
@@ -100,19 +108,14 @@
         </div><!--/.nav-collapse -->
       </div>
     </div>
-   
+    
 <div class="slider-wrapper theme-default">    
 	<div id="slider" class="nivoSlider">
-			<?php
-			for($i = 1; $i < 2; $i++){								
-			$path = '<img src="'.$path. '" data-thumb="'.$path.'" alt="" title="" />';
-			echo $path;
+			<?php			
+			for($i = 0; $i< $count; $i++) {
+				echo '<img src="'.$path[$i].'" data-thumb="'.$path[$i].'" alt="" title="" />';				
 			}
-			?>
-	    <img src="upload/18photo.JPG" data-thumb="upload/18photo.JPG" alt="" title="" />
-            <img src="upload/16photo 1.JPG" data-thumb="upload/16photo 1.JPG" alt="" />
-            <img src="upload/17photo 3.JPG" data-thumb="upload/17photo 3.JPG" alt="" />
-            <img src="upload/11photo(1).JPG" data-thumb="upload/11photo(1).JPG" alt="" />
+			?>				        
 	</div>
 </div>
 
@@ -120,17 +123,8 @@
 $(window).load(function() {
     $('#slider').nivoSlider({effect: 'fade'});
 });
-</script>
+</script> 
 
-<!--
-<div class="container">
-	<?php
-	require 'functions.php'; 		
-	printalbums($user_id);
-	?>
-</div>
-   <script src="js/bootstrap.min.js"></script>
--->
  </body>
 </html>
 

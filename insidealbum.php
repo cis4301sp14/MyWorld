@@ -11,17 +11,22 @@
     <meta name="author" content="">
     <link rel="shortcut icon" href="../../assets/ico/favicon.ico">
 
-    <title>My World</title>
+    <title>My World</title>   
 
     <!-- Bootstrap core CSS -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
+    
+    <link rel="stylesheet" href="nivo-slider/nivo-slider.css" type="text/css" media="screen"/>
+    <link rel="stylesheet" href="nivo-slider/themes/default/default.css" type="text/css" media="screen"/>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    <script src="nivo-slider/jquery.nivo.slider.pack.js" type="text/javascript"></script>
 
+ 
     <!-- Custom styles for this template -->
     <!--link href="css/starter-template.css" rel="stylesheet"-->
-    <script src="http://maps.google.com/maps/api/js?sensor=false"
-              type="text/javascript"></script>
-	<script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
-	<script> 
+    <script src="http://maps.google.com/maps/api/js?sensor=false" type="text/javascript"></script>
+
+	<!--script> 
 	$( document ).ready(function() {
 		//$(document).ajaxComplete(function(){
         console.log( "document loaded" );
@@ -41,6 +46,25 @@
 		});
 		//});
 	});
+	</script-->
+	<script type="text/javascript">
+	
+	function togglebucklist(theid)
+	{
+		console.log("inside");
+		$.ajax({
+		type: "POST",
+		url: "bucket.php",
+		data: {id:theid},
+		success:  function( data,  textStatus,  jqXHR){
+				$("#message_box").html("");
+				$("#message_box").hide();
+				$("#message_box").html(data);
+				$("#message_box").fadeIn( "slow", function (){});
+				$("#message_box").fadeOut( 2000, function (){});	
+			}
+		});
+	}
 	</script>
 	
 	<style type="text/css" >
@@ -56,7 +80,21 @@
     -webkit-mask-border-radius:15px;
     -webkit-border-radius:15px;
 }
-
+.success{
+		border: 1px solid;
+		margin: 10px 0px;
+		padding: 15px 10px 15px 50px;
+		background-repeat: no-repeat;
+		background-position: 10px center;
+		color: #4F8A10;
+		background-color: #DFF2BF;
+		display:none;
+		 border-radius:15px; 
+    -moz-border-radius:15px;
+    -webkit-mask-border-radius:15px;
+    -webkit-border-radius:15px;
+		
+	}
 </style>
   <title>
    My World
@@ -66,6 +104,7 @@
  <body style="background-color:#E6E6E6;">
   <?php  
 	session_start();
+	require 'functions.php';
 	if ($_SESSION['user'] == '') {
 		header("Location: index.php");
 	 exit;
@@ -89,18 +128,14 @@
 	$user_id = pg_fetch_result($result,0,3);
 	$dbusrn = pg_fetch_result($result, 0, 4);
 	
+	
 	 $_SESSION['userid'] = pg_fetch_result($result,0,3);	
 	 }
 	 
 	$frdreq = pg_query($dbconn, "select count(friendreqid) from friendreq where userid='$user_id'");
 	$frdreqcount = pg_fetch_result($frdreq,0,0);
 	  ?>
-	<!-- < ? /*if($result) { ? >
-	<div id="map_canvas"></div>
-	< ?php } else { ? >
-    <div class="myotherdiv">Unable to upload image. No location detected.</div>
-	< ?php }*/ ? >
-	-->
+
    <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
       <div class="container">
         <div class="navbar-header">
@@ -122,7 +157,8 @@
 	 	  if(!($frdreqcount)) {echo 'Friend Requests';}			
 		  else{echo 'Friend Requests ('.$frdreqcount.')';}
 	     ?>
-	    </a></li>			
+	    </a></li>	
+		<li><a href="jsbucket.php"> My Bucket</a></li>		
        </ul>
 	   <form class="navbar-form navbar-right" name="form" action="loggedout.php" method = "post">            
 	    <button type="submit" class="btn btn-success">Sign Out, <?php echo ucwords($dbusrn);?></button>
@@ -136,38 +172,57 @@
 
         </div><!--/.nav-collapse -->
       </div>
-    </div>
-    
-<table align="center" >
+    </div>    
+
+<table align="center" style="margin-top:30px; margin-left:375px;">
 	<tr>
         <div class="container" style="margin-top:70px"></div>
 	<?php 
-	require 'functions.php';
+	
 	$frdinfo = pg_query($dbconn, "select userid, firstn, lastn from users where username='$unalbum'");
 	$frd_id = pg_fetch_result($frdinfo,0,0);
 	$frd_fn = pg_fetch_result($frdinfo,0,1);
 	$frd_ln = pg_fetch_result($frdinfo,0,2);
 	
-	$path = null;
+	/*$path = null;
 	$path = profile_picture($frd_id);
 	$path = '<td ALIGN=CENTER><img src="'.$path. '" alt"image"  width=300 height=auto id="propic1" class="img-thumbnail" />';
-	echo $path;
-	?>
+	echo $path;*/?>	
 
+	<td ALIGN=CENTER width="30%">	
 	<h2><?php echo $frd_fn.' '.$frd_ln; ?></h2>
+	<div class="slider-wrapper theme-default" style="width:500px; height:400px;">    
+	<div id="slider" class="nivoSlider">
+			<?php
+			$path = display_photos($albumid);	
+			
+
+		$count = pg_query($dbconn, "select count(photoid) from photo where albumid=$albumid");	
+			$count = pg_fetch_result($count,0,0);		
+			for($i = 0; $i< $count; $i++) {
+				echo '<img src="'.$path[$i].'" data-thumb="'.$path[$i].'" alt="" title="" />';			
+			}
+			?>				        
+	</div>
+</div>
+	<div style="height:40px;"><div class="success" id="message_box"></div></div>
+	
 	</td>
-	<td ALIGN=CENTER>
-	<div class="col-md-4 col-md-offset-4" id="map" style="width: 500px; height: 400px;"></div>
+	<td ALIGN=CENTER >
+	<div class="col-md-4 col-md-offset-4" id="map" style="margin-left:20%; width: 500px; height: 400px;"></div>
 	</td></tr>
  </table>
 	
 <div class="container" style="margin-top:50px"><table align="center"> 
-	<tr>
-		<td ALIGN=CENTER>
-	<div class="container">
-
-	</div>
-	</td>
+	<tr>	
+	<?php
+	$ids = show_id($albumid);
+	for($i = 0; $i < $count; $i++) {
+		$pic = '<td ALIGN=CENTER><div ondblClick="javascript:togglebucklist('.$ids[$i].')" id="propic1"><img src="'.$path[$i]. '" alt"image"  
+		width=150 height=auto id="propic1" class="img-thumbnail"/></div>';
+		echo $pic;
+		}
+	?>
 	</tr>
 </table></div>
       
@@ -207,18 +262,22 @@
         }
 		?>
       </script>
-<table align="center" ><tr><td>
+<!--<table align="center" ><tr><td>
 	<?php
 	for($i = 0; $i < count($albname); $i++){	
 		$covername = '<img src="'. $albname[$i] . '" alt="image" width=150 height=auto class="img-thumbnail" />';
 		echo $covername;
 	}
 ?>
-</td></tr></table>
+</td></tr></table>-->
 
-    </div><!-- /.container -->
-	 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    </div><!-- /.container -->	 
     <script src="js/bootstrap.min.js"></script>
+    <script type="text/javascript">
+$(window).load(function() {
+    $('#slider').nivoSlider({effect: 'fade'});
+});
+</script> 
  </body>
 
 </html>

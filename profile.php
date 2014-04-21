@@ -21,55 +21,73 @@
               type="text/javascript"></script>
 	<script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
 
-		
 	
-	/*$( document ).ready(function() {
-        console.log( "document loaded" );
-		$('#propic1').click(function(){
-			console.log("propic click");
-			$.ajax({
-			  type: "POST",
-			  url: "bucket.php",
-			  data: { name: "John", location: "Boston" }
-			})
-		});
-    });
-   */
-
-	<script>
-function togglebucklist(theid){
-		console.log("double click "+theid);
-		/*$.ajax({
-		type: "POST",
-		url: bucket.php,
-		data: {id:theid},
-		success: success,
-		dataType: integer}
-		);*/
-	}
-	</script>
 	
 	<style type="text/css" >
-#map {
-    left: 0; 
-    right: 0; 
-    bottom:0; 
-    z-index: 1; 
-    overflow: hidden;
-    border:solid 3px #FFFFFF; 
-    border-radius:15px; 
-    -moz-border-radius:15px;
-    -webkit-mask-border-radius:15px;
-    -webkit-border-radius:15px;
-}
-
-</style>
+	#map {
+		left: 0; 
+		right: 0; 
+		bottom:0; 
+		z-index: 1; 
+		overflow: hidden;
+		border:solid 3px #FFFFFF; 
+		border-radius:15px; 
+		-moz-border-radius:15px;
+		-webkit-mask-border-radius:15px;
+		-webkit-border-radius:15px;
+	}
+	body{
+		background-color:#E6E6E6;
+	}
+	.success{
+		border: 1px solid;
+		margin: 10px 0px;
+		padding: 15px 10px 15px 50px;
+		background-repeat: no-repeat;
+		background-position: 10px center;
+		color: #4F8A10;
+		background-color: #DFF2BF;
+		display:none;
+		border-radius:15px; 
+		-moz-border-radius:15px;
+		-webkit-mask-border-radius:15px;
+		-webkit-border-radius:15px;
+	}
+	</style>
   <title>
    My World
   </title>
-    
+  
+
+   
+    <script type="text/javascript">
+		/*
+		visibility: hidden;
+		
+		$( document ).ready(function() {
+        	$('#propic1').click(function(){
+				console.log("propic click");
+			});
+		});*/
+		
+	function togglebucklist(theid)
+	{
+		$.ajax({
+		type: "POST",
+		url: "bucket.php",
+		data: {id:theid},
+		success:  function( data,  textStatus,  jqXHR){
+				$("#message_box").html("");
+				$("#message_box").hide();
+				$("#message_box").html(data);
+				$("#message_box").fadeIn( "slow", function (){});
+				$("#message_box").fadeOut( 2000, function (){});	
+			}
+		});
+	}
+	</script>
  </head>
- <body style="background-color:#E6E6E6;">
+ <body >
   <?php  
 	session_start();
 	if ($_SESSION['user'] == '') {
@@ -130,13 +148,15 @@ function togglebucklist(theid){
 			<li><a href="friendreq.php"><?php 
 				if(!($frdreqcount)) {echo 'Friend Requests';}			
 				else{echo 'Friend Requests ('.$frdreqcount.')';}
-			?></a></li></ul>
+			?></a></li>
+			<li><a href="jsbucket.php"> My Bucket</a></li>
+			</ul>
 			<form class="navbar-form navbar-right" name="form" action="loggedout.php" method = "post">            
 			<button type="submit" class="btn btn-success">Sign Out, <?php echo ucwords($dbusrn);?></button>
 			</form>
-			<form class="navbar-form navbar-right" name="form" action="search.php" method = "post">            
+			<form class="navbar-form navbar-right" name="form" action="search.php" method = "post" id="searchbar">            
 			<div class="form-group">
-			<input type="text" placeholder="Name or Username" class="form-control" name = "person" id = "person">					
+			<input type="text" placeholder="Name or Username" class="form-control" name = "person" id = "person" required>					
 			</div>
 			<button type="submit" class="btn btn-success">Search</button>
 			</form>
@@ -144,9 +164,10 @@ function togglebucklist(theid){
         </div><!--/.nav-collapse -->
       </div>
     </div>
-<div class="container" style="margin-top:70px"></div>    
+<div class="container" style="margin-top:70px" style="margin-bottom:100px"></div>  
+
 <table align="center" >
-	<tr>
+	<tr> 
 	<?php 
 	require 'functions.php';	
 	$frdinfo = pg_query($dbconn, "select userid, firstn, lastn from users where username='$frd_un'");
@@ -155,12 +176,15 @@ function togglebucklist(theid){
 	$frd_ln = pg_fetch_result($frdinfo,0,2);
 	
 	$path = null;
-	$path = profile_picture($frd_id);
-	$path = '<td ALIGN=CENTER><img src="'.$path. '" alt"image"  width=300 height=auto id="propic1" class="img-thumbnail" ondblclick="togglebucketlist(2)"/>';
+	$array = profile_picture($frd_id);
+	$path = $array[0];
+	$path = '<td ALIGN=CENTER><div ondblClick="javascript:togglebucklist('.$array[1].')" id="propic1"><img src="'.$path. '" alt"image"  
+	width=300 height=auto id="propic1" class="img-thumbnail"/></div>';
 	echo $path;
-	/**/
 	?>
+	
 	<h2><?php echo $frd_fn.' '.$frd_ln; ?></h2>
+	<div style="height:40px;"><div class="success" id="message_box"></div></div>
 	</td>
 	<td ALIGN=CENTER>
 
@@ -168,6 +192,8 @@ function togglebucklist(theid){
 
 	</td></tr>
  </table>
+ <div>
+ </div> 
 	<script type="text/javascript">
 	<?php 
 	$db = pg_connect("host=postgres.cise.ufl.edu port=5432 dbname=atheteodb user=jclewis password=2991Uf!1855")or die('connection failed');
@@ -206,7 +232,7 @@ function togglebucklist(theid){
         }
 		?>
       </script>
-<div class="container" style="margin-top:50px"><table align="center" > 
+<div class="container" style="margin-top:100px"><table align="center"  > 
 	<tr><td ALIGN=CENTER>
 	<div class="container">
 		<?php printalbums($frd_id);	
@@ -215,10 +241,9 @@ function togglebucklist(theid){
 	</div></td></tr>
 </table></div>
  
-
-    
-	 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
+	 
+
  </body>
 
 </html>
