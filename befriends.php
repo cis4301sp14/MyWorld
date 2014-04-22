@@ -24,7 +24,7 @@
 	session_start();
 	$dbfn = $_SESSION['fn'];
 	$dbln = $_SESSION['ln'];
-	$urid = $_SESSION['userid'];
+	$urid = $_SESSION['userid']; 
 	
 	$dbconn = pg_connect("host=postgres.cise.ufl.edu port=5432 dbname=atheteodb user=jclewis password=2991Uf!1855") or die('connection failed');
 	$frdreq = pg_query($dbconn, "select count(friendreqid) from friendreq where userid='$urid'");
