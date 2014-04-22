@@ -17,7 +17,7 @@
 		<title>Friend Requests</title>		
 		
 	 </head>
-	<body style="background-color:#E6E6E6;">
+	<body style="background-color:#E6E6E6;"> 
 		<?php
 			require 'functions.php';
 			session_start();
