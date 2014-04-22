@@ -20,7 +20,7 @@
 	
 	function addtophoto(albumname, filename)
 	{
-		console.log(albumname + " " filename);
+		console.log(albumname + " " filename); 
 		/*$.ajax({
 		type: "POST",
 		url: "upload_file.php",
