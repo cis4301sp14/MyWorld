@@ -14,7 +14,7 @@
 		
 		if (!$result) {
 		 echo "An error has occurred.\n";
-		 exit;
+		 exit; 
 		}
 		$dbfn = pg_fetch_result($result, 0, 0);
 		$dbln = pg_fetch_result($result, 0, 1);
