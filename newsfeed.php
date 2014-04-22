@@ -1,4 +1,3 @@
-
   <?php
   
    $usrn = $_SESSION['user'];
@@ -21,7 +20,7 @@
 						ORDER BY albums.albumid, photoid");
    
    
-
+ 
 
 
    function deletephoto($photoname){
