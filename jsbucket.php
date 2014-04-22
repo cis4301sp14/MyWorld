@@ -21,7 +21,7 @@
 		$.ajax({
 		type: "POST",
 		url: "mybucket.php",
-		data: {pid:thephotoid},
+		data: {pid:thephotoid}, 
 		success:  function( data,  textStatus,  jqXHR){
 				console.log();
 			}
