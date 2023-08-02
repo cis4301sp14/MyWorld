@@ -143,7 +143,7 @@
     <!-- Bootstrap core JavaScript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.0.slim.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
 <script>
 $(document).ready(

@@ -20,7 +20,7 @@
 
     <link rel="stylesheet" href="nivo-slider/nivo-slider.css" type="text/css" media="screen"/>
     <link rel="stylesheet" href="nivo-slider/themes/default/default.css" type="text/css" media="screen"/>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.0.slim.min.js"></script>
     <script src="nivo-slider/jquery.nivo.slider.pack.js" type="text/javascript"></script>
         
  </head>

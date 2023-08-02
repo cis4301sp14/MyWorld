@@ -127,7 +127,7 @@
 		</table></div>
 </ul>
 </div>
- <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+ <script src="//code.jquery.com/jquery-3.7.0.slim.min.js"></script>
 
 	
 	</body>	

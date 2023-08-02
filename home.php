@@ -180,7 +180,7 @@
     </div>
    </div>
   </div>
- <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+ <script src="//code.jquery.com/jquery-3.7.0.slim.min.js"></script>
 <!--<script> 
 $(document).ready(function(){
 	$("#searchbar").click(function() {
@@ -197,7 +197,7 @@ $(document).ready(function(){
 </script>
 
   <!--</div><!-- /.container -->
-	 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+	 <script src="https://code.jquery.com/jquery-3.7.0.slim.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
     <?php include 'Footer.php'; ?>
  </body>
