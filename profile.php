@@ -19,7 +19,7 @@
     <!--link href="starter-template.css" rel="stylesheet"-->
     <script src="http://maps.google.com/maps/api/js?sensor=false"
               type="text/javascript"></script>
-	<script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+	<script src="https://code.jquery.com/jquery-3.7.0.slim.min.js"></script>
 
 	
 	

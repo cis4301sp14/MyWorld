@@ -13,7 +13,7 @@
 
 		<!-- Bootstrap core CSS -->
 		<link href="css/bootstrap.min.css" rel="stylesheet">
-		<script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+		<script src="https://code.jquery.com/jquery-3.7.0.slim.min.js"></script>
 		<script type="text/javascript">	
 	function mark_gone(thephotoid)
 	{
